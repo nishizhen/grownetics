@@ -1,0 +1,35 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f docker-compose.yml -f docker-compose.override.yml
+    kompose.version: 1.16.0 (0c01309)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: growfaker
+  name: growfaker
+spec:
+  replicas: 1
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        io.kompose.service: growfaker
+    spec:
+      containers:
+      - args:
+        - ./growctl
+        - faker
+        - --host
+        - nginx:81
+        - --consul_host
+        - consul:8500
+        - --influx_host
+        - influxdb:8086
+        - --json
+        image: code.cropcircle.io:4567/grownetics/grownetics/growctl:latest
+        name: growfaker
+        resources: {}
+      restartPolicy: Always
+status: {}

@@ -1,0 +1,104 @@
+/* map.scss
+ *   styles for leaflet map icons
+ */
+
+.leaflet-container {
+    background-color: #f2f2f2 !important;
+}
+
+.grownetics-sensor-map-icon div {
+    color: #ffffff;
+    font-size: 1.1em;
+    font-weight: bold;
+    text-align: center;
+    background-color: #999999;
+    border: 1px solid #ffffff;
+    border-radius: 4px;
+}
+
+.edit-layers-control {
+    min-width: 240px;
+    overflow-y: scroll;
+}
+
+.edit-layers-list-item {
+    label {
+        font-weight: bold;
+        font-size: 1.1em;
+    }
+    text-align: left;
+}
+
+@-webkit-keyframes pulseAnimation {       
+    0% {-webkit-transform: scale(0); opacity: 0;}
+    8% {-webkit-transform: scale(0); opacity: 0;}
+    15% {-webkit-transform: scale(0.1); opacity: 1;}
+    30% {-webkit-transform: scale(0.5); opacity: 1;}
+    100% {opacity: 0; -webkit-transform: scale(1);}
+}
+
+@-moz-keyframes pulseAnimation {       
+    0% {-moz-transform: scale(0); opacity: 0;}
+    8% {-moz-transform: scale(0); opacity: 0;}
+    15% {-moz-transform: scale(0.1); opacity: 1;}
+    30% {-moz-transform: scale(0.5); opacity: 1;}
+    100% {opacity: 0; -moz-transform: scale(1);}
+}
+
+.pulse_holder {
+    display: block;
+    position: absolute;
+    border-style: none !important;
+
+    .pulse_marker {
+        width: 0px;
+        height: 0px;    
+        border: none;
+    }
+    .pulse_rays_up {
+        margin: 0 auto;
+        padding: 20px;
+        position: relative;
+        z-index: -1;
+        background-color: rgba(0,128,64,.3);
+        top: -12px;
+        right: 18px;
+        width: 86px;
+        height: 30px;
+        border: 2px solid rgba(0, 128, 64, 1);
+        -webkit-border-radius: 100px;
+        -moz-border-radius: 100px;
+        -o-border-radius: 100px;
+        -ms-border-radius: 100px;
+        border-radius: 4px;
+        -webkit-animation: pulseAnimation 1.7s linear 1;
+        -moz-animation: pulseAnimation 1.7s linear 1; 
+        border-image: initial;
+        animation-fill-mode: forwards;
+    }
+    .pulse_rays_down {
+        margin: 0 auto;
+        padding: 20px;
+        position: relative;
+        z-index: -1;
+        background-color: rgba(240,14,17,.3);
+        top: -12px;
+        right: 18px;
+        width: 86px;
+        height: 30px;
+        border: 2px solid rgba(240,14,17, 1);
+        -webkit-border-radius: 100px;
+        -moz-border-radius: 100px;
+        -o-border-radius: 100px;
+        -ms-border-radius: 100px;
+        border-radius: 4px;
+        -webkit-animation: pulseAnimation 1.7s linear 1;
+        -moz-animation: pulseAnimation 1.7s linear 1; 
+        border-image: initial;
+        animation-fill-mode: forwards;
+    }
+}
+#sensor-value {
+    color: #fff;
+    text-shadow: 0.85px 0 0 #000, 0 -0.85px 0 #000, 0 0.85px 0 #000, -0.85px 0 0 #000;
+}

@@ -1,0 +1,6 @@
+jupyterlab:
+  image: mikebirdgeneau/jupyterlab
+  ports:
+    - "8888:8888"
+  volumes:
+    - ./:/opt/app/data

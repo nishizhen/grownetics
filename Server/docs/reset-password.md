@@ -1,0 +1,1 @@
+On the login screen of your dashboard, click 'Reset Password' at the bottom, and enter the email address associated with your account. Check your email, including the spam filter, and follow the attached link. Now enter your new password twice in a row. You will then be able to login with your new password.

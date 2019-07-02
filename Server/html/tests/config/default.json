@@ -1,0 +1,7 @@
+{
+  "driver_host": "127.0.0.1",
+  "driver_port": 9515,
+  "driver_path": "/",
+  "local_chrome_driver": true,
+  "app_base_path": "http://localhost:9090"
+}

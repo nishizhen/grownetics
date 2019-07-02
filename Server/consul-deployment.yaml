@@ -1,0 +1,39 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f docker-compose.yml -f docker-compose.override.yml
+    kompose.version: 1.16.0 (0c01309)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: consul
+  name: consul
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        io.kompose.service: consul
+    spec:
+      containers:
+      - image: bitnami/consul
+        name: consul
+        ports:
+        - containerPort: 8300
+        - containerPort: 8400
+        - containerPort: 8500
+        - containerPort: 53
+          protocol: UDP
+        resources: {}
+        volumeMounts:
+        - mountPath: /bitnami
+          name: consul-claim0
+      restartPolicy: Always
+      volumes:
+      - name: consul-claim0
+        persistentVolumeClaim:
+          claimName: consul-claim0
+status: {}

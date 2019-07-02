@@ -1,0 +1,13 @@
+FROM golang
+
+#RUN curl -s https://glide.sh/get | sh
+#RUN apt-get update && apt-get install netcat -y
+
+ADD . /go/src/
+WORKDIR /go/src
+#RUN cd /go/src/code.cropcircle.io/grownetics/growctl \
+    && glide install
+RUN mkdir /go/src/output \
+    && go get code.cropcircle.io/grownetics/growctl \
+    && go build -o output/growctl code.cropcircle.io/grownetics/growctl
+CMD ["./growctl"]

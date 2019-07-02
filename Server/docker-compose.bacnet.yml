@@ -1,0 +1,17 @@
+version: '3'
+services:
+
+  server:
+    image: bacnet
+    # command: ["bacserv", "200001"]
+    command: ["sleep","infinity"]
+    network_mode: bridge
+
+  # Pump values into server.
+  # TODO: Needs more convenient Env based config
+  simulator:
+    image: bacnet
+    depends_on:
+      - server
+    command: ["perl", "/simulator"]
+    network_mode: bridge

@@ -1,0 +1,47 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f docker-compose.yml -f docker-compose.override.yml
+    kompose.version: 1.16.0 (0c01309)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: supercron
+  name: supercron
+spec:
+  replicas: 1
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        io.kompose.service: supercron
+    spec:
+      containers:
+      - env:
+        - name: CERES
+        - name: DB_HOSTNAME
+        - name: DEV
+        - name: ENVIRONMENT
+        - name: FACILITY_ID
+        - name: FACILITY_NAME
+        - name: GF_SERVER_ROOT_URL
+          value: http://localhost/grafana
+        - name: INFLUX_HOST
+        - name: INFLUX_PORT
+        - name: MYSQL_DATABASE
+        - name: MYSQL_PASSWORD
+        - name: MYSQL_ROOT_PASSWORD
+        - name: MYSQL_TEST_DATABASE
+        - name: MYSQL_USER
+        - name: RABBIT_HOST
+        - name: RABBIT_PASS
+        - name: RABBIT_PORT
+        - name: RABBIT_USER
+        - name: REDIS_HOSTNAME
+        - name: REMOTE_URL
+        image: code.cropcircle.io:4567/grownetics/grownetics/supercron:latest
+        name: supercron
+        resources: {}
+      restartPolicy: Always
+status: {}

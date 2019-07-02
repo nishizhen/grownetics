@@ -1,0 +1,27 @@
+{
+  "name": "growserver",
+  "version": "1.8.0",
+  "description": "Grownetics Server JS dependencies",
+  "config": {
+    "url": "http://localhost/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://code.cropcircle.io/Grownetics/Grownetics.git"
+  },
+  "author": "mike.c",
+  "private": true,
+  "main": "index.js",
+  "scripts": {
+    "test": "docker exec phpunit_phpunit_1 /bin/sh /var/www/html/test_run.sh FrontEnd"
+  },
+  "devDependencies": {
+    "chai": "^4.1.0",
+    "config": "^1.26.1",
+    "mocha": "^3.1.2",
+    "wdio-mocha-framework": "^0.4.6",
+    "wdio-phantomjs-service": "^0.2.2",
+    "wdio-spec-reporter": "0.0.3",
+    "webdriverio": "^4.8.0"
+  }
+}

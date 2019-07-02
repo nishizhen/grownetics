@@ -1,0 +1,32 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f docker-compose.yml -f docker-compose.override.yml
+    kompose.version: 1.16.0 (0c01309)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: nginx
+  name: nginx
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        io.kompose.service: nginx
+    spec:
+      imagePullSecrets:
+      - name: regcred
+      containers:
+      - image: code.cropcircle.io:4567/grownetics/grownetics/nginx:latest
+        name: nginx
+        ports:
+        - containerPort: 80
+        - containerPort: 81
+        - containerPort: 8090
+        resources: {}
+      restartPolicy: Always
+status: {}

@@ -1,0 +1,14 @@
+.wikis {
+  .pull-right {
+    z-index: 500;
+    position: relative;
+  }
+  .toc {
+    margin: 3em 0 0 5em;
+  }
+  h3#home {
+    position: fixed;
+    top: 3em;
+    left: 10em;
+  }
+}

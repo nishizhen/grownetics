@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: common-config
+  namespace: default
+data:
+  MYSQL_HOST: appdb.default.svc.cluster.local
+  DB_HOSTNAME: appdb.default.svc.cluster.local
+  MYSQL_ROOT_PASSWORD: grownetics
+  MYSQL_DATABASE: grownetics
+  MYSQL_TEST_DATABASE: grownetics
+  MYSQL_USER: grownetics
+  MYSQL_PASSWORD: grownetics
+  REDIS_HOSTNAME: redis.default.svc.cluster.local

@@ -1,0 +1,135 @@
+growdash:
+  volumes:
+    - ./html:/var/www/html:cached
+    - ./tmp:/tmp:cached
+
+deviceapi:
+  volumes:
+    - ./html:/var/www/html
+    - ./tmp:/tmp
+
+growbacnet:
+  volumes:
+    - ./html:/var/www/html:cached
+    - ./tmp:/tmp:cached
+
+argus:
+  volumes:
+    - ./html:/var/www/html:cached
+    - ./tmp:/tmp:cached
+
+growpulse:
+  volumes:
+    - ./html:/var/www/html:cached
+    - ./tmp:/tmp:cached
+
+growsocket:
+  ports:
+    - "8989:8989"
+  volumes:
+    - ./html/images/socketio/socket.js:/srv/socket.js
+
+notifications:
+  volumes:
+    - ./html:/var/www/html:cached
+    - ./tmp:/tmp:cached
+
+nginx:
+  ports:
+    - "80:80"
+    - "81:81"
+    # Status Pages
+    - "8090:8090"
+  volumes:
+    - ./html:/var/www/html
+    - ./html/images/nginx/:/var/www/templates
+    - ./html/images/nginx/conf.d/growdash.conf:/etc/nginx/conf.d/default.conf
+    - ./html/images/nginx/nginx.conf:/etc/nginx/nginx.conf
+
+appdb:
+  ports:
+    - "3306:3306"
+  volumes:
+   - ./data/appdb:/var/lib/mysql
+
+rabbitmq:
+  ports:
+    - "15672:15672"
+    - "5672:5672"
+
+consul:
+  volumes:
+    - ./data/consul:/bitnami
+  ports:
+    - "8300:8300"
+    - "8400:8400"
+    - "8500:8500"
+    - "8600:53/udp"
+
+influxdb:
+  ports:
+    - "8086:8086"
+
+#kapacitor:
+#  ports:
+#    - "9092:9092"
+#  volumes:
+#    - ./html/images/kapacitor/:/etc/kapacitor/
+#    - ./data/kapacitor:/var/lib/kapacitor
+
+telegraf:
+  volumes:
+    - ../DevOps/roles/growserver/templates/telegraf.conf:/etc/telegraf/telegraf.conf
+    - /var/run/docker.sock:/var/run/docker.sock
+
+chronograf:
+  image: chronograf
+  volumes:
+    - ./data/chronograf:/var/lib/chronograf
+  ports:
+    - "8888:8888"
+
+growfaker:
+  image: code.cropcircle.io:4567/grownetics/grownetics/growctl:latest
+  command: ./growctl faker --host nginx:81 --consul_host consul:8500 --influx_host influxdb:8086 --json
+  links:
+    - nginx
+    - influxdb
+    - consul
+
+documentation:
+  image: squidfunk/mkdocs-material
+  restart: always
+  ports:
+    - "8000:8000"
+  volumes:
+    - ./:/docs
+
+grafana:
+  volumes:
+    - ./html/images/grafana/conf:/etc/grafana
+    - ./data/grafana/data:/var/lib/grafana
+  ports:
+    - "3000:3000"
+
+supercron:
+  image: code.cropcircle.io:4567/grownetics/grownetics/supercron:latest
+  volumes:
+    - ./html:/var/www/html:cached
+    - ./tmp:/tmp:cached
+    - /var/data/cron/crontab:/etc/crontab
+  environment:
+    - GF_SERVER_ROOT_URL=http://localhost/grafana
+
+bookstack-mysql:
+  volumes:
+  - ./data/bookstack/mysql-data:/var/lib/mysql
+
+bookstack:
+  volumes:
+    - ./data/bookstack/uploads:/var/www/bookstack/public/uploads
+    - ./data/bookstack/storage-uploads:/var/www/bookstack/public/storage
+  ports:
+    - "8283:80"
+  environment:
+    - APP_URL=http://localhost/wikis

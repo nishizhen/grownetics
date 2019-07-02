@@ -1,0 +1,77 @@
+nginx:
+  ports:
+    - "80:80"
+    - "81:81"
+
+appdb:
+  volumes:
+    - /var/data/mariadb:/var/lib/mysql
+  ports:
+    - "3306:3306"
+
+redis:
+  volumes:
+   - /var/data/redis:/data
+
+rabbitmq:
+  volumes:
+    - /var/data/rabbitmq:/var/lib/rabbitmq
+  ports:
+    - "15672:15672"
+    - "5672:5672"
+
+growsocket:
+  ports:
+    - "8989:8989"
+
+consul:
+  volumes:
+    - /var/data/consul:/bitnami
+  ports:
+    - "8500:8500"
+
+influxdb:
+  volumes:
+    - /var/data/influxdb:/var/lib/influxdb
+  ports:
+    - "8086:8086"
+
+telegraf:
+  volumes:
+    - /var/data/telegraf.conf:/etc/telegraf/telegraf.conf
+    - /var/run/docker.sock:/var/run/docker.sock
+
+chronograf:
+  volumes:
+    - /var/data/chronograf:/var/lib/chronograf
+  ports:
+    - "8888:8888"
+
+grafana:
+  ports:
+    - "3000:3000"
+  volumes:
+    - /var/data/grafana/data:/var/lib/grafana
+  environment:
+    - GF_SERVER_ROOT_URL=http://onsite.grownetics.co/grafana
+
+growbot:
+  image: code.cropcircle.io:4567/grownetics/grownetics/growctl:${VERSION}
+  command: ./growctl mattermost -j --growdash_version=${version} --bot_name=GrowBot-${HOSTNAME}
+
+supercron:
+  volumes:
+    - /var/data/cron/crontab:/etc/crontab
+
+bookstack-mysql:
+  volumes:
+  - /var/data/bookstack/mysql-data:/var/lib/mysql
+
+bookstack:
+  volumes:
+  - /var/data/bookstack/uploads:/var/www/bookstack/public/uploads
+  - /var/data/bookstack/storage-uploads:/var/www/bookstack/public/storage
+  ports:
+  - "8080:80"
+  environment:
+    - APP_URL=http://onsite.grownetics.co/wikis

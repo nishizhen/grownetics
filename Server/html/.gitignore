@@ -1,0 +1,5 @@
+/vendor/*
+/tmp/*
+/logs/*
+node_modules/
+bower_components/

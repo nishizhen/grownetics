@@ -1,0 +1,3 @@
+bookstack:
+  environment:
+    - APP_URL=http://cloud.qa.development.cloudforest.io/wikis

@@ -1,0 +1,23 @@
+site_name: Grownetics Server Documentation
+theme:
+  name: 'material'
+  palette:
+    primary: 'green'
+    accent: 'green'
+
+pages:
+- Home: 'index.md'
+- FAQ:
+  - 'How do I create plants?': 'create-plants.md'
+  - 'How do I add a user?': 'create-users.md'
+  - 'How do I add someone to receive alerts?': 'add-user-alerts.md'
+  - "How do I move a Batch from Zone 'A' to Zone 'B'?": 'move-batch.md'
+  - 'How do I reset my password?': 'reset-password.md'
+  - 'How do I change the units displayed?': 'change-units.md'
+  - 'How do I view my environment data?': 'view-data.md'
+  - "How do I change a light's schedule?": 'light-schedule.md'
+  - 'Why are my lights not coming back on?': 'burnout-protection.md'
+- Software:
+  - 'Grafana': 'grafana.md'
+- Hardware:
+  - 'Hardware Debugging Procedures': 'hardware-debugging.md'

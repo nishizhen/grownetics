@@ -1,0 +1,33 @@
+nginx:
+  image: code.cropcircle.io:4567/grownetics/grownetics/nginx:$CI_PIPELINE_ID
+
+growdash:
+  image: code.cropcircle.io:4567/grownetics/grownetics/growdash:$CI_PIPELINE_ID
+  environment:
+      - FACILITY_NAME=${CI_PIPELINE_ID}
+      - DEV=0
+deviceapi:
+  image: code.cropcircle.io:4567/grownetics/grownetics/growdash:$CI_PIPELINE_ID
+growsocket:
+  image: code.cropcircle.io:4567/grownetics/grownetics/socketio:$CI_PIPELINE_ID
+growbacnet:
+  image: code.cropcircle.io:4567/grownetics/grownetics/growdash:$CI_PIPELINE_ID
+phpunit:
+  image: code.cropcircle.io:4567/grownetics/grownetics/growdash:$CI_PIPELINE_ID
+growpulse:
+  image: code.cropcircle.io:4567/grownetics/grownetics/growdash:$CI_PIPELINE_ID
+supercron:
+  image: code.cropcircle.io:4567/grownetics/grownetics/supercron:$CI_PIPELINE_ID
+notifications:
+  image: code.cropcircle.io:4567/grownetics/grownetics/growdash:$CI_PIPELINE_ID
+
+growfaker:
+  image: code.cropcircle.io:4567/grownetics/grownetics/growctl:$CI_PIPELINE_ID
+
+grafana:
+  environment:
+    - GF_SERVER_ROOT_URL=http://cloud.$CI_ENVIRONMENT_SLUG.development.cloudforest.io/grafana
+
+bookstack:
+  environment:
+    - APP_URL=http://cloud.$CI_ENVIRONMENT_SLUG.development.cloudforest.io/wikis

@@ -1,0 +1,11 @@
+.Recipes.view {
+	.prev.disabled {
+		display: none;
+	}
+	.next.disabled {
+		display: none;
+	}
+	#daysInput {
+		width: 50%;
+	}
+}

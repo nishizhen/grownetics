@@ -1,0 +1,40 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f docker-compose.yml -f docker-compose.override.yml
+    kompose.version: 1.16.0 (0c01309)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: grafana
+  name: grafana
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        io.kompose.service: grafana
+    spec:
+      containers:
+      - image: grafana/grafana-dev:master-9fe0dcec0ed35d443b95f8f1a180d2ec93448210
+        name: grafana
+        ports:
+        - containerPort: 3000
+        resources: {}
+        volumeMounts:
+        - mountPath: /etc/grafana
+          name: grafana-claim0
+        - mountPath: /var/lib/grafana
+          name: grafana-claim1
+      restartPolicy: Always
+      volumes:
+      - name: grafana-claim0
+        persistentVolumeClaim:
+          claimName: grafana-claim0
+      - name: grafana-claim1
+        persistentVolumeClaim:
+          claimName: grafana-claim1
+status: {}

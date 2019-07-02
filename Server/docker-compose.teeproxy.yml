@@ -1,0 +1,5 @@
+teeproxy:
+  image: grownetics/teeproxy
+  ports:
+    - "8000:8000"
+  command: -l=:8000 -a="10.10.4.6:80" -b="10.10.4.7:80" -debug=false

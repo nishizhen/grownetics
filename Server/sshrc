@@ -1,0 +1,6 @@
+if [ "$USER" != "git" ]; then
+	ip=`echo $SSH_CONNECTION | cut -d " " -f 1`
+	host="`hostname`"
+	ext_ip=`curl -s http://ipecho.net/plain; echo`
+	curl -s -X POST -H "Content-Type: application/json" -d  "{\"secret\": \"SSH login to $host - $ext_ip by User: $USER at IP: $ip\"}" https://bloombot.herokuapp.com/hubot/chatsecrets/dGPq8WiCkvypuABAn > /dev/null
+fi

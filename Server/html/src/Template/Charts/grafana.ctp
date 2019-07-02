@@ -1,0 +1,2 @@
+<a href="http://<?=env('HTTP_HOST')?>:3000/dashboard/db/system-health?refresh=5s&orgId=1&from=now-3h&to=now" target="_blank">Open in new Window</a>
+<iframe src="http://<?=env('HTTP_HOST')?>:3000/dashboard/db/system-health?refresh=5s&orgId=1&from=now-3h&to=now" style="width:100%; height: 700px; border: 0;"></iframe>

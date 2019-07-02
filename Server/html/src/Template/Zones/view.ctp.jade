@@ -1,0 +1,42 @@
+.zones.view.col-lg-9.col-md-8.columns.content
+  != $view->Html->script('zones/view', ['block' => 'scriptBottom']);
+  != $view->Html->script('notes/modalDisplayNoteNavigator', ['block' => 'scriptBottom']);
+  h3
+    | Zone
+    != h($zone->id)
+    != h($zone->label)
+  !=  $view->cell('PhotoNoteUploadModal', [$zone->id], ['modelType' => 'Zone']);
+  != $view->cell('PhotoNoteModalDisplay', [$zone->id], ['modelType' => 'Zone']);
+  table.vertical-table
+    tr
+      th
+        != __('Label')
+      td
+        != h($zone->label)
+    tr
+      th
+        != __('Id')
+      td.zone_id
+        != h($view->Number->format($zone->id))
+    tr
+      th
+        != __('Status')
+      td
+        != h($view->Number->format($zone->status))
+    tr
+      th
+        != __('Created')
+      td
+        != h($zone->created->i18nFormat(null, env('TIMEZONE')))
+    tr
+      th
+        != __('Modified')
+      td
+        != h($zone->modified->i18nFormat(null, env('TIMEZONE')))
+
+    h3 Recent Humidity Chart
+
+    #chartcontainer
+      #loadingIcon
+        i#spinner.fa.fa-circle-o-notch.fa-spin.fa-3x.fa-fw
+      #chartdiv

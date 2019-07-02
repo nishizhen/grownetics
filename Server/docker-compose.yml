@@ -1,0 +1,444 @@
+# The dashboard interface that humans access
+growdash:
+  image: code.cropcircle.io:4567/grownetics/grownetics/growdash:${VERSION}
+  restart: always
+  links:
+    - appdb
+    - redis
+    - rabbitmq
+    - influxdb
+    - consul
+  environment:
+    - DEV
+    - FACILITY_NAME
+    - FACILITY_ID
+    - CERES
+    - DEMO
+    - ENVIRONMENT
+    - REMOTE_URL
+    - VERSION
+    - SHORT_NAME
+
+    - SET_POINT_ALARM_TOLERANCE_PERCENTAGE
+    - BURNOUT_PROTECTION_DELAY
+
+    - DB_HOSTNAME
+    - MYSQL_ROOT_PASSWORD
+    - MYSQL_DATABASE
+    - MYSQL_TEST_DATABASE
+    - MYSQL_USER
+    - MYSQL_PASSWORD
+
+    - REDIS_HOSTNAME
+    - RABBIT_HOST
+    - RABBIT_PORT
+    - RABBIT_USER
+    - RABBIT_PASS
+    - INFLUX_HOST
+    - INFLUX_PORT
+
+    - TWILIO_SID
+    - TWILIO_TOKEN
+
+    - THRESHOLD_DEVICE_BOOTS
+    - THRESHOLD_DATA_RECEIVED
+    - THRESHOLD_CT_ON
+
+    - TIMEZONE_OFFSET
+    - TIMEZONE
+
+    - BACNET_URL
+    - BACNET_AUTH
+    - BACNET_RATE
+    - BACNET_ENABLED
+
+    - ARGUS_RATE
+    - ARGUS_URL
+
+    - SMTP_HOST
+    - SMTP_USER
+    - SMTP_PASS
+
+  labels:
+    io.rancher.container.pull_image: always
+    io.rancher.scheduler.affinity:host_label_ne: onsite=true
+
+# The API that devices talk to
+deviceapi:
+  image: code.cropcircle.io:4567/grownetics/grownetics/growdash:${VERSION}
+  restart: always
+  links:
+    - appdb
+    - redis
+    - rabbitmq
+    - influxdb
+    - consul
+  environment:
+    - DEV
+    - FACILITY_NAME
+    - FACILITY_ID
+    - CERES
+    - ENVIRONMENT
+    - REMOTE_URL
+    - SHORT_NAME
+
+    - BURNOUT_PROTECTION_DELAY
+
+    - DB_HOSTNAME
+    - MYSQL_ROOT_PASSWORD
+    - MYSQL_DATABASE
+    - MYSQL_TEST_DATABASE
+    - MYSQL_USER
+    - MYSQL_PASSWORD
+
+    - REDIS_HOSTNAME
+    - RABBIT_HOST
+    - RABBIT_PORT
+    - RABBIT_USER
+    - RABBIT_PASS
+    - INFLUX_HOST
+    - INFLUX_PORT
+
+    - THRESHOLD_DEVICE_BOOTS
+    - THRESHOLD_DATA_RECEIVED
+    - THRESHOLD_CT_ON
+  labels:
+    io.rancher.container.pull_image: always
+    io.rancher.scheduler.affinity:host_label_ne: onsite=true
+
+# Responsible for maintaining the socket connection to the dashboard for live data and chat
+growsocket:
+  image: code.cropcircle.io:4567/grownetics/grownetics/socketio:latest
+  restart: always
+  links:
+    - rabbitmq
+    - nginx
+  labels:
+    io.rancher.container.pull_image: always
+    io.rancher.scheduler.affinity:host_label_ne: onsite=true
+
+# Responsible for communicating with the onsite BACnet system
+# Only runs if BACNET_URL is set.
+growbacnet:
+  image: code.cropcircle.io:4567/grownetics/grownetics/growdash:${VERSION}
+  restart: always
+  command: /var/www/html/growbacnet.sh
+  links:
+    - appdb
+    - redis
+    - influxdb
+  environment:
+    - DEV
+    - FACILITY_NAME
+    - FACILITY_ID
+    - CERES
+    - ENVIRONMENT
+    - REMOTE_URL
+    - SHORT_NAME
+
+    - DB_HOSTNAME
+    - MYSQL_ROOT_PASSWORD
+    - MYSQL_DATABASE
+    - MYSQL_TEST_DATABASE
+    - MYSQL_USER
+    - MYSQL_PASSWORD
+
+    - REDIS_HOSTNAME
+    - RABBIT_HOST
+    - RABBIT_PORT
+    - RABBIT_USER
+    - RABBIT_PASS
+    - INFLUX_HOST
+    - INFLUX_PORT
+
+    - BACNET_URL
+    - BACNET_AUTH
+    - BACNET_RATE
+    - BACNET_ENABLED
+    - THRESHOLD_DEVICE_BOOTS
+    - THRESHOLD_DATA_RECEIVED
+    - THRESHOLD_CT_ON
+  labels:
+    io.rancher.container.pull_image: always
+    io.rancher.scheduler.affinity:host_label_ne: onsite=true
+
+# 'Pulses' at a regular interval to calucate and process zone and time based rules
+# Also sends notifications and monitors device health
+growpulse:
+  image: code.cropcircle.io:4567/grownetics/grownetics/growdash:${VERSION}
+  restart: always
+  command: /var/www/html/growpulse.sh
+  links:
+    - appdb
+    - redis
+    - rabbitmq
+    - influxdb
+    - consul
+  environment:
+    - DEV
+    - FACILITY_NAME
+    - FACILITY_ID
+    - CERES
+    - ENVIRONMENT
+    - REMOTE_URL
+    - SHORT_NAME
+    - VERSION
+
+    - DB_HOSTNAME
+    - MYSQL_ROOT_PASSWORD
+    - MYSQL_DATABASE
+    - MYSQL_TEST_DATABASE
+    - MYSQL_USER
+    - MYSQL_PASSWORD
+
+    - REDIS_HOSTNAME
+    - RABBIT_HOST
+    - RABBIT_PORT
+    - RABBIT_USER
+    - RABBIT_PASS
+    - INFLUX_HOST
+    - INFLUX_PORT
+    - THRESHOLD_DEVICE_BOOTS
+    - THRESHOLD_DATA_RECEIVED
+    - THRESHOLD_CT_ON
+  labels:
+    io.rancher.container.pull_image: always
+    io.rancher.scheduler.affinity:host_label_ne: onsite=true
+
+notifications:
+  image: code.cropcircle.io:4567/grownetics/grownetics/growdash:${VERSION}
+  restart: always
+  command: bash -c "chmod +x /var/www/html/notification.sh && /var/www/html/notification.sh"
+  links:
+    - appdb
+    - redis
+    - rabbitmq
+    - influxdb
+    - consul
+  environment:
+    - DEV
+    - FACILITY_NAME
+    - SHORT_NAME
+    - FACILITY_ID
+    - CERES
+    - ENVIRONMENT
+    - REMOTE_URL
+    - VERSION
+
+    - DB_HOSTNAME
+    - MYSQL_ROOT_PASSWORD
+    - MYSQL_DATABASE
+    - MYSQL_TEST_DATABASE
+    - MYSQL_USER
+    - MYSQL_PASSWORD
+
+    - REDIS_HOSTNAME
+    - RABBIT_HOST
+    - RABBIT_PORT
+    - RABBIT_USER
+    - RABBIT_PASS
+    - INFLUX_HOST
+    - INFLUX_PORT
+
+    - TWILIO_SID
+    - TWILIO_TOKEN
+
+    - SMTP_HOST
+    - SMTP_USER
+    - SMTP_PASS
+  labels:
+    io.rancher.container.pull_image: always
+    io.rancher.scheduler.affinity:host_label_ne: onsite=true
+
+# Responsible for communicating with the onsite Argus system
+# Only runs if ARGUS_URL is set.
+argus:
+  image: code.cropcircle.io:4567/grownetics/grownetics/growdash:${VERSION}
+  restart: always
+  command: /var/www/html/argus.sh
+  links:
+    - appdb
+    - redis
+    - influxdb
+  environment:
+    - DEV
+    - FACILITY_NAME
+    - FACILITY_ID
+    - CERES
+    - ENVIRONMENT
+    - REMOTE_URL
+    - SHORT_NAME
+    - VERSION
+
+    - DB_HOSTNAME
+    - MYSQL_ROOT_PASSWORD
+    - MYSQL_DATABASE
+    - MYSQL_TEST_DATABASE
+    - MYSQL_USER
+    - MYSQL_PASSWORD
+
+    - REDIS_HOSTNAME
+    - RABBIT_HOST
+    - RABBIT_PORT
+    - RABBIT_USER
+    - RABBIT_PASS
+    - INFLUX_HOST
+    - INFLUX_PORT
+
+    - BACNET_URL
+    - BACNET_AUTH
+    - BACNET_RATE
+    - BACNET_ENABLED
+    - THRESHOLD_DEVICE_BOOTS
+    - THRESHOLD_DATA_RECEIVED
+    - THRESHOLD_CT_ON
+
+    - ARGUS_URL
+    - ARGUS_RATE
+  labels:
+    io.rancher.container.pull_image: always
+    io.rancher.scheduler.affinity:host_label_ne: onsite=true
+
+# Dispatches web requests
+nginx:
+  image: code.cropcircle.io:4567/grownetics/grownetics/nginx:${VERSION}
+  restart: always
+  links:
+    - growdash
+    - deviceapi
+    - bookstack
+    - grafana
+  labels:
+    io.rancher.container.pull_image: always
+    io.rancher.scheduler.affinity:host_label_ne: onsite=true
+
+# Stores all application info, users, zones, devices, rules, notifications, etc.
+appdb:
+  image: mariadb:10.3
+  restart: always
+  command: mysqld --sql_mode=""
+  environment:
+    - MYSQL_ROOT_PASSWORD
+    - MYSQL_DATABASE
+    - MYSQL_TEST_DATABASE
+    - MYSQL_USER
+    - MYSQL_PASSWORD
+
+# Caching engine for GrowDash, GrowSocket, and GrowPulse
+redis:
+  image: redis
+  restart: always
+
+#
+# Service Discovery - Consul
+#
+consul:
+  image: bitnami/consul
+  restart: always
+
+
+# Holds all data points, as well as system performance data and other time series metrics
+influxdb:
+  image: influxdb
+  restart: always
+  environment:
+    - INFLUXDB_HTTP_LOG_ENABLED=false
+
+# Alerting
+kapacitor:
+  image: kapacitor
+  links:
+    - influxdb
+  environment:
+    - KAPACITOR_INFLUXDB_0_URLS_0=http://influxdb:8086
+
+# Records system metrics to Influx
+telegraf:
+  image: telegraf
+  restart: always
+  links:
+    - consul
+    - appdb
+    - influxdb
+    - rabbitmq
+    - redis
+    - growdash
+    - deviceapi
+    - nginx
+
+# Charting and display
+chronograf:
+  image: chronograf
+  restart: always
+  links:
+    - influxdb
+    - kapacitor
+
+# Better charting
+grafana:
+  image: grafana/grafana-dev:master-9fe0dcec0ed35d443b95f8f1a180d2ec93448210
+  restart: always
+  links:
+    - influxdb
+
+# Queues data points to be inserted into the local Influx, and out to the cloud. Served on port :15672 in development and onsite
+rabbitmq:
+  image: rabbitmq:3.6-management-alpine
+  restart: always
+  environment:
+    # - RABBITMQ_DEFAULT_USER:RABBIT_USER
+    - RABBITMQ_DEFAULT_USER=rabbit
+    # - RABBITMQ_DEFAULT_PASS:RABBIT_PASS
+    - RABBITMQ_DEFAULT_PASS=rabbit
+
+supercron:
+  image: code.cropcircle.io:4567/grownetics/grownetics/supercron:${VERSION}
+  links:
+    - consul
+    - appdb
+    - growdash
+    - redis
+    - rabbitmq
+  environment:
+    - DEV
+    - FACILITY_NAME
+    - FACILITY_ID
+    - CERES
+    - ENVIRONMENT
+    - REMOTE_URL
+
+    - DB_HOSTNAME
+    - MYSQL_ROOT_PASSWORD
+    - MYSQL_DATABASE
+    - MYSQL_TEST_DATABASE
+    - MYSQL_USER
+    - MYSQL_PASSWORD
+
+    - REDIS_HOSTNAME
+    - RABBIT_HOST
+    - RABBIT_PORT
+    - RABBIT_USER
+    - RABBIT_PASS
+    - INFLUX_HOST
+    - INFLUX_PORT
+
+bookstack-mysql:
+  image: mysql:5.7.21
+  restart: always
+  environment:
+    - MYSQL_ROOT_PASSWORD=secret
+    - MYSQL_DATABASE=bookstack
+    - MYSQL_USER=bookstack
+    - MYSQL_PASSWORD=secret
+
+bookstack:
+  image: solidnerd/bookstack:0.22.0
+  restart: always
+  links:
+    - bookstack-mysql
+  environment:
+    - DB_HOST=bookstack-mysql:3306
+    - DB_DATABASE=bookstack
+    - DB_USERNAME=bookstack
+    - DB_PASSWORD=secret
+

@@ -1,0 +1,49 @@
+FROM php:7.1.6-fpm
+
+RUN apt-get update \
+    && apt-get -y install \
+    autoconf \
+    curl \
+    g++ \
+    iputils-ping \
+    libicu-dev \
+    libcurl4-gnutls-dev \
+    libmcrypt-dev \
+    libpng-dev \
+    libxml2-dev \
+    mysql-client \
+    make \
+    nodejs \
+    npm \
+    ruby \
+    ruby-dev \
+    unzip \
+    vim \
+    zip \
+    && gem install -n /usr/local/bin sass \
+    && npm install -g bower grunt-cli \
+    && ln -s /usr/bin/nodejs /usr/bin/node \
+    && echo '{ "allow_root": true }' > /root/.bowerrc \
+    && docker-php-source extract \
+    && pecl install xdebug \
+    && docker-php-ext-enable xdebug \
+    && docker-php-source delete \
+    && docker-php-ext-install curl gd json mbstring bcmath dom intl mcrypt pdo_mysql soap sockets \
+    && echo "xdebug.remote_enable=on\n" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
+    && echo "xdebug.remote_autostart=1\n" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
+    && echo "xdebug.remote_port=9000\n" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
+    && echo "xdebug.remote_handler=dbgp\n" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
+    && echo "xdebug.remote_connect_back=1\n" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
+    && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
+    && rm -rf /tmp/*
+
+ENV PHPREDIS_VERSION 3.0.0
+
+RUN mkdir -p /usr/src/php/ext/redis \
+    && curl -L https://github.com/phpredis/phpredis/archive/$PHPREDIS_VERSION.tar.gz | tar xvz -C /usr/src/php/ext/redis --strip 1 \
+    && echo 'redis' >> /usr/src/php-available-exts \
+    && docker-php-ext-install redis
+
+COPY images/php/www.conf /usr/local/etc/php-fpm.d/www.conf
+
+WORKDIR /var/www/html

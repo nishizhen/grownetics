@@ -1,0 +1,4 @@
+handbook:
+  image: code.cropcircle.io:4567/grownetics/grownetics/handbook:$CI_PIPELINE_ID
+  ports:
+    - 80:80/tcp

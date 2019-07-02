@@ -1,0 +1,7 @@
+{
+  "driver_host": "chrome_standalone",
+  "driver_port": 4444,
+  "driver_path": "/wd/hub",
+  "local_chrome_driver": false,
+  "app_base_path": "http://growdash:9000"
+}

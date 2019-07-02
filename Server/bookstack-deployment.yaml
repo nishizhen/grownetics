@@ -1,0 +1,51 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f docker-compose.yml -f docker-compose.override.yml
+    kompose.version: 1.16.0 (0c01309)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: bookstack
+  name: bookstack
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        io.kompose.service: bookstack
+    spec:
+      containers:
+      - env:
+        - name: APP_URL
+          value: http://localhost/wikis
+        - name: DB_DATABASE
+          value: bookstack
+        - name: DB_HOST
+          value: bookstack-mysql:3306
+        - name: DB_PASSWORD
+          value: secret
+        - name: DB_USERNAME
+          value: bookstack
+        image: solidnerd/bookstack:0.22.0
+        name: bookstack
+        ports:
+        - containerPort: 80
+        resources: {}
+        volumeMounts:
+        - mountPath: /var/www/bookstack/public/uploads
+          name: bookstack-claim0
+        - mountPath: /var/www/bookstack/public/storage
+          name: bookstack-claim1
+      restartPolicy: Always
+      volumes:
+      - name: bookstack-claim0
+        persistentVolumeClaim:
+          claimName: bookstack-claim0
+      - name: bookstack-claim1
+        persistentVolumeClaim:
+          claimName: bookstack-claim1
+status: {}

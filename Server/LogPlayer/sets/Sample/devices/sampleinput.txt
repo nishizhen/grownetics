@@ -1,0 +1,33 @@
+# usage:
+#
+# growfaker recognizes three classes of lines for its input file:
+# 	1) data
+#		Each 'data' line will be sent in the order it is encountered to the configured Grownetics API endpoint
+#
+#		Format:
+#				<device id>: "<device data packet>"
+#
+#		Example:
+#				123: "[D1:123.45],[D2:234.56],[D3:0.1],[M4:65-88],[A5:25]"
+#
+#
+# 	2) sleep
+#		Each 'sleep' line will, in the order it is encountered, pause the program for the specified number of
+#		seconds before advancing to the next line.
+#
+#		There is currently a .25s sleep being provided by this utility between each call automatically. This
+#		will be configurable in a future release.
+#
+#		Format:
+#				sleep <number of seconds>
+#
+#		Example:
+#				sleep 5
+#
+#
+sleep 1
+2: "[D1:123.45],[D2:234.56],[D3:0.1],[M4:65-88],[A5:25]"
+sleep 1
+2: "[D1:123.45],[D2:234.56],[D3:0.1],[M4:65-88],[A5:25]"
+Testing
+3: "[D1:123.45],[D2:234.56],[D3:0.1],[M4:65-88],[A5:25]"

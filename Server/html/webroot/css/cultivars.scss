@@ -1,0 +1,156 @@
+.Cultivars.view {
+  .profile-pic img {
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    -webkit-border-radius: 50%;
+    border: 10px solid #f1f2f7;
+    margin-top: 20px;
+  }
+
+  .profile-text h6 {
+    margin-top: -10px;
+    margin-bottom: 20px;
+    color: #d3d3d3;
+  }
+
+  .profile-text h3 {
+    font-weight: 700;
+    color: #FF865C;
+  }
+
+  .profile-text h4 {
+    color: #FF865C;
+  }
+
+  profile-text p {
+    margin-left: 10px;
+  }
+
+  .right-divider {
+    border-right: 1px solid #d3d3d3;
+    height: 100%;
+  }
+
+  .panel-heading .nav {
+    border: medium none;
+    font-size: 13px;
+    margin-left: 0px;
+    margin-right: 0px;
+    text-transform: uppercase;
+  }
+
+  .nav-tabs {
+    background: #e0e1e7;
+  }
+
+  .nav-tabs a {
+    color: #2f2f2f;
+  }
+
+  .nav-justified {
+    width: 98%;
+  }
+
+  .grey-style {
+    background: #f2f4f6;
+    padding: 10px;
+    height: 45px;
+  }
+
+  .detailed h4 {
+    text-align: center;
+    text-transform: uppercase;
+    border-bottom: 1px solid #e2e2e2;
+    font-weight: 700;
+    color: #FF865C;
+  }
+
+  ul.my-friends {
+    margin: 0px;
+    margin-top: 16px;
+    margin-left: 10px;
+    padding: 0;
+  }
+
+  ul.my-friends li .friends-pic {
+    display: inline-block;
+    float: left;
+    overflow: hidden;
+    margin: 4px;
+  }
+
+  .recent-activity {
+    border-collapse: collapse;
+    border-spacing: 0;
+    display: table;
+    position: relative;
+    table-layout: fixed;
+    width: 100%;
+  }
+
+  .recent-activity:before {
+    background-color: #eeeeee;
+    bottom: 0;
+    content: "";
+    left: 50%;
+    position: absolute;
+    top: 50px;
+    width: 2px;
+    z-index: 0;
+  }
+
+  .activity-icon {
+    border-radius: 50%;
+    -webkit-border-radius: 50%;
+    color: #FFFFFF;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    width: 30px;
+    margin: 20px auto 20px;
+    position: relative;
+    z-index: 100;
+    float: none;
+  }
+
+  .activity-panel {
+    padding: 15px 30px;
+    background: #f2f2f2;
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    position: relative;
+    text-align: center;
+  }
+
+  .activity-panel h5 {
+    font-weight: 700;
+  }
+  #growInfo {
+    ul {
+      margin: 0;
+      padding: 0;
+      list-style-type: none;
+      text-align: center;
+    }
+
+    ul li { 
+      display: inline-block;
+      padding: 50px 50px 0px 50px;
+
+    }
+
+    #Recc {
+      margin-top: 50px;
+      margin-left: 107px;
+    }
+
+
+
+
+
+  }
+
+
+
+}

@@ -1,0 +1,9 @@
+.paginator
+  ul.pagination
+    !=$view->Paginator->first('|< ' . __('first'))
+    !=$view->Paginator->prev('< ' . __('previous'))
+    !=$view->Paginator->numbers()
+    !=$view->Paginator->next(__('next') . ' >')
+    !=$view->Paginator->last(__('last') . ' >|')
+  br
+  !=$view->Paginator->counter(['format' => 'Page {{page}} of {{pages}}, showing {{current}} records out of {{count}} total, starting on record {{start}}, ending on {{end}}'])

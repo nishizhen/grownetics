@@ -1,0 +1,65 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: growdash
+  labels:
+    app: growdash
+spec:
+  replicas: 3
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: growdash
+    spec:
+      imagePullSecrets:
+      - name: regcred
+      containers:
+      - args:
+        envFrom:
+        - configMapRef:
+            name: common-config
+      # - env:
+      #   - name: ARGUS_RATE
+      #   - name: ARGUS_URL
+      #   - name: BACNET_AUTH
+      #   - name: BACNET_ENABLED
+      #   - name: BACNET_RATE
+      #   - name: BACNET_URL
+      #   - name: BURNOUT_PROTECTION_DELAY
+      #   - name: CERES
+      #   - name: DB_HOSTNAME
+      #   - name: DEV
+      #   - name: ENVIRONMENT
+      #   - name: FACILITY_ID
+      #   - name: FACILITY_NAME
+      #   - name: INFLUX_HOST
+      #   - name: INFLUX_PORT
+      #   - name: MYSQL_DATABASE
+      #   - name: MYSQL_PASSWORD
+      #   - name: MYSQL_ROOT_PASSWORD
+      #   - name: MYSQL_TEST_DATABASE
+      #   - name: MYSQL_USER
+      #   - name: RABBIT_HOST
+      #   - name: RABBIT_PASS
+      #   - name: RABBIT_PORT
+      #   - name: RABBIT_USER
+      #   - name: REDIS_HOSTNAME
+      #   - name: REMOTE_URL
+      #   - name: SET_POINT_ALARM_TOLERANCE_PERCENTAGE
+      #   - name: SHORT_NAME
+      #   - name: THRESHOLD_CT_ON
+      #   - name: THRESHOLD_DATA_RECEIVED
+      #   - name: THRESHOLD_DEVICE_BOOTS
+      #   - name: TIMEZONE
+      #   - name: TIMEZONE_OFFSET
+      #   - name: TWILIO_SID
+      #   - name: TWILIO_TOKEN
+      #   - name: VERSION
+        image: code.cropcircle.io:4567/grownetics/grownetics/growdash:latest
+        name: growdash
+        resources: {}
+        ports:
+        - containerPort: 80
+      restartPolicy: Always
+status: {}

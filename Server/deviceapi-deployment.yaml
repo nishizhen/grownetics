@@ -1,0 +1,65 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  annotations:
+    io.rancher.container.pull_image: always
+    io.rancher.scheduler.affinity:host_label_ne: onsite=true
+    kompose.cmd: kompose convert -f docker-compose.yml -f docker-compose.override.yml
+    kompose.version: 1.16.0 (0c01309)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: deviceapi
+  name: deviceapi
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        io.kompose.service: deviceapi
+    spec:
+      containers:
+      - env:
+        - name: BURNOUT_PROTECTION_DELAY
+        - name: CERES
+        - name: DB_HOSTNAME
+        - name: DEV
+        - name: ENVIRONMENT
+        - name: FACILITY_ID
+        - name: FACILITY_NAME
+        - name: INFLUX_HOST
+        - name: INFLUX_PORT
+        - name: MYSQL_DATABASE
+        - name: MYSQL_PASSWORD
+        - name: MYSQL_ROOT_PASSWORD
+        - name: MYSQL_TEST_DATABASE
+        - name: MYSQL_USER
+        - name: RABBIT_HOST
+        - name: RABBIT_PASS
+        - name: RABBIT_PORT
+        - name: RABBIT_USER
+        - name: REDIS_HOSTNAME
+        - name: REMOTE_URL
+        - name: SHORT_NAME
+        - name: THRESHOLD_CT_ON
+        - name: THRESHOLD_DATA_RECEIVED
+        - name: THRESHOLD_DEVICE_BOOTS
+        image: code.cropcircle.io:4567/grownetics/grownetics/growdash:latest
+        name: deviceapi
+        resources: {}
+        volumeMounts:
+        - mountPath: /var/www/html
+          name: deviceapi-claim0
+        - mountPath: /tmp
+          name: deviceapi-claim1
+      restartPolicy: Always
+      volumes:
+      - name: deviceapi-claim0
+        persistentVolumeClaim:
+          claimName: deviceapi-claim0
+      - name: deviceapi-claim1
+        persistentVolumeClaim:
+          claimName: deviceapi-claim1
+status: {}

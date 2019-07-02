@@ -1,0 +1,16 @@
+growdash:
+  environment:
+    - DEV=1
+phpunit:
+  volumes:
+      - ./html:/var/www/html:cached
+      - ./tmp:/tmp:cached
+
+chrome:
+  image: selenium/node-chrome-debug
+  ports:
+    - 5900:5900
+
+growfaker:
+  image: busybox
+  command: echo "Do nothing in test mode."

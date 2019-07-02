@@ -1,0 +1,38 @@
+cloud:
+  image: rancher/lb-service-haproxy:v0.4.2
+  ports:
+    - 80:80/tcp
+    - 8989:8989/tcp
+  labels:
+    io.rancher.container.create_agent: 'true'
+    io.rancher.container.agent.role: environmentAdmin
+    io.rancher.scheduler.affinity:host_label_ne: onsite=true
+
+growdash:
+  image: code.cropcircle.io:4567/grownetics/grownetics/growdash:latest
+
+deviceapi:
+  image: code.cropcircle.io:4567/grownetics/grownetics/growdash:latest
+
+growbacnet:
+  image: code.cropcircle.io:4567/grownetics/grownetics/growdash:latest
+
+growpulse:
+  image: code.cropcircle.io:4567/grownetics/grownetics/growdash:latest
+
+growsocket:
+  image: code.cropcircle.io:4567/grownetics/grownetics/socketio:latest
+
+nginx:
+  image: code.cropcircle.io:4567/grownetics/grownetics/nginx:latest
+
+growfaker:
+  image: code.cropcircle.io:4567/grownetics/grownetics/growctl:latest
+
+chronograf:
+  ports:
+    - 8888:8888
+
+consul:
+  ports:
+    - 8500:8500

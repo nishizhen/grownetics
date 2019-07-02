@@ -1,0 +1,6 @@
+{
+    "terminal.integrated.env.osx": {
+        "PATH": "/Users/nickgrownetics/.platformio/penv/bin:/Users/nickgrownetics/.platformio/penv:/Users/nickgrownetics/Downloads/google-cloud-sdk/bin:/usr/local/sbin:/Users/nickgrownetics/.gem/ruby/1.8/bin:/usr/local/mysql/bin:/Applications/MAMP/Library/bin/:/Applications/MAMP/bin/php5/bin/:/Users/nickgrownetics/Code/golang/bin::/Users/nickgrownetics/Code/SitterSquared/macosx/python2.7:/opt/local/bin:/opt/local/sbin:.:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/go/bin:/opt/X11/bin:/Applications/Wireshark.app/Contents/MacOS:/Users/nickgrownetics/.rvm/bin:/Users/nick/Code/FlowerCollective/Web/www/app/Console",
+        "PLATFORMIO_CALLER": "vscode"
+    }
+}

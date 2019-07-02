@@ -1,0 +1,3 @@
+growfaker:
+  image: code.cropcircle.io:4567/grownetics/grownetics/growctl:$CI_PIPELINE_ID
+

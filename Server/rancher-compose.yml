@@ -1,0 +1,28 @@
+version: '2'
+services:
+
+  cloud:
+    scale: 1
+    lb_config:
+      certs: []
+      port_rules:
+      - hostname: ''
+        path: ''
+        priority: 1
+        protocol: http
+        service: nginx
+        source_port: 80
+        target_port: 80
+      - hostname: ''
+        path: ''
+        priority: 1
+        protocol: http
+        service: growsocket
+        source_port: 8989
+        target_port: 8989
+    health_check:
+      port: 42
+      interval: 2000
+      unhealthy_threshold: 3
+      healthy_threshold: 2
+      response_timeout: 2000

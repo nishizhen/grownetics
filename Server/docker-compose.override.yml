@@ -1,4 +1,6 @@
 growdash:
+  ports:
+    - 9090:9000
   volumes:
     - ./html:/var/www/html:cached
     - ./tmp:/tmp:cached

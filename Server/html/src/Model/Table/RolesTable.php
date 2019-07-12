@@ -46,8 +46,8 @@ class RolesTable extends Table
         $this->addBehavior('Timestamp');
         $this->addBehavior('Notifier');
 
-        $this->hasMany('Users', [
-            'foreignKey' => 'role_id'
+        $this->belongsToMany('Users', [
+            'through' => 'UsersRoles'
         ]);
         $this->belongsToMany('Acls', [
             'foreignKey' => 'role_id',

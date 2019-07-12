@@ -14,7 +14,7 @@
       <span>Dashboard</span>
       </a>
     </li>
-    <?php if ((isset($role) && $role == 'Admin') || ($this->Acl->hasAccess($acls, "harvestbatches", "index"))) { ?>
+    <?php if ((isset($navRole) && $navRole == 'Admin') || ($this->Acl->hasAccess($navAcls, "harvestbatches", "index"))) { ?>
     <li class="sub-menu">
       <a href="javascript:;"<?php if ($this->request->params['controller']=='HarvestBatches' || $this->request->params['controller']=='Recipes') {?> class='active'<?php }?>>
       <i class="fa fa-leaf"></i>
@@ -27,7 +27,7 @@
       </ul>
     </li>
     <?php } ?>
-    <?php if ((isset($role) && $role == 'Admin') || ($this->Acl->hasAccess($acls, "tasks", "index"))) { ?>
+    <?php if ((isset($navRole) && $navRole == 'Admin') || ($this->Acl->hasAccess($navAcls, "tasks", "index"))) { ?>
     <li class="sub-menu">
       <a href="/tasks"<?php if ($this->request->params['controller']=='Tasks'){?> class='active'<?php }?>>
       <i class="fa fa-list"></i>
@@ -35,7 +35,7 @@
       </a>
     </li>
     <?php } ?>
-    <?php if ((isset($role) && $role == 'Admin') || ($this->Acl->hasAccess($acls, "cultivars", "index"))) { ?>
+    <?php if ((isset($navRole) && $navRole == 'Admin') || ($this->Acl->hasAccess($navAcls, "cultivars", "index"))) { ?>
     <li class="sub-menu">
       <a href="/cultivars"<?php if ($this->request->params['controller']=='Cultivars'){?> class='active'<?php }?>>
       <i class="fa fa-pagelines"></i>
@@ -43,7 +43,7 @@
       </a>
     </li>
     <?php } ?>
-    <?php if ((isset($role) && $role == 'Admin') || ($this->Acl->hasAccess($acls, "notes", "index"))) { ?>
+    <?php if ((isset($navRole) && $navRole == 'Admin') || ($this->Acl->hasAccess($navAcls, "notes", "index"))) { ?>
     <li class="sub-menu">
       <a href="/notes"<?php if ($this->request->params['controller']=='Notes'){?> class='active'<?php }?>>
       <i class="fa fa-camera"></i>
@@ -51,7 +51,7 @@
       </a>
     </li>
     <?php } ?>
-    <?php if ((isset($role) && $role == 'Admin') || ($this->Acl->hasAccess($acls, "charts", "index"))) { ?>
+    <?php if ((isset($navRole) && $navRole == 'Admin') || ($this->Acl->hasAccess($navAcls, "charts", "index"))) { ?>
       <li class="sub-menu">
       <a href="javascript:;"<?php if ($this->request->params['controller']=='Charts'){?> class='active'<?php }?>>
       <i class="fa fa-area-chart"></i>
@@ -65,7 +65,7 @@
 
     </li>
     <?php } ?>
-    <?php if ((isset($role) && $role == 'Admin') || ($this->Acl->hasAccess($acls, "outputs", "index"))) { ?>
+    <?php if ((isset($navRole) && $navRole == 'Admin') || ($this->Acl->hasAccess($navAcls, "outputs", "index"))) { ?>
     <li class="sub-menu">
       <a href="/outputs"<?php if ($this->request->params['controller']=='Outputs'){?> class='active'<?php }?>>
       <i class="fa fa-lightbulb-o"></i>
@@ -73,7 +73,7 @@
       </a>
     </li>
     <?php } ?>
-    <?php if ((isset($role) && $role == 'Admin') || ($this->Acl->hasAccess($acls, "wikis", "view"))) { ?>
+    <?php if ((isset($navRole) && $navRole == 'Admin') || ($this->Acl->hasAccess($navAcls, "wikis", "view"))) { ?>
     <li class="sub-menu">
       <a href="/wikis/"<?php if ($this->request->params['controller']=='Wikis'){?> class='active'<?php }?>>
       <i class="fa fa-info"></i>
@@ -87,26 +87,26 @@
         <span>Settings</span>
       </a>
       <ul class="sub">
-        <?php if ((isset($role) && $role == 'Admin') || ($this->Acl->hasAccess($acls, "devices", "index"))) { ?>
+        <?php if ((isset($navRole) && $navRole == 'Admin') || ($this->Acl->hasAccess($navAcls, "devices", "index"))) { ?>
         <li class="">
           <a href="/devices">
           <span>Devices</span>
           </a>
         </li>
         <?php } ?>
-        <?php if ((isset($role) && $role == 'Admin') || ($this->Acl->hasAccess($acls, "zones", "index"))) { ?>
+        <?php if ((isset($navRole) && $navRole == 'Admin') || ($this->Acl->hasAccess($navAcls, "zones", "index"))) { ?>
         <li class="">
           <a href="/zones">
           <span>Zones</span>
           </a>
         </li>
         <?php } ?>
-          <?php if ((isset($role) && $role == 'Admin') || ($this->Acl->hasAccess($acls, "users", "index"))) { ?>
+          <?php if ((isset($navRole) && $navRole == 'Admin') || ($this->Acl->hasAccess($navAcls, "users", "index"))) { ?>
               <li><a href="/users/">Manage Users</a></li>
           <?php } ?>
 
 
-        <?php if ((isset($role) && $role == 'Admin') || ($this->Acl->hasAccess($acls, "rules", "index"))) { ?>
+        <?php if ((isset($navRole) && $navRole == 'Admin') || ($this->Acl->hasAccess($navAcls, "rules", "index"))) { ?>
         <li class="">
           <a href="/rules">
           <span>Rules</span>
@@ -117,7 +117,7 @@
     </li>
     <?php } ?>
 
-    <?php if (isset($role) && $role == 'Admin') { ?>
+    <?php if (isset($navRole) && $navRole == 'Admin') { ?>
     <li class="sub-menu">
       <a href="javascript:;" <?php if ($this->request->params['controller']=='Users' || $this->request->params['controller']=='Acls' || $this->request->params['controller']=='Roles' || $this->request->params['controller']=='Facilities' || $this->request->params['controller']=='Api' || $this->request->params['controller']=='SensorTypes' || $this->request->params['action']=='system' || $this->request->params['action']=='server'){?> class='active'<?php }?>>
         <i class="fa fa-cog"></i>

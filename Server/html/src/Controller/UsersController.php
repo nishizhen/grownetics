@@ -51,12 +51,15 @@ class UsersController extends AppController {
     public function login($roleId=null) {
         # If we're in development and have a roleID set, login as the first active user with that role.
         if (env('DEV') && $roleId) {
-            $user = $this->Users->find('all',[
+            $this->loadModel('UsersRoles');
+            $userRole = $this->UsersRoles->find('all',[
                 'conditions' => [
                     'role_id' => $roleId
                     // 'deleted' => false
                 ]
             ])->first();
+            $user = $this->Users->get($userRole->user_id);
+
             $this->Auth->setUser($user);
             return $this->redirect($this->Auth->redirectUrl());
         }
@@ -338,7 +341,7 @@ class UsersController extends AppController {
 
     public function edit($id = null) {
         $user = $this->Users->get($id, [
-            'contain' => []
+            'contain' => ['Roles']
         ]);
         # User is not an admin, make sure the user they are trying to edit is also not an admin.
         if ($this->Auth->user('role_id') > 1 && $user['role_id'] == 1) {

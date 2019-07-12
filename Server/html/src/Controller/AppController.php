@@ -1,4 +1,5 @@
 <?php
+
 /**
  * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
  * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
@@ -12,6 +13,7 @@
  * @since     0.2.9
  * @license   http://www.opensource.org/licenses/mit-license.php MIT License
  */
+
 namespace App\Controller;
 
 use Cake\Controller\Controller;
@@ -19,7 +21,8 @@ use Cake\Event\Event;
 use Cake\Core\Configure;
 use \Rollbar\Rollbar;
 use App\Lib\SystemEventRecorder;
-use Muffin\Footprint\Auth\FootprintAwareTrait;
+// use Muffin\Footprint\Auth\FootprintAwareTrait;
+use Cake\ORM\TableRegistry;
 
 use Cake\Cache\Cache;
 
@@ -30,6 +33,7 @@ use Cake\Cache\Cache;
  * will inherit them.
  *
  * @link http://book.cakephp.org/3.0/en/controllers.html#the-app-controller
+ * @property \App\Model\Table\UsersRolesTable $UsersRoles
  * @property \App\Model\Table\RolesTable $Roles
  * @property \App\Model\Table\AclsTable $Acls
  * @property \App\Model\Table\RulesTable $Rules
@@ -37,9 +41,9 @@ use Cake\Cache\Cache;
  */
 class AppController extends Controller
 {
-    use FootprintAwareTrait;
-    
-    public $helpers = ['AssetCompress.AssetCompress','Cache','FeatureFlags.FeatureFlags'];
+    // use FootprintAwareTrait;
+
+    public $helpers = ['AssetCompress.AssetCompress', 'Cache', 'FeatureFlags.FeatureFlags'];
 
     /**
      * Initialization hook method.
@@ -95,10 +99,11 @@ class AppController extends Controller
 
         // Allow the display action so our pages controller
         // continues to work.
-        $this->Auth->allow(['raw','reboot','count','out','password','reset','aldc', 'tlc', 'chat', 'map', 'hdd', 'appdb', 'growpulse', 'system', 'login']);
+        $this->Auth->allow(['raw', 'reboot', 'count', 'out', 'password', 'reset', 'aldc', 'tlc', 'chat', 'map', 'hdd', 'appdb', 'growpulse', 'system', 'login']);
     }
 
-    public function beforeFilter(Event $event) {
+    public function beforeFilter(Event $event)
+    {
         if ($this->request->getParam('action') == "raw" || $this->request->getParam('action') == "tlc") {
             # Don't try and login api devices.
             return true;
@@ -117,7 +122,7 @@ class AppController extends Controller
                 if ($this->Auth->isAuthorized($user->first(), $this->request)) {
                     $this->Auth->setUser($user->first());
                     $recorder = new SystemEventRecorder();
-                    $recorder->recordEvent('user_actions','user_logged_in',1,['type' => 'Cookie','email' => $cookie['username']]);
+                    $recorder->recordEvent('user_actions', 'user_logged_in', 1, ['type' => 'Cookie', 'email' => $cookie['username']]);
                     if ($this->FeatureFlags->getFlagValue("home_screen")) {
                         if ($this->Auth->redirectUrl() && $this->Auth->redirectUrl() != "/") {
                             return $this->redirect($this->Auth->redirectUrl());
@@ -138,45 +143,51 @@ class AppController extends Controller
     {
         $authed = false;
         if (isset($user['id'])) {
+            $this->loadModel('UsersRoles');
             $this->loadModel('Roles');
-            $roleQuery = $this->Roles->get($user['role_id']);
-            if ($roleQuery) {
-                $role = $roleQuery->label;
-                $this->set('role',$role);
-                if ($role === 'Admin') {
-                    $authed = true;
-                }
-                // Everything other than an admin, look up the actual ACLs for this request.
-                $this->loadModel('Acls');
 
-                $controller = strtolower($this->request->params['controller']);
-                $action = strtolower($this->request->params['action']);
-                $query = $this->Acls->find('all');
-                $acls = [];
-                $query->matching('Roles', function ($q) use ($roleQuery) {
-                    return $q->where(['Roles.id' => $roleQuery->id]);
-                });
-                $query->cache('acls-for-role-'.$roleQuery->id, 'acls');
+            $usersRoles = $this->UsersRoles->findByUserId($user['id']);
+            $navAcls = [];
 
-                foreach ($query as $row) {
-                    $acls[] = $row; // $row->controller.'/'.$row->action;
-                    if (
-                        ($row->controller == $controller && ($row->action == $action || $row->action == '*'))
-                        // &&
-                        // strtolower($row->rule) == 'allow'
-                    ) {
+            if ($usersRoles) {
+                foreach ($usersRoles as $userRole) {
+                    $role = $this->Roles->get($userRole->role_id);
+                    $roleLabel = $role->label;
+                    $this->set('navRole', $roleLabel);
+                    if ($roleLabel === 'Admin') {
                         $authed = true;
                     }
-                }
-                // add all the acls to the response so we can dynamically generate nav menu
-                $this->set('acls', $acls);
+                    // Everything other than an admin, look up the actual ACLs for this request.
+                    $this->loadModel('Acls');
 
+                    $controller = strtolower($this->request->params['controller']);
+                    $action = strtolower($this->request->params['action']);
+                    $query = $this->Acls->find('all');
+                    $acls = [];
+                    $query->matching('Roles', function ($query) use ($role) {
+                        return $query->where(['Roles.id' => $role->id]);
+                    });
+                    $query->cache('acls-for-role-' . $role->id, 'acls');
+
+                    foreach ($query as $row) {
+                        $acls[] = $row; // $row->controller.'/'.$row->action;
+                        if (
+                            ($row->controller == $controller && ($row->action == $action || $row->action == '*'))
+                            // &&
+                            // strtolower($row->rule) == 'allow'
+                        ) {
+                            $authed = true;
+                        }
+                    }
+                    // add all the acls to the response so we can dynamically generate nav menu
+                    $navAcls = array_merge($navAcls, $acls);
+                }
             } else {
                 // This user has no Role! Redirect to the account page.
                 return $this->redirect('/users/account');
             }
+            $this->set('navAcls', $navAcls);
         }
-
         // Default deny
         return $authed;
     }
@@ -190,14 +201,15 @@ class AppController extends Controller
     public function beforeRender(Event $event)
     {
 
-        if (!array_key_exists('_serialize', $this->viewVars) &&
+        if (
+            !array_key_exists('_serialize', $this->viewVars) &&
             in_array($this->response->type(), ['application/json', 'application/xml'])
         ) {
             $this->set('_serialize', true);
         } else {
             $this->set('BUILD_ID', Configure::read('BUILD_ID'));
             $this->set('BUILD_DATE', Configure::read('BUILD_DATE'));
-            $this->set('bodyClass', strtolower($this->request->params['controller'].' '.$this->request->params['action']));
+            $this->set('bodyClass', strtolower($this->request->params['controller'] . ' ' . $this->request->params['action']));
         }
     }
 
@@ -208,7 +220,7 @@ class AppController extends Controller
 
         $message = '';
         if (isset($opts['message'])) {
-            $message = env('FACILITY_ID').'-'.env('FACILITY_NAME').' '.$opts['message'];
+            $message = env('FACILITY_ID') . '-' . env('FACILITY_NAME') . ' ' . $opts['message'];
         }
         $template = '';
         if (isset($opts['template'])) {
@@ -233,7 +245,7 @@ class AppController extends Controller
             'user_id' => $user_id,
             'source_type' => $source_type,
             'source_id' => $source_id,
-            'notification_level' => isset($opts['notification_level']) ? $this->RuleActions->enumValueToKey('notification_level',$opts['notification_level']) : $this->RuleActions->enumValueToKey('notification_level', 'Dashboard Notification')
+            'notification_level' => isset($opts['notification_level']) ? $this->RuleActions->enumValueToKey('notification_level', $opts['notification_level']) : $this->RuleActions->enumValueToKey('notification_level', 'Dashboard Notification')
         ]);
         $this->Notifications->save($notification);
     }

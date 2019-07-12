@@ -51,9 +51,8 @@ class UsersTable extends Table
         $this->addBehavior('Timestamp');
         $this->addBehavior('Notifier');
 
-        $this->belongsTo('Roles', [
-            'foreignKey' => 'role_id',
-            'joinType' => 'INNER'
+        $this->belongsToMany('Roles', [
+            'through' => 'UsersRoles'
         ]);
         
     }

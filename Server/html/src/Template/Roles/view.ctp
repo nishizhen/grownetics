@@ -136,5 +136,4 @@ echo $this->element('actionsMenu',['label'=>'Actions','actions'=>[
         $this->Form->postLink(__('Delete Role'), ['action' => 'delete', $role->id], ['confirm' => __('Are you sure you want to delete # {0}?', $role->id)]),
         $this->Html->link(__('List Roles'), ['action' => 'index']),
         $this->Html->link(__('New Role'), ['action' => 'add']),
-<a href="/users">List Users</a><a href="/users/add">New User</a><a href="/acls">List Acls</a><a href="/acls/add">New Acl</a>
 ]])?>

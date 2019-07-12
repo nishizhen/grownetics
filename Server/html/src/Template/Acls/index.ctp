@@ -19,7 +19,7 @@
         <tbody>
             <?php foreach ($acls as $acl): ?>
             <tr>
-                <td><?= $this->Html->link(__('View'), ['action' => 'view', $acl->id]) ?></td>
+                <td><?= $this->Html->link(__('View'), ['action' => 'edit', $acl->id]) ?></td>
                 <td><?= h($acl->controller);?>
                 </td>
                 <td><?= h($acl->action);?>

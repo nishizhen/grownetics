@@ -40,10 +40,6 @@ class DeviceBootTest extends IntegrationTestCase {
     public function testBootingPostData() {
         $data = array('q'=>'{"id":'.$this->deviceId.',"b":0}');
 
-        $this->configRequest([
-            'headers' => ['Accept' => 'application/json']
-        ]);
-
         $result = $this->post(
             '/api/raw',
             array('data' => $data)

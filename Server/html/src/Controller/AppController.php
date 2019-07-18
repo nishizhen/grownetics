@@ -1,5 +1,4 @@
 <?php
-
 /**
  * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
  * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
@@ -150,44 +149,57 @@ class AppController extends Controller
             $navAcls = [];
 
             if ($usersRoles) {
+                $roleIds = [];
                 foreach ($usersRoles as $userRole) {
-                    $role = $this->Roles->get($userRole->role_id);
-                    $roleLabel = $role->label;
-                    $this->set('navRole', $roleLabel);
-                    if ($roleLabel === 'Admin') {
-                        $authed = true;
-                    }
-                    // Everything other than an admin, look up the actual ACLs for this request.
-                    $this->loadModel('Acls');
 
-                    $controller = strtolower($this->request->params['controller']);
-                    $action = strtolower($this->request->params['action']);
-                    $query = $this->Acls->find('all');
-                    $acls = [];
-                    $query->matching('Roles', function ($query) use ($role) {
-                        return $query->where(['Roles.id' => $role->id]);
-                    });
-                    $query->cache('acls-for-role-' . $role->id, 'acls');
+                    # Load non-organization / Site Wide roles only
+                    if ($userRole->organization_id == NULL) {
+                        $role = $this->Roles->get($userRole->role_id);
+                        array_push($roleIds, $role->id);
+                        $roleLabel = $role->label;
+                        $this->set('navRole', $roleLabel);
 
-                    foreach ($query as $row) {
-                        $acls[] = $row; // $row->controller.'/'.$row->action;
-                        if (
-                            ($row->controller == $controller && ($row->action == $action || $row->action == '*'))
-                            // &&
-                            // strtolower($row->rule) == 'allow'
-                        ) {
+                        if ($roleLabel === 'Admin') {
                             $authed = true;
                         }
                     }
-                    // add all the acls to the response so we can dynamically generate nav menu
-                    $navAcls = array_merge($navAcls, $acls);
                 }
+
+                # Everything other than an admin, look up the actual ACLs for this request.
+                $this->loadModel('Acls');
+
+                $controller = strtolower($this->request->params['controller']);
+                $action = strtolower($this->request->params['action']);
+                $query = $this->Acls->find('all', [
+                    'contain' => [
+                        'Roles' => [
+                            'conditions' => [
+                                'Roles.id IN' => $roleIds
+                            ]
+                        ]
+                    ],
+                ]);
+                $acls = [];
+                $query->cache('acls-for-role-' . $role->id, 'acls');
+                foreach ($query as $row) {
+                    $acls[] = $row; // $row->controller.'/'.$row->action;
+                    if (
+                        ($row->controller == $controller && ($row->action == $action || $row->action == '*'))
+                        // &&
+                        // strtolower($row->rule) == 'allow'
+                    ) {
+                        $authed = true;
+                    }
+                }
+                // add all the acls to the response so we can dynamically generate nav menu
+                $navAcls = array_merge($navAcls, $acls);
             } else {
                 // This user has no Role! Redirect to the account page.
                 return $this->redirect('/users/account');
             }
             $this->set('navAcls', $navAcls);
         }
+
         // Default deny
         return $authed;
     }
@@ -200,6 +212,50 @@ class AppController extends Controller
      */
     public function beforeRender(Event $event)
     {
+        $this->loadModel('UsersRoles');
+        $this->loadModel('Roles');
+        $this->loadModel('Organizations');
+
+        if ($this->request->getParam('action') == "raw" || $this->request->getParam('action') == "tlc") {
+            return true;
+        }
+
+        $adminId = $this->Roles->findByLabel('Organization Admin')->first()->id;
+        $memberId = $this->Roles->findByLabel('Organization Member')->first()->id;
+
+        $validRoles = [
+            $adminId,
+            $memberId
+        ];
+
+        # Load organizations
+        $userRoles = $this->UsersRoles->find('all', [
+            'conditions' => [
+                'user_id' => $this->Auth->user('id'),
+                'role_id IN' => $validRoles
+            ],
+            'fields' => [
+                'organization_id',
+                'role_id'
+            ]
+        ]);
+
+        $orgIds = [];
+        foreach ($userRoles as $role) {
+            if ($role['organization_id']) {
+                array_push($orgIds, $role['organization_id']);
+            }
+        }
+        $organizations = $this->Organizations->find('all',[
+            'conditions' => [
+                'Organizations.id in' => $orgIds
+            ]
+        ]);
+        $this->set('userOrganizations',$organizations);
+        $this->set('userRoles',$userRoles);
+        $this->set('organizationId',$this->getRequest()->getSession()->read('Config.organization_id'));
+        $this->set('orgAdminRoleId',$adminId);
+        $this->set('orgMemberRoleId',$memberId);
 
         if (
             !array_key_exists('_serialize', $this->viewVars) &&

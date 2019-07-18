@@ -2,7 +2,7 @@
     <h3>
         Notifications
     </h3>
-    <?php if ($role == 'Admin') { ?>
+    <?php if ($navRole == 'Admin') { ?>
         <div class="showback">
             <h3>Admin Area</h3>
             <h4>

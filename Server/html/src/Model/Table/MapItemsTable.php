@@ -5,7 +5,6 @@ use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
-use function PHPSTORM_META\type;
 use SoftDelete\Model\Table\SoftDeleteTrait;
 use Cake\I18n\Number;
 use Cake\ORM\TableRegistry;
@@ -52,6 +51,7 @@ class MapItemsTable extends Table
 
         $this->addBehavior('Timestamp');
         //$this->addBehavior('Mappable');
+        $this->addBehavior('Organization');
 
         $this->belongsTo('Floorplans', [
             'foreignKey' => 'floorplan_id',

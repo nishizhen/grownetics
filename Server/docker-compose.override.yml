@@ -1,4 +1,5 @@
 growdash:
+  image: code.cropcircle.io:4567/grownetics/grownetics/growdash:dev
   ports:
     - 9090:9000
   volumes:

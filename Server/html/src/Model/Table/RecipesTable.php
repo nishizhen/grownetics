@@ -44,6 +44,8 @@ class RecipesTable extends Table
 
         $this->addBehavior('Timestamp');
         $this->addBehavior('Notifier');
+        $this->addBehavior('Organization');
+        
         $this->hasMany('RecipeEntries', [
             'foreignKey' => 'recipe_id'
         ]);

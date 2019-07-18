@@ -50,6 +50,7 @@ class FloorplansTable extends Table
 
         $this->addBehavior('Timestamp');
         $this->addBehavior('Notifier');
+        $this->addBehavior('Organization');
 
 //        $this->belongsTo('Facilities', [
 //            'foreignKey' => 'facility_id',

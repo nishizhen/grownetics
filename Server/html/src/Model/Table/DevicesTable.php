@@ -78,6 +78,7 @@ class DevicesTable extends Table
             'notification_level' => 1
         ]);
         $this->addBehavior('Mappable');
+        $this->addBehavior('Organization');
 
         $this->hasMany('Outputs', [
             'foreignKey' => 'device_id'

@@ -87,6 +87,7 @@ class ZonesTable extends Table
         $this->addBehavior('Notifier');
         $this->addBehavior('Mappable');
         $this->addBehavior('FeatureFlags.FeatureFlags');
+        $this->addBehavior('Organization');
 
         $this->hasMany('Datapoints', [
             'foreignKey' => 'zone_id'

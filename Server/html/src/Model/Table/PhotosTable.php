@@ -40,6 +40,7 @@ class PhotosTable extends Table
         $this->setPrimaryKey('id');
 
         $this->addBehavior('Timestamp');
+        $this->addBehavior('Organization');
 
         $this->belongsToMany('Notes', [
             'foreignKey' => 'photo_id',

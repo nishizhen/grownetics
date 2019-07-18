@@ -87,6 +87,7 @@
         <span>Settings</span>
       </a>
       <ul class="sub">
+
         <?php if ((isset($navRole) && $navRole == 'Admin') || ($this->Acl->hasAccess($navAcls, "devices", "index"))) { ?>
         <li class="">
           <a href="/devices">
@@ -101,10 +102,14 @@
           </a>
         </li>
         <?php } ?>
-          <?php if ((isset($navRole) && $navRole == 'Admin') || ($this->Acl->hasAccess($navAcls, "users", "index"))) { ?>
-              <li><a href="/users/">Manage Users</a></li>
-          <?php } ?>
 
+        <?php if ((isset($navRole) && $navRole == 'Admin') || ($this->Acl->hasAccess($navAcls, "users", "index"))) { ?>
+            <li><a href="/users/">Manage Users</a></li>
+        <?php } ?>
+
+        <?php if ((isset($navRole) && $navRole == 'Admin') || ($this->Acl->hasAccess($navAcls, "organizations", "index"))) { ?>
+            <li><a href="/organizations/">Manage Organizations</a></li>
+        <?php } ?>
 
         <?php if ((isset($navRole) && $navRole == 'Admin') || ($this->Acl->hasAccess($navAcls, "rules", "index"))) { ?>
         <li class="">

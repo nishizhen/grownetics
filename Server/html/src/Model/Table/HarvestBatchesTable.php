@@ -59,6 +59,7 @@ class HarvestBatchesTable extends Table
 
         $this->addBehavior('Timestamp');
         $this->addBehavior('Enum');
+        $this->addBehavior('Organization');
         $this->addBehavior('Notifier', [
             'notification_level' => 1
         ]);
@@ -72,6 +73,7 @@ class HarvestBatchesTable extends Table
                 'show_metric' => '_footprint.show_metric',
             ],
         ]);
+        
         $this->belongsTo('Cultivars', [
             'foreignKey' => 'cultivar_id',
             'joinType' => 'INNER'

@@ -69,6 +69,7 @@ class RulesTable extends Table
             'notification_level' => 1
         ]);
         $this->addBehavior('FeatureFlags.FeatureFlags');
+        $this->addBehavior('Organization');
 
         $this->hasMany('Notifications', [
             'foreignKey' => 'rule_id'

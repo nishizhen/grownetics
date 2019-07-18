@@ -46,6 +46,7 @@ class AppliancesTable extends Table
 
         $this->addBehavior('Timestamp');
         $this->addBehavior('Mappable');
+        $this->addBehavior('Organization');
 
         $this->belongsTo('Outputs', [
             'foreignKey' => 'output_id',

@@ -44,6 +44,7 @@ class BatchRecipeEntriesTable extends Table
         $this->setPrimaryKey('id');
 
         $this->addBehavior('Timestamp');
+        $this->addBehavior('Organization');
 
         $this->belongsTo('Zones', [
             'foreignKey' => 'zone_id',

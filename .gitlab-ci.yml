@@ -1,0 +1,297 @@
+image: code.cropcircle.io:4567/grownetics/grownetics/build:1.0
+
+variables:
+  DOCKER_DRIVER: overlay2
+
+services:
+  - docker:dind
+
+stages:
+  - build
+  - test
+  - review
+  - release
+  - deploy
+
+before_script:
+  - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN code.cropcircle.io:4567
+
+'Build Handbook':
+  stage: build
+  tags:
+    - dev
+  script:
+    - mkdocs build
+    - cp .htpasswd site/
+    - docker build --pull -t code.cropcircle.io:4567/grownetics/grownetics/handbook:$CI_PIPELINE_ID -f Dockerfile.handbook .
+    - docker push code.cropcircle.io:4567/grownetics/grownetics/handbook:$CI_PIPELINE_ID
+
+'Build Cron':
+  stage: build
+  retry: 1
+  tags:
+    - dev
+  script:
+    - docker build Server/html --pull --no-cache -t code.cropcircle.io:4567/grownetics/grownetics/supercron:$CI_PIPELINE_ID -f Server/html/images/supercron/Dockerfile
+    - docker push code.cropcircle.io:4567/grownetics/grownetics/supercron:$CI_PIPELINE_ID
+
+'Build Socket':
+  stage: build
+  retry: 1
+  tags:
+    - dev
+  script:
+    - docker build Server/html/images/socketio --pull --no-cache -t code.cropcircle.io:4567/grownetics/grownetics/socketio:$CI_PIPELINE_ID -f Server/html/images/socketio/Dockerfile
+    - docker push code.cropcircle.io:4567/grownetics/grownetics/socketio:$CI_PIPELINE_ID
+
+'Build GrowServer':
+  stage: build
+  retry: 1
+  tags:
+    - dev
+  script:
+    - cd Server/
+    - mkdocs build
+    - mv site html/webroot/docs
+    - cd html/
+    - mkdir tmp webroot/cache_js webroot/cache_css || true
+    - chmod -R 777 webroot tmp
+    - composer install
+    - bower install
+    - bin/cake asset_compress build
+
+    - BUILD_DATE=`date +%Y-%m-%d:%H:%M:%S` && echo "<?php return ['BUILD_ID' => '$CI_PIPELINE_ID','BUILD_DATE' => '$BUILD_DATE'];" > config/build_info.php
+    - cd ../../
+
+    # Building nginx here and growdash below can't be separated due to the asset_compress build step above.
+    # Using gitlab ci artifacts may fix this, for now this is the next best solution.
+
+    - docker build Server/html --pull --no-cache -t code.cropcircle.io:4567/grownetics/grownetics/nginx:$CI_PIPELINE_ID -f Server/html/images/nginx/Dockerfile
+    - docker push code.cropcircle.io:4567/grownetics/grownetics/nginx:$CI_PIPELINE_ID
+
+    - docker build Server/html --pull --no-cache -t code.cropcircle.io:4567/grownetics/grownetics/growdash:$CI_PIPELINE_ID -f Server/html/images/growdash/Dockerfile
+    - docker push code.cropcircle.io:4567/grownetics/grownetics/growdash:$CI_PIPELINE_ID
+
+'Build growctl':
+  stage: build
+  retry: 1
+  tags:
+    - dev
+  script:
+    - docker build src --no-cache -t code.cropcircle.io:4567/grownetics/grownetics/growctl:$CI_PIPELINE_ID -f src/code.cropcircle.io/grownetics/growctl/Dockerfile
+    - docker push code.cropcircle.io:4567/grownetics/grownetics/growctl:$CI_PIPELINE_ID
+
+'Rules Engine':
+  stage: test
+#  only:
+#    changes:
+#      - Server/*
+  retry: 1
+  tags:
+    - dev
+  script:
+    - cd Server/
+    - docker-compose -p "$CI_PIPELINE_ID"rulesengine -f docker-compose.yml -f docker-compose.review.yml down || true
+    - docker-compose -p "$CI_PIPELINE_ID"rulesengine -f docker-compose.yml -f docker-compose.review.yml up -d
+    - echo "Give mariaDB time to come online" && sleep 20
+    - docker exec "$CI_PIPELINE_ID"rulesengine_growdash_1 /bin/sh /var/www/html/seed.sh
+    - docker exec "$CI_PIPELINE_ID"rulesengine_growdash_1 /bin/sh /var/www/html/test.sh --testsuite RulesEngine --coverage-text --colors=never --stop-on-failure
+  after_script:
+    - cd Server/
+    - docker-compose -p "$CI_PIPELINE_ID"rulesengine -f docker-compose.yml -f docker-compose.review.yml down || true
+
+      
+# 'Front End':
+#   stage: test
+#   retry: 2
+#   tags:
+#     - dev
+#   script:
+#     - cd Server/
+#     - docker-compose -p "$CI_PIPELINE_ID"frontend -f docker-compose.yml -f docker-compose.selenium.yml -f docker-compose.review.yml down || true
+#     - docker-compose -p "$CI_PIPELINE_ID"frontend -f docker-compose.yml -f docker-compose.selenium.yml -f docker-compose.review.yml up -d
+#     - echo "Give mariaDB time to come online" && sleep 20
+#     - docker exec "$CI_PIPELINE_ID"frontend_phpunit_1 /bin/sh /var/www/html/seed.sh
+#     - docker exec "$CI_PIPELINE_ID"frontend_phpunit_1 /bin/sh /var/www/html/test.sh --testsuite FrontEnd --stop-on-failure
+#   after_script:
+#     - cd Server/
+#     - docker-compose -p "$CI_PIPELINE_ID"frontend -f docker-compose.yml -f docker-compose.selenium.yml -f docker-compose.review.yml down || true
+
+'Review Handbook':
+  stage: review
+  when: manual
+  tags:
+    - dev
+  script:
+    - mkdocs build
+    - cp .htpasswd site/
+    - docker build -t code.cropcircle.io:4567/grownetics/grownetics/handbook:$CI_PIPELINE_ID .
+    - docker push code.cropcircle.io:4567/grownetics/grownetics/handbook:$CI_PIPELINE_ID
+    - echo $CI_ENVIRONMENT_SLUG
+    - export IMAGE=$CI_PIPELINE_ID
+    - echo '{"accessKey":"$RANCHER_ACCESS_KEY","secretKey":"$RANCHER_SECRET_KEY","url":"http://rancher.cropcircle.io:8080/v2-beta/schemas","environment":"1a5"}' > rancher.json
+    - rancher --config rancher.json rm -s handbook-"$CI_ENVIRONMENT_SLUG" || true
+    - rancher --config rancher.json up -s handbook-"$CI_ENVIRONMENT_SLUG" -d -f docker-compose.handbook.yml -f docker-compose.handbook.review.yml
+  environment:
+    name: review_handbook/$CI_COMMIT_REF_NAME
+    url: http://handbook.handbook-$CI_ENVIRONMENT_SLUG.development.cloudforest.io/
+    on_stop: 'Stop Review Handbook'
+  only:
+    - branches
+  except:
+    - master
+
+'Stop Review Handbook':
+  stage: review
+  tags:
+    - dev
+  variables:
+    GIT_STRATEGY: none
+  script:
+    - echo '{"accessKey":"$RANCHER_ACCESS_KEY","secretKey":"$RANCHER_SECRET_KEY","url":"http://rancher.cropcircle.io:8080/v2-beta/schemas","environment":"1a5"}' > rancher.json
+    - rancher --config rancher.json rm -s $CI_ENVIRONMENT_SLUG || true
+  when: manual
+  environment:
+    name: review_handbook/$CI_COMMIT_REF_NAME
+    action: stop
+  only:
+    - branches
+  except:
+    - master
+
+'Review GrowServer':
+  stage: review
+  when: manual
+  tags:
+    - dev
+  script:
+    - cd Server/
+    - echo $CI_ENVIRONMENT_SLUG
+    - export IMAGE=$CI_PIPELINE_ID
+    - echo '{"accessKey":"$RANCHER_ACCESS_KEY","secretKey":"$RANCHER_SECRET_KEY","url":"http://rancher.cropcircle.io:8080/v2-beta/schemas","environment":"1a5"}' > rancher.json
+    - rancher --config rancher.json rm -s $CI_ENVIRONMENT_SLUG || true
+    - cp .env env.yaml
+    # Set the Remote URL to the correct value
+    - sed -i "s/localhost/cloud.$CI_ENVIRONMENT_SLUG.development.cloudforest.io/g" env.yaml
+    - rancher --config rancher.json up -e env.yaml -f docker-compose.yml -f docker-compose.rancher.yml -f docker-compose.faker.yml -f docker-compose.review.yml -s $CI_ENVIRONMENT_SLUG -d
+    - echo "Give MariaDB time to come online before running the DemoSeeds. 60 seconds.."
+    - sleep 60
+    - rancher --config rancher.json exec "$CI_ENVIRONMENT_SLUG"-growdash-1 /bin/sh /var/www/html/bin/cake migrations seed --source DemoSeeds;
+  environment:
+    name: review/$CI_COMMIT_REF_NAME
+    url: http://cloud.$CI_ENVIRONMENT_SLUG.development.cloudforest.io/
+    on_stop: 'Stop Review GrowServer'
+  only:
+    - branches
+  except:
+    - master
+
+'Stop Review GrowServer':
+  stage: review
+  tags:
+    - dev
+  variables:
+    GIT_STRATEGY: none
+  script:
+    - echo '{"accessKey":"$RANCHER_ACCESS_KEY","secretKey":"$RANCHER_SECRET_KEY","url":"http://rancher.cropcircle.io:8080/v2-beta/schemas","environment":"1a5"}' > rancher.json
+    - rancher --config rancher.json rm -s $CI_ENVIRONMENT_SLUG || true
+  when: manual
+  environment:
+    name: review/$CI_COMMIT_REF_NAME
+    action: stop
+  only:
+    - branches
+  except:
+    - master
+
+'Tag Images for Testing':
+  only:
+    - master
+  stage: release
+  tags:
+    - rancher
+  script:
+    - docker pull code.cropcircle.io:4567/grownetics/grownetics/nginx:$CI_PIPELINE_ID
+    - docker tag code.cropcircle.io:4567/grownetics/grownetics/nginx:$CI_PIPELINE_ID code.cropcircle.io:4567/grownetics/grownetics/nginx:latest
+    - docker push code.cropcircle.io:4567/grownetics/grownetics/nginx:latest
+
+    - docker pull code.cropcircle.io:4567/grownetics/grownetics/growdash:$CI_PIPELINE_ID
+    - docker tag code.cropcircle.io:4567/grownetics/grownetics/growdash:$CI_PIPELINE_ID code.cropcircle.io:4567/grownetics/grownetics/growdash:latest
+    - docker push code.cropcircle.io:4567/grownetics/grownetics/growdash:latest
+
+    - docker pull code.cropcircle.io:4567/grownetics/grownetics/growctl:$CI_PIPELINE_ID
+    - docker tag code.cropcircle.io:4567/grownetics/grownetics/growctl:$CI_PIPELINE_ID code.cropcircle.io:4567/grownetics/grownetics/growctl:latest
+    - docker push code.cropcircle.io:4567/grownetics/grownetics/growctl:latest
+
+    - docker pull code.cropcircle.io:4567/grownetics/grownetics/supercron:$CI_PIPELINE_ID
+    - docker tag code.cropcircle.io:4567/grownetics/grownetics/supercron:$CI_PIPELINE_ID code.cropcircle.io:4567/grownetics/grownetics/supercron:latest
+    - docker push code.cropcircle.io:4567/grownetics/grownetics/supercron:latest
+
+    - docker pull code.cropcircle.io:4567/grownetics/grownetics/socketio:$CI_PIPELINE_ID
+    - docker tag code.cropcircle.io:4567/grownetics/grownetics/socketio:$CI_PIPELINE_ID code.cropcircle.io:4567/grownetics/grownetics/socketio:latest
+    - docker push code.cropcircle.io:4567/grownetics/grownetics/socketio:latest
+
+'Tag Images for Release':
+  only:
+    - /^v.*$/
+  except:
+    - branches
+  stage: release
+  tags:
+    - rancher
+  script:
+    - docker pull code.cropcircle.io:4567/grownetics/grownetics/nginx:$CI_PIPELINE_ID
+    - docker tag code.cropcircle.io:4567/grownetics/grownetics/nginx:$CI_PIPELINE_ID code.cropcircle.io:4567/grownetics/grownetics/nginx:$CI_COMMIT_REF_NAME
+    - docker push code.cropcircle.io:4567/grownetics/grownetics/nginx:$CI_COMMIT_REF_NAME
+
+    - docker pull code.cropcircle.io:4567/grownetics/grownetics/growdash:$CI_PIPELINE_ID
+    - docker tag code.cropcircle.io:4567/grownetics/grownetics/growdash:$CI_PIPELINE_ID code.cropcircle.io:4567/grownetics/grownetics/growdash:$CI_COMMIT_REF_NAME
+    - docker push code.cropcircle.io:4567/grownetics/grownetics/growdash:$CI_COMMIT_REF_NAME
+
+    - docker pull code.cropcircle.io:4567/grownetics/grownetics/growctl:$CI_PIPELINE_ID
+    - docker tag code.cropcircle.io:4567/grownetics/grownetics/growctl:$CI_PIPELINE_ID code.cropcircle.io:4567/grownetics/grownetics/growctl:$CI_COMMIT_REF_NAME
+    - docker push code.cropcircle.io:4567/grownetics/grownetics/growctl:$CI_COMMIT_REF_NAME
+    
+    - docker pull code.cropcircle.io:4567/grownetics/grownetics/supercron:$CI_PIPELINE_ID
+    - docker tag code.cropcircle.io:4567/grownetics/grownetics/supercron:$CI_PIPELINE_ID code.cropcircle.io:4567/grownetics/grownetics/supercron:$CI_COMMIT_REF_NAME
+    - docker push code.cropcircle.io:4567/grownetics/grownetics/supercron:$CI_COMMIT_REF_NAME
+    
+    - docker pull code.cropcircle.io:4567/grownetics/grownetics/socketio:$CI_PIPELINE_ID
+    - docker tag code.cropcircle.io:4567/grownetics/grownetics/socketio:$CI_PIPELINE_ID code.cropcircle.io:4567/grownetics/grownetics/socketio:$CI_COMMIT_REF_NAME
+    - docker push code.cropcircle.io:4567/grownetics/grownetics/socketio:$CI_COMMIT_REF_NAME
+
+'Deploy: QA':
+  only:
+      - master
+  stage: deploy
+  tags:
+      - rancher
+  allow_failure: true
+  retry: 1
+  script:
+    - cd Server/
+    - echo '{"accessKey":"$RANCHER_ACCESS_KEY","secretKey":"$RANCHER_SECRET_KEY","url":"http://rancher.cropcircle.io:8080/v2-beta/schemas","environment":"1a5"}' > rancher.json
+    - export IMAGE=$CI_PIPELINE_ID
+    - rancher --config rancher.json rm -s qa || true
+    - rancher --config rancher.json up -e qa.env -s qa -d -f docker-compose.yml -f docker-compose.faker.yml -f docker-compose.rancher.yml -f docker-compose.qa.yml
+    - echo "Give MariaDB time to come online before running the DemoSeeds. 60 seconds.."
+    - sleep 60
+    - rancher --config rancher.json exec qa-growdash-1 /bin/sh /var/www/html/bin/cake migrations seed --source DemoSeeds;
+
+  environment:
+    name: QA
+    url: http://cloud.qa.development.cloudforest.io/
+
+'Deploy: Handbook':
+  only:
+    - master
+  stage: deploy
+  retry: 1
+  tags:
+    - dev
+    - rancher
+  script:
+    - echo '{"accessKey":"$RANCHER_ACCESS_KEY","secretKey":"$RANCHER_SECRET_KEY","url":"http://rancher.cropcircle.io:8080/v2-beta/schemas","environment":"1a115"}' > rancher.json
+    - rancher --config rancher.json rm --type stack -s handbook || true
+    - rancher --config rancher.json up -s handbook -d -f docker-compose.handbook.yml
+

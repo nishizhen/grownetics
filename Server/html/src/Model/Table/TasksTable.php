@@ -72,6 +72,7 @@ class TasksTable extends Table
         $this->addBehavior('Timestamp');
         $this->addBehavior('Notifier');
         $this->addBehavior('Enum');
+        $this->addBehavior('Organization');
 
         $this->belongsTo('Harvestbatches', [
             'foreignKey' => 'harvestbatch_id'

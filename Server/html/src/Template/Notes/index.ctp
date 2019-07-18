@@ -5,5 +5,7 @@
             'note' => $note
         ]);
     endforeach; ?>
-    <?= $this->element('paginator') ?>
+    <?php 
+    $this->Form->resetTemplates();
+    echo $this->element('paginator') ?>
 </div>

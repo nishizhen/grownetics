@@ -47,6 +47,7 @@ class NotesTable extends Table
         $this->setPrimaryKey('id');
 
         $this->addBehavior('Timestamp');
+        $this->addBehavior('Organization');
 
         $this->belongsTo('Users', [
             'foreignKey' => 'user_id', 

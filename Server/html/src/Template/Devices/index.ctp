@@ -12,7 +12,7 @@
             <th><?php echo $this->Paginator->sort('api_id','ID'); ?></th>
             <th><?php echo $this->Paginator->sort('label'); ?></th>
             <th><?php echo $this->Paginator->sort('last_message'); ?></th>
-            <?php if ($role == 'Admin') { ?>
+            <?php if ($navRole == 'Admin') { ?>
 
                 <th><?php echo $this->Paginator->sort('GrowFaker Requests'); ?></th>
                 <th><?php echo $this->Paginator->sort('Mode'); ?>

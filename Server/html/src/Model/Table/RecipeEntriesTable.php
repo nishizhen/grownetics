@@ -47,6 +47,7 @@ class RecipeEntriesTable extends Table
         $this->setPrimaryKey('id');
 
         $this->addBehavior('Timestamp');
+        $this->addBehavior('Organization');
 
         $this->belongsTo('Recipes', [
             'foreignKey' => 'recipe_id',

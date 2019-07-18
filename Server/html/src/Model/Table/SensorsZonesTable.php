@@ -39,6 +39,8 @@ class SensorsZonesTable extends Table
         $this->setDisplayField('id');
         $this->setPrimaryKey('id');
 
+        $this->addBehavior('Organization');
+
         $this->belongsTo('Sensors', [
             'foreignKey' => 'sensor_id',
             'joinType' => 'INNER'

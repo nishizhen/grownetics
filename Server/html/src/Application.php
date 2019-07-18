@@ -1,4 +1,5 @@
 <?php
+
 /**
  * CakePHP(tm) : Rapid Development Framework (https://cakephp.org)
  * Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
@@ -12,6 +13,7 @@
  * @since     3.3.0
  * @license   https://opensource.org/licenses/mit-license.php MIT License
  */
+
 namespace App;
 
 use Cake\Core\Configure;
@@ -32,7 +34,19 @@ class Application extends BaseApplication
     public function bootstrap()
     {
         parent::bootstrap();
-        //$this->addPlugin('DebugKit');
+        if (Configure::read('debug')) {
+            $this->addPlugin('DebugKit');
+        }
+
+        $this->addPlugin('AssetCompress', ['bootstrap' => true]);
+        $this->addPlugin('Migrations');
+        $this->addPlugin('SoftDelete');
+        $this->addPlugin('EnumBehavior', ['bootstrap' => false, 'routes' => true]);
+        $this->addPlugin('Cake/Localized');
+        $this->addPlugin('Xety/Cake3CookieAuth');
+        $this->addPlugin('Muffin/Footprint');
+        $this->addPlugin('FeatureFlags', ['bootstrap' => false, 'routes' => true]);
+        $this->addPlugin('Setup', ['bootstrap' => true]);
     }
     /**
      * Setup the middleware queue your application will use.

@@ -605,6 +605,14 @@ class AclsSeed extends AbstractSeed
                 'controller'  => 'charts',
                 'action'  => '*',
                 'rule' => 'allow'
+            ],
+            [
+                'id'      => 75,
+                'created'       => date(DATE_ATOM),
+                'modified'    => date(DATE_ATOM),
+                'controller'  => 'organizations',
+                'action'  => '*',
+                'rule' => 'allow'
             ]
         ];
 

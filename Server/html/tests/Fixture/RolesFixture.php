@@ -32,6 +32,15 @@ class RolesFixture extends TestFixture
         ],
         [
             'label' => 'Guest',
+        ],
+        [
+            'label' => 'Organization Invitee'
+        ],
+        [
+            'label' => 'Organization Member'
+        ],
+        [
+            'label' => 'Organization Admin'
         ]
     ];
 }

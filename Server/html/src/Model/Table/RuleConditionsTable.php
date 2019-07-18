@@ -76,6 +76,7 @@ class RuleConditionsTable extends Table
 
         $this->addBehavior('Enum');
         $this->addBehavior('Timestamp');
+        $this->addBehavior('Organization');
 
         $this->belongsTo('Rules', [
             'foreignKey' => 'rule_id'

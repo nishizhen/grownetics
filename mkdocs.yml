@@ -36,6 +36,7 @@ pages:
   - 'GrowServer': 'Development/growserver.md'
   - 'How We Develop': 'Development/how-we-develop.md'
   - 'Onsite Server Setup Guide': 'Development/onsite-server-setup.md'
+  - 'Organizations': 'Development/organizations.md'
   - 'Release Guide': 'Development/releases.md'
   - 'Rules Engine': 'Development/rules-engine.md'
   - 'Testing': 'Development/testing.md'

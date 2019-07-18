@@ -46,6 +46,7 @@ class CultivarsTable extends Table
         $this->addBehavior('Notifier',[
             'notification_level' => 1
         ]);
+        $this->addBehavior('Organization');
 
         $this->hasMany('HarvestBatch', [
             'foreignKey' => 'cultivar_id'

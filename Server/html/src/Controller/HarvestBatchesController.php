@@ -35,7 +35,7 @@ class HarvestBatchesController extends AppController
                 'planted_date' => 'asc'
             ],
             'conditions' => [
-                'status !=' => $this->HarvestBatches->enumValueToKey('status', 'Harvested')
+                'status !=' => $this->HarvestBatches->enumValueToKey('status', 'Harvested'),
             ],
             'contain' => [
                 'batchRecipeEntries' => [

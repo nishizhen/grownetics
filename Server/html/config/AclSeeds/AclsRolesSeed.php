@@ -25,7 +25,7 @@ class AclsRolesSeed extends AbstractSeed
         # These numbers correspond to the RED N cells in the doc above
         $owner = [];
         # When adding ACLS make sure to increment the number below, it should equal the highest ACL ID available.
-        $all_acls = range(1, 74);
+        $all_acls = range(1, 75);
         $grower_forbidden_acls = [
             66
         ];

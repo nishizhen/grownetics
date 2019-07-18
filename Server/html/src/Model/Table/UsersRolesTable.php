@@ -7,7 +7,13 @@ class UsersRolesTable extends Table
 {
     public function initialize(array $config)
     {
-        $this->belongsTo('Users');
-        $this->belongsTo('Roles');
+        $this->belongsTo('Users', [
+            'foreignKey' => 'user_id',
+            'joinType' => 'inner'
+        ]);
+        $this->belongsTo('Roles', [
+            'foreignKey' => 'role_id',
+            'joinType' => 'inner'
+        ]);
     }
 }

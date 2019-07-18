@@ -21,7 +21,8 @@ class BurnoutProtectionTest extends IntegrationTestCase {
         'app.rule_actions',
         'app.rule_action_targets',
         'app.map_items',
-        'app.map_item_types'
+        'app.map_item_types',
+        'app.users_roles'
     ];
 
     public function setUp() {

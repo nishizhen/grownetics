@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Model\Table;
 
 use Cake\ORM\Query;
@@ -44,6 +45,8 @@ class PlantsTable extends Table
             'Destroyed'
         )
     );
+
+    // @codeCoverageIgnoreStart
     /**
      * Initialize method
      *
@@ -57,6 +60,7 @@ class PlantsTable extends Table
         $this->setTable('plants');
         $this->setDisplayField('id');
         $this->setPrimaryKey('id');
+
         $this->addBehavior('Enum');
         $this->addBehavior('Mappable');
         $this->addBehavior('Muffin/Footprint.Footprint', [
@@ -69,6 +73,7 @@ class PlantsTable extends Table
                 'show_metric' => '_footprint.show_metric',
             ],
         ]);
+        $this->addBehavior('Organization');
 
         $this->belongsTo('MapItems', [
             'foreignKey' => 'map_item_id',
@@ -134,6 +139,7 @@ class PlantsTable extends Table
 
         return $rules;
     }
+    // @codeCoverageIgnoreEnd
 
     public function beforeSave($event, $entity, $options)
     {

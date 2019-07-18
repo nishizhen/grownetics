@@ -50,7 +50,6 @@ require CORE_PATH . 'config' . DS . 'bootstrap.php';
 
 use Cake\Cache\Cache;
 use Cake\Console\ConsoleErrorHandler;
-use Cake\Core\App;
 use Cake\Core\Configure;
 use Cake\Core\Configure\Engine\PhpConfig;
 use Cake\Core\Plugin;
@@ -94,9 +93,6 @@ if (!Configure::read('debug')) {
     Configure::write('Cache._cake_model_.duration', '+1 years');
     Configure::write('Cache._cake_core_.duration', '+1 years');
     Configure::write('Cache.acls.duration', '+1 years');
-} else {
-    // We're in debug mode. Load DebugKit
-    Plugin::load('DebugKit', ['bootstrap' => true, 'routes' => true]);
 }
 
 /**
@@ -123,7 +119,7 @@ $isCli = PHP_SAPI === 'cli';
 if ($isCli) {
     (new ConsoleErrorHandler(Configure::read('Error')))->register();
 } else {
-    (new \Gourmet\Whoops\Error\WhoopsHandler(Configure::read('Error')))->register();
+    // (new \Gourmet\Whoops\Error\WhoopsHandler(Configure::read('Error')))->register();
 }
 
 // Include the CLI bootstrap overrides.
@@ -152,7 +148,6 @@ if (!Configure::read('App.fullBaseUrl')) {
 
 Cache::setConfig(Configure::consume('Cache'));
 ConnectionManager::setConfig(Configure::consume('Datasources'));
-Email::setConfigTransport(Configure::consume('EmailTransport'));
 Email::setConfig(Configure::consume('Email'));
 Log::setConfig('default', [
     'engine' => 'Console'
@@ -196,8 +191,6 @@ DispatcherFactory::add('Asset');
 DispatcherFactory::add('Routing');
 DispatcherFactory::add('ControllerFactory');
 
-Plugin::load('AssetCompress', ['bootstrap' => true]);
-
 /**
  * Enable immutable time objects in the ORM.
  *
@@ -212,16 +205,3 @@ Type::build('date')
     ->useImmutable();
 Type::build('datetime')
     ->useImmutable();
-
-Plugin::load('Migrations');
-Plugin::load('SoftDelete');
-Plugin::load('EnumBehavior', ['bootstrap' => false, 'routes' => true]);
-//Plugin::load('Cake/ElasticSearch', ['bootstrap' => true]);
-Plugin::load('Cake/Localized');
-Plugin::load('Xety/Cake3CookieAuth');
-Plugin::load('Muffin/Footprint');
-//Plugin::load('JadeView');
-
-Plugin::load('FeatureFlags', ['bootstrap' => false, 'routes' => true]);
-
-Plugin::load('Setup', ['bootstrap' => true]);

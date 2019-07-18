@@ -56,6 +56,24 @@ class RolesSeed extends AbstractSeed
                 'modified' => date(DATE_ATOM),
                 'label' => 'Guest',
             ],
+            [
+                'id' => 7,
+                'created' => date(DATE_ATOM),
+                'modified' => date(DATE_ATOM),
+                'label' => 'Organization Admin',
+            ],
+            [
+                'id' => 8,
+                'created' => date(DATE_ATOM),
+                'modified' => date(DATE_ATOM),
+                'label' => 'Organization Member',
+            ],
+            [
+                'id' => 9,
+                'created' => date(DATE_ATOM),
+                'modified' => date(DATE_ATOM),
+                'label' => 'Organization Invitee',
+            ],            
         ];
 
         $table = $this->table('roles');

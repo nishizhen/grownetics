@@ -72,6 +72,7 @@ class SetPointsTable extends Table
                 'show_metric' => '_footprint.show_metric',
             ],
         ]);
+        $this->addBehavior('Organization');
     }
 
     /**

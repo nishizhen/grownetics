@@ -39,6 +39,8 @@ class AppliancesZonesTable extends Table
         $this->setDisplayField('id');
         $this->setPrimaryKey('id');
 
+        $this->addBehavior('Organization');
+
         $this->belongsTo('Appliances', [
             'foreignKey' => 'appliance_id',
             'joinType' => 'INNER'

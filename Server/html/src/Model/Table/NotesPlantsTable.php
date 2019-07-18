@@ -38,6 +38,8 @@ class NotesPlantsTable extends Table
         $this->setDisplayField('id');
         $this->setPrimaryKey('id');
 
+        $this->addBehavior('Organization');
+
         $this->belongsToMany('Notes', [
             'foreignKey' => 'note_id',
             'targetForeignKey' => 'plant_id',

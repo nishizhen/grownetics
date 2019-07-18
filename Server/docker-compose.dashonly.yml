@@ -36,7 +36,7 @@ growdash:
     - SMTP_HOST
     - SMTP_USER
     - SMTP_PASS
-  image: code.cropcircle.io:4567/grownetics/grownetics/growdash:latest
+  image: code.cropcircle.io:4567/grownetics/grownetics/growdash:${VERSION}
   volumes:
     - ./html:/var/www/html:cached
     - ./tmp:/tmp:cached
@@ -74,7 +74,7 @@ deviceapi:
     - RABBIT_PASS
     - INFLUX_HOST
     - INFLUX_PORT
-  image: code.cropcircle.io:4567/grownetics/grownetics/growdash:latest
+  image: code.cropcircle.io:4567/grownetics/grownetics/growdash:${VERSION}
   volumes:
     - ./html:/var/www/html:cached
     - ./tmp:/tmp:cached

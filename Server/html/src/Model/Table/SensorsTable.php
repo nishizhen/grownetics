@@ -165,6 +165,7 @@ class SensorsTable extends Table
         $this->addBehavior('Notifier',[
             'notification_level' => 1
         ]);
+        $this->addBehavior('Organization');
 
         $this->belongsTo('Devices', [
             'foreignKey' => 'device_id',

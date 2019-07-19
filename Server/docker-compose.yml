@@ -393,36 +393,36 @@ rabbitmq:
     # - RABBITMQ_DEFAULT_PASS:RABBIT_PASS
     - RABBITMQ_DEFAULT_PASS=rabbit
 
-supercron:
-  image: code.cropcircle.io:4567/grownetics/grownetics/supercron:${VERSION}
-  links:
-    - consul
-    - appdb
-    - growdash
-    - redis
-    - rabbitmq
-  environment:
-    - DEV
-    - FACILITY_NAME
-    - FACILITY_ID
-    - CERES
-    - ENVIRONMENT
-    - REMOTE_URL
+# supercron:
+#   image: code.cropcircle.io:4567/grownetics/grownetics/supercron:${VERSION}
+#   links:
+#     - consul
+#     - appdb
+#     - growdash
+#     - redis
+#     - rabbitmq
+#   environment:
+#     - DEV
+#     - FACILITY_NAME
+#     - FACILITY_ID
+#     - CERES
+#     - ENVIRONMENT
+#     - REMOTE_URL
 
-    - DB_HOSTNAME
-    - MYSQL_ROOT_PASSWORD
-    - MYSQL_DATABASE
-    - MYSQL_TEST_DATABASE
-    - MYSQL_USER
-    - MYSQL_PASSWORD
+#     - DB_HOSTNAME
+#     - MYSQL_ROOT_PASSWORD
+#     - MYSQL_DATABASE
+#     - MYSQL_TEST_DATABASE
+#     - MYSQL_USER
+#     - MYSQL_PASSWORD
 
-    - REDIS_HOSTNAME
-    - RABBIT_HOST
-    - RABBIT_PORT
-    - RABBIT_USER
-    - RABBIT_PASS
-    - INFLUX_HOST
-    - INFLUX_PORT
+#     - REDIS_HOSTNAME
+#     - RABBIT_HOST
+#     - RABBIT_PORT
+#     - RABBIT_USER
+#     - RABBIT_PASS
+#     - INFLUX_HOST
+#     - INFLUX_PORT
 
 bookstack-mysql:
   image: mysql:5.7.21

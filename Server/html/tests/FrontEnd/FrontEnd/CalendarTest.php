@@ -11,7 +11,7 @@ use Cake\I18n\Time;
 
 require_once('/var/www/html/vendor/autoload.php');
 
-class CalendarTest extends \PHPUnit_Framework_TestCase {
+class CalendarTest extends \PHPUnit\Framework\TestCase {
     protected $driver;
     protected $browser;
 

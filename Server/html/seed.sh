@@ -14,7 +14,6 @@ curl -i -XPOST http://influxdb:8086/query --data-urlencode "q=CREATE DATABASE in
 
 mkdir webroot/cache_js webroot/cache_css
 
-
 mysql -happdb -uroot -pgrownetics -e 'create database if not exists grownetics_test; grant all privileges on grownetics_test.* to grownetics;';
 
 /var/www/html/bin/cake migrations migrate

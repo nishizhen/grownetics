@@ -44,7 +44,13 @@ class OrganizationsController extends AppController
                 'Organizations.id IN' => $orgIds
             ]
         ];
-        $organizations = $this->paginate($this->Organizations);
+        try {
+            $organizations = $this->paginate($this->Organizations);
+        } catch (\Exception $exception) {
+            # There was an error paginating, likely no organizations
+            # exist for this user yet. Return an empty array.
+            $organizations = [];
+        }
 
         $this->Roles = TableRegistry::get("Roles");
         $inviteeRoleId = $this->Roles->findByLabel('Organization Invitee')->first()->id;

@@ -12,7 +12,7 @@ RUN apt-get update \
     libmcrypt-dev \
     libpng-dev \
     libxml2-dev \
-    mysql-client \
+    default-mysql-client \
     make \
     nodejs \
     npm \

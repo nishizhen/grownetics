@@ -117,12 +117,18 @@
                         <?php if (!env('ONSITE') && $userOrganizations) { ?>
                             <li>
                                 <a data-toggle="dropdown" class="dropdown-toggle">
-                                    <i class="fa fa-users"></i>
+                                    <i class="fa fa-users"></i> 
+                                    <?php if ($currentOrganization) { 
+                                        echo $currentOrganization->label;
+                                    } else {
+                                        echo "No organization";
+                                    }
+                                    ?>
                                 </a>
                                 <ul class="dropdown-menu pull-right">
                                     <li<?php if (!$organizationId) {
                                             echo " class='active'";
-                                        } ?>><?= $this->Html->link("No Organization", ['controller' => 'Organizations', 'action' => 'setActiveOrganization']) ?>
+                                        } ?>><?= $this->Html->link("No organization", ['controller' => 'Organizations', 'action' => 'setActiveOrganization']) ?>
                                     </li>
                                     <?php foreach ($userOrganizations as $organization) { ?>
                                         <li<?php if ($organizationId == $organization->id) {

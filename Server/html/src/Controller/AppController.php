@@ -274,9 +274,16 @@ class AppController extends Controller
             ]);
         }
 
+        $currentOrganization = False;
+        try {
+            $currentOrganization = $this->Organizations->get($this->getRequest()->getSession()->read('Config.organization_id'));
+        } catch (\Exception $exception) {
+            # Ignore
+        }
         $this->set('userOrganizations', $organizations);
         $this->set('userRoles', $userRoles);
         $this->set('organizationId', $this->getRequest()->getSession()->read('Config.organization_id'));
+        $this->set('currentOrganization', $currentOrganization);
         $this->set('orgAdminRoleId', $adminId);
         $this->set('orgMemberRoleId', $memberId);
 

@@ -17,25 +17,19 @@ class OrganizationBehavior extends Behavior
 
     public function beforeSave($event, $entity, $options)
     {
-        dd($entity);
         # Only perform Organization separation if we are not Onsite
-        if (!env('ONSITE')) {
+        if (!env('ONSITE') && !$entity->owner_id) {
             $session = new Session();
-            // dd($this->getRequest()->getSession()->read('User.username'));
-            dd($session->read('Auth.User'));
+
             # Only auto-add owner information for logged in users
-            if ($session->read('Auth.User')) {
-                dd("Got user");
+            if (isset($options['_footprint'])) {
                 if ($session->read('Config.organization_id')) {
-                    dd("Got org");
                     $entity->owner_type = $this->_TYPES["Organization"];
                     $entity->owner_id = $session->read('Config.organization_id');
-                } else if ($session->read('Auth.User.id')) {
+                } else if ($options['_footprint']['id']) {
                     $entity->owner_type = $this->_TYPES["User"];
-                    $entity->owner_id = $session->read('Auth.User.id');
+                    $entity->owner_id = $options['_footprint']['id'];
                 }
-            } else {
-                dd("No user");
             }
         }
     }
@@ -47,16 +41,16 @@ class OrganizationBehavior extends Behavior
             $session = new Session();
 
             # Only auto-add owner information for logged in users
-            if ($session->read('Auth.User')) {
+            if (isset($options['_footprint'])) {
                 if ($session->read('Config.organization_id')) {
                     $query->where([
                         'owner_type' => $this->_TYPES["Organization"],
                         'owner_id' => $session->read('Config.organization_id')
                     ]);
-                } else if ($session->read('Auth.User.id')) {
+                } else if ($options['_footprint']['id']) {
                     $query->where([
                         'owner_type' => $this->_TYPES["User"],
-                        'owner_id' => $session->read('Auth.User')->id
+                        'owner_id' => $options['_footprint']['id']
                     ]);
                 }
             }

@@ -31,7 +31,7 @@
         "psy/psysh": "@stable",
         "cakephp/debug_kit": "~3.0",
         "cakephp/bake": "~1.1",
-        "phpunit/phpunit": "^8",
+        "phpunit/phpunit": "^5.7.14|^6.0",
         "phpmd/phpmd": "^2.4",
         "zenozeng/gitlab-changelog": "0.1.1",
         "dereuromark/cakephp-ide-helper": "^0.8.0",

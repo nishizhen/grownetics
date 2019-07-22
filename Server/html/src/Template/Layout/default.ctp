@@ -114,36 +114,50 @@
 
                 <div class="top-menu">
                     <ul class="nav pull-right top-menu hidden-xs">
-                        <li><a data-toggle="dropdown" class="dropdown-toggle">
-                                <i class="fa fa-users"></i>
-                            </a>
-                            <ul class="dropdown-menu pull-right">
-                                <li<?php if (!$organizationId) { echo " class='active'"; }?>><?= $this->Html->link("No Organization", ['controller' => 'Organizations', 'action' => 'setActiveOrganization']) ?></li>
-                                <?php foreach ($userOrganizations as $organization) { ?>
-                                    <li<?php if ($organizationId == $organization->id) { echo " class='active'"; }?>><?= $this->Html->link($organization->label, ['controller' => 'Organizations', 'action' => 'setActiveOrganization', $organization->id]) ?></li>
-                                <?php } ?>
-                            </ul>
-                        </li>
-                        <li><a data-toggle="dropdown" class="dropdown-toggle">
-                                <i class="fa fa-life-saver"></i>
-                            </a>
-                            <ul class="dropdown-menu pull-right">
-                                <?php if (env('DEV')) { ?>
-                                    <li><a href='http://localhost:8000' target='_new'><i class="fa fa-ticket"></i> Documentation</a></li>
-                                <?php } else { ?>
-                                    <li><a href='/docs/' target='_new'><i class="fa fa-ticket"></i> Documentation</a></li>
-                                <?php } ?>
-                                <li><a href="tel:1-844-476-9638"><i class="fa fa-phone"></i> 1 (844) 476-9638</a></li>
-                                <li><a href="mailto:support@grownetics.co" target="_blank"><i class="fa fa-envelope"></i> support@grownetics.co</a></li>
-                            </ul>
-                        </li>
-                        <li>
-                            <?php if ($this->request->session()->read('Auth.User.id')) { ?>
-                                <a class='logout' href='/users/logout'>Logout</a>
+                        <?php if (!env('ONSITE') && $userOrganizations) { ?>
+                            <li>
+                                <a data-toggle="dropdown" class="dropdown-toggle">
+                                    <i class="fa fa-users"></i> 
+                                    <?php if ($currentOrganization) { 
+                                        echo $currentOrganization->label;
+                                    } else {
+                                        echo "No organization";
+                                    }
+                                    ?>
+                                </a>
+                                <ul class="dropdown-menu pull-right">
+                                    <li<?php if (!$organizationId) {
+                                            echo " class='active'";
+                                        } ?>><?= $this->Html->link("No organization", ['controller' => 'Organizations', 'action' => 'setActiveOrganization']) ?>
+                                    </li>
+                                    <?php foreach ($userOrganizations as $organization) { ?>
+                                        <li<?php if ($organizationId == $organization->id) {
+                                                echo " class='active'";
+                                            } ?>><?= $this->Html->link($organization->label, ['controller' => 'Organizations', 'action' => 'setActiveOrganization', $organization->id]) ?></li>
+                                        <?php } ?>
+                                </ul>
+                            </li>
+                        <?php } ?>
+                    <li><a data-toggle="dropdown" class="dropdown-toggle">
+                            <i class="fa fa-life-saver"></i>
+                        </a>
+                        <ul class="dropdown-menu pull-right">
+                            <?php if (env('DEV')) { ?>
+                                <li><a href='http://localhost:8000' target='_new'><i class="fa fa-ticket"></i> Documentation</a></li>
                             <?php } else { ?>
-                                <a class='login' href='/users/login'>Login</a>
+                                <li><a href='/docs/' target='_new'><i class="fa fa-ticket"></i> Documentation</a></li>
                             <?php } ?>
-                        </li>
+                            <li><a href="tel:1-844-476-9638"><i class="fa fa-phone"></i> 1 (844) 476-9638</a></li>
+                            <li><a href="mailto:support@grownetics.co" target="_blank"><i class="fa fa-envelope"></i> support@grownetics.co</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <?php if ($this->request->session()->read('Auth.User.id')) { ?>
+                            <a class='logout' href='/users/logout'>Logout</a>
+                        <?php } else { ?>
+                            <a class='login' href='/users/login'>Login</a>
+                        <?php } ?>
+                    </li>
                     </ul>
                 </div>
 

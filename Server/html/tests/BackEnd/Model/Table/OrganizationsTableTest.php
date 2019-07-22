@@ -59,36 +59,6 @@ class OrganizationsTableTest extends TestCase
     }
 
     /**
-     * Test initialize method
-     *
-     * @return void
-     */
-    public function testInitialize()
-    {
-        $this->markTestIncomplete('Not implemented yet.');
-    }
-
-    /**
-     * Test validationDefault method
-     *
-     * @return void
-     */
-    public function testValidationDefault()
-    {
-        $this->markTestIncomplete('Not implemented yet.');
-    }
-
-    /**
-     * Test buildRules method
-     *
-     * @return void
-     */
-    public function testBuildRules()
-    {
-        $this->markTestIncomplete('Not implemented yet.');
-    }
-
-    /**
      * Test afterSave method
      *
      * @return void
@@ -115,13 +85,10 @@ class OrganizationsTableTest extends TestCase
      */
     public function testTryToAcceptBadInvite()
     {
-        # Get User
-        $userId = $this->Users->get(1)->id;
-
         # Get Organization
         $organizationId = $this->Organizations->get(1)->id;
 
-        # Create Invite (Handbook/Development/organizations.md)
+        # Create bad Invite (Handbook/Development/organizations.md)
         $invite = $this->UsersRoles->newEntity([
             'organization_id' => $organizationId,
             'user_id' => 2,
@@ -129,7 +96,8 @@ class OrganizationsTableTest extends TestCase
         ]);
         $this->UsersRoles->save($invite);
 
-        $this->assertFalse($this->Organizations->acceptInvite(1, 1));
+        # Pass incorrect values
+        $this->assertFalse($this->Organizations->respondToInvite($organizationId, 1));
     }
 
     public function testAcceptInvite()
@@ -217,6 +185,12 @@ class OrganizationsTableTest extends TestCase
 
     public function testAttemptDowngradeLastAdminToMember()
     {
+        $this->configRequest([
+            'environment' => [
+                'ONSITE' => '1',
+            ]
+        ]);
+
         # Get User
         $userId = $this->Users->get(1)->id;
 

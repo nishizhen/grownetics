@@ -11,7 +11,7 @@ use Cake\ORM\TableRegistry;
 
 require_once('/var/www/html/vendor/autoload.php');
 
-class BatchWorkflowTest extends \PHPUnit_Framework_TestCase {
+class BatchWorkflowTest extends \PHPUnit\Framework\TestCase {
 
     /** @var $driver RemoteWebDriver */
     public $driver;

@@ -8,7 +8,7 @@ use Facebook\WebDriver\Remote\WebDriverCapabilityType;
 
 require_once('/var/www/html/vendor/autoload.php');
 
-class LoginCrudTest extends \PHPUnit_Framework_TestCase {
+class LoginCrudTest extends \PHPUnit\Framework\TestCase {
 
     /** @var $driver RemoteWebDriver */
     protected $driver;

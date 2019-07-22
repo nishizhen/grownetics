@@ -1,48 +1,9 @@
-# PHPStorm / XDebug Remote Debugging Setup ##
+# XDebug
 
-Xdebug should be installed in your vagrant box already.
-
-The Xdebug remote properties should also already be setup by ansible if you are in a (dev == 1) environment.
-Verify that `/etc/php/7.0/apache2/conf.d/20-xdebug.ini` contains the following lines:
-
-```
-xdebug.remote_enable = 1
-xdebug.remote_host = 192.168.33.1
-xdebug.remote_port = 9000
-``` 
-
-Make sure to restart your apache service if you made any changes `sudo service apache2 restart`
-
-Setup roughly follows the guidelines from Jetbrains here:
-
-https://confluence.jetbrains.com/display/PhpStorm/Zero-configuration+Web+Application+Debugging+with+Xdebug+and+PhpStorm
-
-Except that for whatever reason in that tutorial they do things in a weird order, so here's the order I did it in.
-
-### 1. Setup Path Mappings ###
-
-Open Settings... navigate to Languages & Frameworks > PHP > Servers and click the + plus sign to add a new server.  Set the Host to `web1.growserver.dev` and then check the box labeled  "Use Path Mappings."
-
-In the Path Mapping box, add a mapping from your local project's `html/` folder, e.g. `/Users/Conan/Grownetics/Server/html/`  to  `/var/www/html/current` on the growserver.
-
-### 2. Setup default configuration file
-Open preferences > Languages & Frameworks > PHP > PHPUnit.
-Select your remote interpreter, under Test Runner change the default configuration file path to:
-`/var/www/html/current/phpunit.xml.dist`
-
-### 3. Install a browser toolbar or bookmarklet ###
-
-See https://confluence.jetbrains.com/display/PhpStorm/Browser+Debugging+Extensions and choose the extension for your favorite browser.  I can confirm that the XDebug Helper for Chrome works.
-
-### 4. Start a debugging session ###
-
-1. In PHPStorm, go to Run > Start Listening for PHP Debug Connections.
-
-2. Set a breakpoint somewhere.
-
-3. Activate debug mode with your favorite browser extension.
-
-4. Reload the page where you set the breakpoint.
+Install the PHP Debug extension for VSCode. Click the Debug icon, click the
+green start button. Uncheck `Everything` in the breakpoints panel.
+Set a breakpoint in the code somewhere, hit a page that loads that code,
+enjoy your bugs.
 
 ## Profiling with XDebug ##
 

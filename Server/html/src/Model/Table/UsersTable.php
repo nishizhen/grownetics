@@ -75,7 +75,8 @@ class UsersTable extends Table
     return $validator;
   }
 
-  public function beforeSave($event, $entity, $options) {
+  public function beforeSave($event, $entity, $options)
+  {
     $siteSalt = env('SALT');
     $token = substr(hash('ripemd160', $siteSalt . time() . uniqid() . $entity['email']), 0, 10);
     $entity['token'] = $token;
@@ -83,51 +84,53 @@ class UsersTable extends Table
 
   public function afterSave($event, $user, $options)
   {
-    if ($user->isNew() && !$user->skipRegister) {
-      $this->Zones = TableRegistry::get('zones');
-      $this->Sensors = TableRegistry::get('sensors');
-      $this->DataPoints = TableRegistry::get('DataPoints');
-      $sensorTypeName = 'Humidity';
-      $zones = [];
-      $zones = $this->Zones->find('all', ['conditions' => ['plant_zone_type_id IN' => [$this->Zones->enumValueToKey('plant_zone_types', 'Veg'), $this->Zones->enumValueToKey('plant_zone_types', 'Bloom')]]])->toArray();
+    if ($user->isNew()) {
+      # Perform new user registration steps, unless specifically told not to.
+      # We tell it not to in our tests primarily.
+      if (!$user->skipRegister) {
+        $this->Zones = TableRegistry::get('Zones');
+        $this->Sensors = TableRegistry::get('Sensors');
+        $this->DataPoints = TableRegistry::get('DataPoints');
+        $sensorTypeName = 'Humidity';
+        $zones = [];
+        $zones = $this->Zones->find('all', ['conditions' => ['plant_zone_type_id IN' => [$this->Zones->enumValueToKey('plant_zone_types', 'Veg'), $this->Zones->enumValueToKey('plant_zone_types', 'Bloom')]]])->toArray();
 
-      $configs = [];
-      foreach ($zones as $zone) {
-        $config = (object) ["data_type" => "", "data_label" => "", "data_symbol" => "", "data_display_class" => "", "source_type" => "", "source_id" => "", "source_label" => "", "lowThreshold" => "", "highThreshold" => ""];
-        $config->data_type = $this->Sensors->enumValueToKey('sensor_type', $sensorTypeName);
-        $config->data_label = $sensorTypeName;
-        $config->data_symbol = $this->Sensors->enumKeyToValue('sensor_symbol', $config->data_type);
-        $config->data_display_class = $this->Sensors->enumKeyToValue('sensor_display_class', $config->data_type);
-        $config->source_type = $this->DataPoints->enumValueToKey('source_type', 'Zone');
-        $config->source_id = $zone->id;
-        $config->source_label = $zone->label;
-        array_push($configs, $config);
-      }
-      $user->dashboard_config = json_encode($configs);
+        $configs = [];
+        foreach ($zones as $zone) {
+          $config = (object) ["data_type" => "", "data_label" => "", "data_symbol" => "", "data_display_class" => "", "source_type" => "", "source_id" => "", "source_label" => "", "lowThreshold" => "", "highThreshold" => ""];
+          $config->data_type = $this->Sensors->enumValueToKey('sensor_type', $sensorTypeName);
+          $config->data_label = $sensorTypeName;
+          $config->data_symbol = $this->Sensors->enumKeyToValue('sensor_symbol', $config->data_type);
+          $config->data_display_class = $this->Sensors->enumKeyToValue('sensor_display_class', $config->data_type);
+          $config->source_type = $this->DataPoints->enumValueToKey('source_type', 'Zone');
+          $config->source_id = $zone->id;
+          $config->source_label = $zone->label;
+          array_push($configs, $config);
+        }
+        $user->dashboard_config = json_encode($configs);
 
-      # Sent email invite if needed
-      $Email = new Email();
+        # Sent email invite if needed
+        $Email = new Email();
 
-      $Email->viewVars(array(
+        $Email->viewVars(array(
           'token' => $user->token,
           'user' => $user
-      ));
+        ));
 
-      $Email->template('registration_invite', 'default')
+        $Email->template('registration_invite', 'default')
           ->emailFormat('html')
           ->subject('Grownetics Password Reset')
           ->to($user['email'])
           ->from('support@grownetics.co');
-          try {
-      if ($Email->send()) {
-          return true;
-      } else {
-          return false;
+        try {
+          if ($Email->send()) {
+            return true;
+          } else {
+            return false;
+          }
+        } catch (\Exception $e) { }
+        $this->save($user);
       }
-    } catch (\Exception $e) {
-
-    }
-      $this->save($user);
     }
   }
 

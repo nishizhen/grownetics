@@ -14,7 +14,7 @@ use Facebook\WebDriver\Exception\NoSuchElementException;
 
 require_once('/var/www/html/vendor/autoload.php');
 
-class NavTest  extends \PHPUnit_Framework_TestCase
+class NavTest  extends \PHPUnit\Framework\TestCase
 {
     /** @var $driver RemoteWebDriver */
     protected $driver;

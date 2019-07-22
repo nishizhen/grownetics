@@ -13,7 +13,7 @@ use Facebook\WebDriver\Remote\WebDriverCapabilityType;
 
 require_once('/var/www/html/vendor/autoload.php');
 
-class MapSensorLayersTest extends \PHPUnit_Framework_TestCase
+class MapSensorLayersTest extends \PHPUnit\Framework\TestCase
 {
 //    public $fixtures = [
 //        'app.floorplans'

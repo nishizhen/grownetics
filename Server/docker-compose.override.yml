@@ -1,7 +1,5 @@
 growdash:
   image: code.cropcircle.io:4567/grownetics/grownetics/growdash:dev
-  ports:
-    - 9090:9000
   volumes:
     - ./html:/var/www/html:cached
     - ./tmp:/tmp:cached
@@ -82,7 +80,7 @@ influxdb:
 
 telegraf:
   volumes:
-    - ../DevOps/roles/growserver/templates/telegraf.conf:/etc/telegraf/telegraf.conf
+    # - ../DevOps/roles/growserver/templates/telegraf.conf:/etc/telegraf/telegraf.conf
     - /var/run/docker.sock:/var/run/docker.sock
 
 chronograf:
@@ -92,13 +90,13 @@ chronograf:
   ports:
     - "8888:8888"
 
-growfaker:
-  image: code.cropcircle.io:4567/grownetics/grownetics/growctl:latest
-  command: ./growctl faker --host nginx:81 --consul_host consul:8500 --influx_host influxdb:8086 --json
-  links:
-    - nginx
-    - influxdb
-    - consul
+# growfaker:
+#   image: code.cropcircle.io:4567/grownetics/grownetics/growctl:latest
+#   command: ./growctl faker --host nginx:81 --consul_host consul:8500 --influx_host influxdb:8086 --json
+#   links:
+#     - nginx
+#     - influxdb
+#     - consul
 
 documentation:
   image: squidfunk/mkdocs-material
@@ -115,14 +113,14 @@ grafana:
   ports:
     - "3000:3000"
 
-supercron:
-  image: code.cropcircle.io:4567/grownetics/grownetics/supercron:latest
-  volumes:
-    - ./html:/var/www/html:cached
-    - ./tmp:/tmp:cached
-    - /var/data/cron/crontab:/etc/crontab
-  environment:
-    - GF_SERVER_ROOT_URL=http://localhost/grafana
+# supercron:
+#   image: code.cropcircle.io:4567/grownetics/grownetics/supercron:latest
+#   volumes:
+#     - ./html:/var/www/html:cached
+#     - ./tmp:/tmp:cached
+#     - /var/data/cron/crontab:/etc/crontab
+#   environment:
+#     - GF_SERVER_ROOT_URL=http://localhost/grafana
 
 bookstack-mysql:
   volumes:

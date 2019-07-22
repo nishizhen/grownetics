@@ -8,8 +8,8 @@ phpunit:
 
 chrome:
   image: selenium/node-chrome-debug
-  ports:
-    - 5900:5900
+  # ports:
+  #   - 5900:5900
 
 growfaker:
   image: busybox

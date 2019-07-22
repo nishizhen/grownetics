@@ -11,7 +11,7 @@ namespace Facebook\WebDriver;
 use Facebook\WebDriver\Remote\WebDriverCapabilityType;
 use Facebook\WebDriver\Remote\RemoteWebDriver;
 
-class TaskAndRecipeCrudTest extends \PHPUnit_Framework_TestCase
+class TaskAndRecipeCrudTest extends \PHPUnit\Framework\TestCase
 {
     public $driver;
     public $browser;

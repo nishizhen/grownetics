@@ -182,6 +182,7 @@ class OrganizationsController extends AppController
 
     public function setActiveOrganization($organization_id = FALSE)
     {
+        $this->loadModel('Users');
         $session = $this->getRequest()->getSession();
         if ($organization_id) {
             $validRoles = [
@@ -199,16 +200,23 @@ class OrganizationsController extends AppController
                     'role_id'
                 ]
             ]);
+
             if ($userRoles->count()) {
-                if ($organization_id) {
-                    $session->write('Config.organization_id', $organization_id);
-                }
+                $user = $session->read('Auth.User');
+                $user->current_organization_id = $organization_id;
+                $this->Users->save($user);
+                $session->write('Auth.User', $user);
                 $this->Flash->success(__('You have switched active Organizations.'));
             } else {
                 $this->Flash->error(__('There was an error switching active Organizations.'));
             }
         } else {
-            $session->delete('Config.organization_id');
+            $user = $session->read('Auth.User');
+            // dd($user);
+            $user->current_organization_id = null;
+            // dd($user);
+            $this->Users->save($user);
+            $session->delete('Auth.User.current_organization_id');
             $this->Flash->success(__('You have logged out of your Organization.'));
         }
         return $this->redirect($this->referer());

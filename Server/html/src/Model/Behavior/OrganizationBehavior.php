@@ -23,9 +23,9 @@ class OrganizationBehavior extends Behavior
 
             # Only auto-add owner information for logged in users
             if (isset($options['_footprint'])) {
-                if ($session->read('Config.organization_id')) {
+                if ($session->read('Auth.User.current_organization_id')) {
                     $entity->owner_type = $this->_TYPES["Organization"];
-                    $entity->owner_id = $session->read('Config.organization_id');
+                    $entity->owner_id = $session->read('Auth.User.current_organization_id');
                 } else if ($options['_footprint']['id']) {
                     $entity->owner_type = $this->_TYPES["User"];
                     $entity->owner_id = $options['_footprint']['id'];
@@ -41,16 +41,16 @@ class OrganizationBehavior extends Behavior
             $session = new Session();
 
             # Only auto-add owner information for logged in users
-            if (isset($options['_footprint'])) {
-                if ($session->read('Config.organization_id')) {
+            if ($session->read('Auth.User.id')) {
+                if ($session->read('Auth.User.current_organization_id')) {
                     $query->where([
                         'owner_type' => $this->_TYPES["Organization"],
-                        'owner_id' => $session->read('Config.organization_id')
+                        'owner_id' => $session->read('Auth.User.current_organization_id')
                     ]);
-                } else if ($options['_footprint']['id']) {
+                } else {
                     $query->where([
                         'owner_type' => $this->_TYPES["User"],
-                        'owner_id' => $options['_footprint']['id']
+                        'owner_id' => $session->read('Auth.User.id')
                     ]);
                 }
             }

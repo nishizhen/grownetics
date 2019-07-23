@@ -25,11 +25,12 @@ class NotificationsCell extends Cell
     public function popout()
     {
         $this->loadModel('Notifications');
+        $this->loadModel('RuleActions');
         $params = [
             'order' => ['Notifications.created' => 'desc'],
             'limit' => 5,
             'conditions' => [
-                'notification_level >' => $this->Notifications->enumValueToKey('notification_level','Logged Only')
+                'notification_level >' => $this->RuleActions->enumValueToKey('notification_level','Logged Only')
             ],
             'fields' => ['Notifications.created','Notifications.message', 'Notifications.id', 'Users.email', 'Users.name'],
             'contain' => ['Users']

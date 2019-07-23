@@ -157,6 +157,7 @@ class AppController extends Controller
         $authed = false;
 
         $session = new Session();
+        // dd($user);
         if (isset($user['id'])) {
             $this->loadModel('UsersRoles');
             $this->loadModel('Roles');
@@ -276,13 +277,13 @@ class AppController extends Controller
 
         $currentOrganization = False;
         try {
-            $currentOrganization = $this->Organizations->get($this->getRequest()->getSession()->read('Config.organization_id'));
+            $currentOrganization = $this->Organizations->get($this->getRequest()->getSession()->read('Auth.User.current_organization_id'));
         } catch (\Exception $exception) {
             # Ignore
         }
         $this->set('userOrganizations', $organizations);
         $this->set('userRoles', $userRoles);
-        $this->set('organizationId', $this->getRequest()->getSession()->read('Config.organization_id'));
+        $this->set('organizationId', $this->getRequest()->getSession()->read('Auth.User.current_organization_id'));
         $this->set('currentOrganization', $currentOrganization);
         $this->set('orgAdminRoleId', $adminId);
         $this->set('orgMemberRoleId', $memberId);

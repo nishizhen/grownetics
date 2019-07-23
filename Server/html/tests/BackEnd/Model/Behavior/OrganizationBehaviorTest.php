@@ -58,8 +58,8 @@ class OrganizationBehaviorTest extends IntegrationTestCase
 
     public function testBeforeSaveOrganization()
     {
-        # Get User
-        $user = $this->Users->get(1);
+        # Get Admin
+        $user = $this->Users->get(2);
 
         $role = $this->UsersRoles->newEntity([
             'user_id' => $user->id,
@@ -77,25 +77,30 @@ class OrganizationBehaviorTest extends IntegrationTestCase
             'role_id' => $this->Roles->findByLabel('Organization Member')->first()->id
         ]);
         $this->UsersRoles->save($role);
+        $user->current_organization_id = $organizationId;
 
-        $this->session(['Auth.User' => $user]);
+        $this->session(['Auth.User' => $user->toArray()]);
+        dd($this->Session->read('Auth.User.id'));
         
         $this->post('/cultivars/add', [
             'label' => 'Test OrganizationBehaviorTest cultivar'
         ]);
 
-        $this->assertResponseOk();
+        $this->assertResponseSuccess();
         
-        # Read cultivar
-        $cultivars = $this->Cultivars->find('all');
-dd($cultivars->toArray());
-
         # Switch active user organization
-        # TODO: 
+        $user->current_organization_id = null;
+        $this->session(['Auth.User' => $user]);
 
         # Attempt to read cultivar, fail
-        $cultivars = $this->Cultivars->find('all');
-        $this->assertEquals(0, $cultivars->count());
+        $this->configRequest([
+            'headers' => ['Accept' => 'application/json']
+        ]);
+        $response = $this->get('/cultivars/index.json');
+
+        $this->assertResponseSuccess();
+        dd((string) $this->_response->getBody(['cultivars']));
+        $this->assertEquals(0, count(json_decode((string) $this->_response->getBody(['cultivars']))->cultivars));
     }
 
     public function testBeforeSaveUser()

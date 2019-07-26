@@ -10,7 +10,7 @@ use App\Lib\SystemEventRecorder;
  * Tasks Controller
  *
  * @property \App\Model\Table\TasksTable $Tasks
- * @property \App\Model\Table\harvestBatchesTable $harvestBatches
+ * @property \App\Model\Table\HarvestBatchesTable $HarvestBatches
  * @property \App\Model\Table\ZonesTable $Zones
  * @property \App\Model\Table\NotificationsTable $Notifications
  * @property \App\Model\Table\MapItemsTable $MapItems
@@ -31,7 +31,7 @@ class TasksController extends AppController
      */
     public function index()
     {
-        $this->loadModel('harvestBatches');
+        $this->loadModel('HarvestBatches');
         $this->loadModel('Zones');
         $this->loadModel('Users');
 
@@ -46,7 +46,7 @@ class TasksController extends AppController
             ],
             'order' => ['due_date' => 'ASC']
         ]);
-        $batches = $this->harvestBatches->find('all', ['conditions' => ['status !=' => $this->harvestBatches->enumValueToKey('status', 'Harvested')], 'order' => ['planted_date' => 'desc']]);
+        $batches = $this->HarvestBatches->find('all', ['conditions' => ['status !=' => $this->HarvestBatches->enumValueToKey('status', 'Harvested')], 'order' => ['planted_date' => 'desc']]);
         $activeZones = [];
         foreach ($batches as $batch) {
             if ($batch->current_room_zone) {
@@ -74,7 +74,7 @@ class TasksController extends AppController
     public function archive()
     {
         $this->paginate = [
-            'contain' => ['Harvestbatches', 'Users', 'Zones', 'batchRecipeEntries'],
+            'contain' => ['HarvestBatches', 'Users', 'Zones', 'BatchRecipeEntries'],
             'conditions' => ['Tasks.status' => $this->Tasks->enumValueToKey('status', 'Completed')],
             'order' => ['completed_date' => 'DESC'],
         ];
@@ -91,7 +91,7 @@ class TasksController extends AppController
         $this->loadModel('Notifications');
         $this->loadModel('MapItems');
         $this->loadModel('Plants');
-        $this->loadModel('harvestBatches');
+        $this->loadModel('HarvestBatches');
         $this->loadModel('MapItemTypes');
         $this->loadModel('Zones');
         $this->loadModel('RuleActions');
@@ -130,7 +130,7 @@ class TasksController extends AppController
         $task->completed_date = date("c");
         $task->assignee = $this->Auth->user('id');
         $this->Tasks->save($task);
-        return $this->redirect(['controller' => 'harvestBatches', 'action' => 'view', $batch_id]);
+        return $this->redirect(['controller' => 'HarvestBatches', 'action' => 'view', $batch_id]);
     }
 
     public function updateBatchTask()
@@ -330,7 +330,7 @@ class TasksController extends AppController
 
                 $this->Tasks->save($task);
             }
-            return $this->redirect(['controller' => 'harvestBatches', 'action' => 'view', $batch_id]);
+            return $this->redirect(['controller' => 'HarvestBatches', 'action' => 'view', $batch_id]);
         } else {
 
             $task = $this->Tasks->get($id, [
@@ -389,11 +389,11 @@ class TasksController extends AppController
         $task = $this->Tasks->get($id);
         if ($this->Tasks->delete($task)) {
             $this->Flash->success(__('The task has been deleted.'));
-            return $this->redirect(['controller' => 'harvestBatches', 'action' => 'view', $batch_id]);
+            return $this->redirect(['controller' => 'HarvestBatches', 'action' => 'view', $batch_id]);
         } else {
             $this->Flash->error(__('The task could not be deleted. Please, try again.'));
         }
 
-        return $this->redirect(['controller' => 'harvestBatches', 'action' => 'index']);
+        return $this->redirect(['controller' => 'HarvestBatches', 'action' => 'index']);
     }
 }

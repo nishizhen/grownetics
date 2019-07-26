@@ -228,13 +228,12 @@ class TasksController extends AppController
         $this->loadModel('HarvestBatches');
         $task = $this->Tasks->newEntity();
 
-        $bre = $this->batchRecipeEntries->newEntity();
         $taskEnums = $this->Tasks->enumValues();
         if ($batch_id == null) {
             unset($taskEnums['types'][2]);
             unset($taskEnums['types'][1]);
         } else {
-            $batch = $this->harvestBatches->get($batch_id, ['contain' => ['Cultivars']]);
+            $batch = $this->HarvestBatches->get($batch_id, ['contain' => ['Cultivars']]);
             unset($taskEnums['types'][2]);
         }
 

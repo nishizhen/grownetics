@@ -276,128 +276,76 @@ class PlantsTable extends Table
         $this->saveMany($batchPlants);
     }
 
-    # Return an array of IDs of map_items that are currently available as plant placeholders
-    public function getAvailablePlaceholdersInZone($zone)
-    {
-        $this->MapItemTypes = TableRegistry::get('MapItemTypes');
-        $targetZones = [];
-
-        // if moving the batch to a Room.
-        if ($zone->room_zone_id == 0) {
-            // first get all bench id's in room
-            $roomBenchIds = $this->Zones->find('all', ['conditions' => [
-                'room_zone_id' => $zone->id,
-                'zone_type_id' => $this->Zones->enumValueToKey('zone_types', 'Group')
-            ], 'fields' => ['id']])->toArray();
-
-            foreach ($roomBenchIds as $id) {
-                array_push($targetZones, $id->id);
-            }
-
-            //if no benches in room, use Room's zone_id
-            if ($targetZones == []) {
-                array_push($targetZones, $zone->id);
-            }
-        } else {
-            $targetZones = $zone->id;
-        }
-
-        //find ALL currPlantsInROOM
-        $currPlantsInZone = $this->find('all', [
-            'conditions' => [
-                'zone_id IN' => $targetZones,
-                'map_item_id !=' => 0
-            ],
-            'fields' => ['map_item_id']
-        ])->toArray();
-        $plantMapItemIds = [];
-
-        //check against ALL plant place holders in room.
-        foreach ($currPlantsInZone as $currPlantInZone) {
-            array_push($plantMapItemIds, $currPlantInZone->map_item_id);
-        }
-        # If we have plants currently in the room, only return empty placeholders.
-        if ($currPlantsInZone) {
-            $available_plant_placeholders = $this->MapItems->find(
-                'all',
-                [
-                    'conditions' =>
-                    ['id NOT IN' => $plantMapItemIds, 'map_item_type_id' => $this->MapItemTypes->find()->select('id')->where(['label' => 'Plant Placeholder']), 'zone_id IN' => $targetZones],
-                    'order' => ['zone_id' => 'ASC', 'ordinal' => 'ASC']
-                ]
-            )->toArray();
-            # No plants currently in the room, return all placeholders
-        } else {
-            $available_plant_placeholders = $this->MapItems->find(
-                'all',
-                [
-                    'conditions' =>
-                    ['map_item_type_id' => $this->MapItemTypes->find()->select('id')->where(['label' => 'Plant Placeholder']), 'zone_id IN' => $targetZones],
-                    'order' => ['zone_id' => 'ASC', 'ordinal' => 'ASC']
-                ]
-            )->toArray();
-        }
-
-        return $available_plant_placeholders;
-    }
-
     public function movePlantsToZone($plants, $zone)
     {
-        $available_plant_placeholders = $this->getAvailablePlaceholdersInZone($zone);
+        $this->Zones = TableRegistry::get('Zones');
+        # Check the zone has plant placeholders at all.
+        # If there are no plant placeholders, just mark
+        # the batch as being in that zone.
+        # This is used in small clone areas without individual
+        # placeholders, and also at home grows who may not use zones.
+        $total_plant_placeholders = $this->Zones->getTotalPlaceholderCount($zone);
+        if ($total_plant_placeholders == 0) {
+            foreach ($plants as $plant) {
+                $plant->map_item_id = 0;
+                $plant->zone_id = $zone->id;
+                $plant->status = $this->enumValueToKey('status', 'Planted');
+            }
+            $this->saveMany($plants);
+        } else {
 
-        if (sizeof($plants) > sizeof($available_plant_placeholders)) {
-            throw new \Exception('The task could not be marked completed because you are moving ' . sizeof($plants) . ' plants into ' . sizeof($available_plant_placeholders) . ' available pots. (Zone: ' . $zone->label . ')');
-        }
+            # Check the amount of available plant place holders is enough to fit our batch
+            $available_plant_placeholders = $this->Zones->getAvailablePlaceholdersInZone($zone);
 
-        $filteredPlants = array();
-        /*
-             *  Logic so we can move a batch to the zone it's already in. (Used when moving plants to an existing batch)
-             *  Loop here and unset all plants that are already in the zone
-             */
-        foreach ($plants as $plant) {
-            if ($plant->zone_id != null) {
-                $plant_zone = $this->Zones->get($plant->zone_id);
+            if (sizeof($plants) > sizeof($available_plant_placeholders)) {
+                throw new \Exception('The task could not be marked completed because you are moving ' . sizeof($plants) . ' plants into ' . sizeof($available_plant_placeholders) . ' available pots. (Zone: ' . $zone->label . ')');
+            }
 
-                if ($plant_zone->room_zone_id != 0) { // plant is a bench
-                    if ($zone->room_zone_id != 0) {
-                        if ($plant_zone->room_zone_id == $zone->room_zone_id) {
-                            continue;
+            $filteredPlants = array();
+            /*
+        *  Logic so we can move a batch to the zone it's already in.
+        *  (Used when moving plants to an existing batch)
+        *  Unset all plants that are already in the zone
+        */
+            foreach ($plants as $plant) {
+                if ($plant->zone_id != null) {
+                    $plant_zone = $this->Zones->get($plant->zone_id);
+
+                    if ($plant_zone->room_zone_id != 0) {
+                        if ($zone->room_zone_id != 0) {
+                            if ($plant_zone->room_zone_id == $zone->room_zone_id) {
+                                continue;
+                            }
+                        } else {
+                            if ($plant_zone->room_zone_id == $zone->id) {
+                                continue;
+                            }
                         }
                     } else {
-                        if ($plant_zone->room_zone_id == $zone->id) {
-                            continue;
-                        }
-                    }
-                } else {
-                    if ($zone->room_zone_id == 0) {
-                        if ($plant_zone->id == $zone->id) {
-                            continue;
-                        }
-                    } else {
-                        if ($plant_zone->id == $zone->room_zone_id) {
-                            continue;
+                        if ($zone->room_zone_id == 0) {
+                            if ($plant_zone->id == $zone->id) {
+                                continue;
+                            }
+                        } else {
+                            if ($plant_zone->id == $zone->room_zone_id) {
+                                continue;
+                            }
                         }
                     }
                 }
+
+                $filteredPlants[] = $plant;
             }
 
-            $filteredPlants[] = $plant;
-        }
-
-        # Now let's actually move the plants
-
-        $ii = 0;
-        while ($ii < sizeof($filteredPlants)) {
-            if (sizeof($available_plant_placeholders) > 0) {
+            # Now let's actually move the plants
+            $ii = 0;
+            while ($ii < sizeof($filteredPlants)) {
                 $filteredPlants[$ii]->map_item_id = $available_plant_placeholders[$ii]->id;
                 $filteredPlants[$ii]->zone_id = $available_plant_placeholders[$ii]->zone_id;
-            } else {
-                $filteredPlants[$ii]->map_item_id = 0;
-                $filteredPlants[$ii]->zone_id = $zone->id;
+                $filteredPlants[$ii]->status = $this->enumValueToKey('status', 'Planted');
+                $ii++;
             }
-            $filteredPlants[$ii]->status = $this->enumValueToKey('status', 'Planted');
-            $ii++;
+            $this->saveMany($filteredPlants);
         }
-        $this->saveMany($filteredPlants);
     }
 }

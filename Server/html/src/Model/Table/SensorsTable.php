@@ -252,6 +252,7 @@ class SensorsTable extends Table
         Cache::delete('floorplan_sensors');
         $Zones = TableRegistry::get("Zones");
 
+        # Generate an updated list of sensors by zone
         $sensor = $this->get($entity['id'],[
             'contain' =>
                 [

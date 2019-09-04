@@ -11,7 +11,6 @@ use Cake\Validation\Validator;
  *
  * @property \App\Model\Table\MapItemsTable|\Cake\ORM\Association\BelongsTo $MapItems
  * @property \App\Model\Table\ZonesTable|\Cake\ORM\Association\BelongsTo $Zones
- * @property \App\Model\Table\OwnersTable|\Cake\ORM\Association\BelongsTo $Owners
  *
  * @method \App\Model\Entity\MapItemsZone get($primaryKey, $options = [])
  * @method \App\Model\Entity\MapItemsZone newEntity($data = null, array $options = [])
@@ -49,9 +48,6 @@ class MapItemsZonesTable extends Table
             'foreignKey' => 'zone_id',
             'joinType' => 'INNER'
         ]);
-        $this->belongsTo('Owners', [
-            'foreignKey' => 'owner_id'
-        ]);
     }
 
     /**
@@ -84,7 +80,6 @@ class MapItemsZonesTable extends Table
     {
         $rules->add($rules->existsIn(['map_item_id'], 'MapItems'));
         $rules->add($rules->existsIn(['zone_id'], 'Zones'));
-        $rules->add($rules->existsIn(['owner_id'], 'Owners'));
 
         return $rules;
     }

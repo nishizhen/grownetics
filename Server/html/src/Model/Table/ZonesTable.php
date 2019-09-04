@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Model\Table;
 
 use Cake\Cache\Cache;
@@ -95,7 +96,7 @@ class ZonesTable extends Table
         $this->hasMany('Outputs', [
             'foreignKey' => 'zone_id'
         ]);
-        
+
         $this->belongsToMany('Sensors', [
             'joinTable' => 'sensors_zones'
         ]);
@@ -125,14 +126,14 @@ class ZonesTable extends Table
             ->integer('id')
             ->allowEmpty('id', 'create');
 
-//        $validator
-//            ->requirePresence('label', 'create')
-//            ->notEmpty('label');
-//
-//        $validator
-//            ->integer('status')
-//            ->requirePresence('status', 'create')
-//            ->notEmpty('status');
+        //        $validator
+        //            ->requirePresence('label', 'create')
+        //            ->notEmpty('label');
+        //
+        //        $validator
+        //            ->integer('status')
+        //            ->requirePresence('status', 'create')
+        //            ->notEmpty('status');
 
         $validator
             ->integer('room_zone_id')
@@ -158,8 +159,8 @@ class ZonesTable extends Table
                 $this->RuleConditions->enumValueToKey('data_source', 'Time')
             ],
             'status IN' => [
-                $this->RuleConditions->enumValueToKey('status','Enabled'),
-                $this->RuleConditions->enumValueToKey('status','Triggered')
+                $this->RuleConditions->enumValueToKey('status', 'Enabled'),
+                $this->RuleConditions->enumValueToKey('status', 'Triggered')
             ],
             'is_default' => false
         ]]);
@@ -172,9 +173,9 @@ class ZonesTable extends Table
         $this->Sensors = TableRegistry::get('Sensors');
         $this->SetPoints = TableRegistry::get('SetPoints');
 
-        $airTempSensorTypeId = $this->Sensors->enumValueToKey('sensor_type','Air Temperature');
-        $humiditySensorTypeId = $this->Sensors->enumValueToKey('sensor_type','Humidity');
-        $vpdSensorTypeId = $this->Sensors->enumValueToKey('sensor_type','Vapor Pressure Deficit');
+        $airTempSensorTypeId = $this->Sensors->enumValueToKey('sensor_type', 'Air Temperature');
+        $humiditySensorTypeId = $this->Sensors->enumValueToKey('sensor_type', 'Humidity');
+        $vpdSensorTypeId = $this->Sensors->enumValueToKey('sensor_type', 'Vapor Pressure Deficit');
 
         $query = $this->find('all')->select([
             'Zones.id',
@@ -204,14 +205,14 @@ class ZonesTable extends Table
                         $value = round($total / $sensorCount, 2);
                         if ($type == $airTempSensorTypeId) {
                             $airTempAverage = $value;
-                        }
-                        else if ($type == $humiditySensorTypeId) {
+                        } else if ($type == $humiditySensorTypeId) {
                             $humAverage = $value;
                         }
                         if ($airTempAverage && $humAverage) {
                             $converter = new DataConverter();
                             $vaporPressureDeficit = $converter->convertToVaporPressureDeficit($humAverage, $airTempAverage);
-                            array_push($points,
+                            array_push(
+                                $points,
                                 new Point(
                                     'sensor_data', // name of the measurement
                                     (float) $vaporPressureDeficit, // the measurement value
@@ -225,31 +226,33 @@ class ZonesTable extends Table
                                     time() // Time precision has to be set to seconds!
                                 )
                             );
-                        } 
-                        array_push($points,
+                        }
+                        array_push(
+                            $points,
 
-                                new Point(
-                                    'sensor_data', // name of the measurement
-                                    (float) $value, // the measurement value
-                                    [
-                                        'source_type' => 1,
-                                        'type' => $type,
-                                        'facility_id' => env('FACILITY_ID'),
-                                        'source_id' => $zone['id'],
-                                    ],
-                                    [], // optional additional fields
-                                    time() // Time precision has to be set to seconds!
-                                )
+                            new Point(
+                                'sensor_data', // name of the measurement
+                                (float) $value, // the measurement value
+                                [
+                                    'source_type' => 1,
+                                    'type' => $type,
+                                    'facility_id' => env('FACILITY_ID'),
+                                    'source_id' => $zone['id'],
+                                ],
+                                [], // optional additional fields
+                                time() // Time precision has to be set to seconds!
+                            )
                         );
 
                         $active_batches = $zone->getActiveBatches();
 
-                        foreach($active_batches as $batch) {
-                            array_push($points,
+                        foreach ($active_batches as $batch) {
+                            array_push(
+                                $points,
 
                                 new Point(
                                     'sensor_data', // name of the measurement
-                                    (float)$value, // the measurement value
+                                    (float) $value, // the measurement value
                                     [
                                         'source_type' => $this->DataPoints->enumValueToKey('source_type', 'Harvest Batch'),
                                         'type' => $type,
@@ -276,7 +279,7 @@ class ZonesTable extends Table
     }
 
     # Update our BACnet device if needed, send alerts if appropriate
-    public function updateBacnetPoints($shell=null)
+    public function updateBacnetPoints($shell = null)
     {
         $recorder = new SystemEventRecorder();
         $recorder->recordEvent('system_events', 'update_bacnet_points_tick', 1);
@@ -299,23 +302,23 @@ class ZonesTable extends Table
 
         $set_point_alerts_enabled = $this->getFeatureFlagValue("set_point_alerts_enabled");
 
-        $tempSensorTypeId = $this->Sensors->enumValueToKey('sensor_type','Air Temperature');
+        $tempSensorTypeId = $this->Sensors->enumValueToKey('sensor_type', 'Air Temperature');
         $humiditySensorTypeId = $this->Sensors->enumValueToKey('sensor_type', 'Humidity');
 
         foreach ($query as $zone) {
-            $shell->out('Process zone: '.$zone['id']);
+            $shell->out('Process zone: ' . $zone['id']);
             $sensorsByType = $this->getSensorsByType($zone);
 
             if ($sensorsByType) {
                 foreach ($sensorsByType as $type => $sensors) {
-                    $shell->out('Process sensor type: '.$type);
+                    $shell->out('Process sensor type: ' . $type);
                     $value = Cache::read('zone-value-' . $type . '-' . $zone['id']);
-                    $shell->out('Got value: '.$value);
-                    $shell->out('BACnet Humidity ID: '.$zone['bacnet_hum_read']);
+                    $shell->out('Got value: ' . $value);
+                    $shell->out('BACnet Humidity ID: ' . $zone['bacnet_hum_read']);
                     # If we have a valid read value, and BACnet object IDs, then go ahead and update the BACnet network
                     if ($value > 0 && $zone['bacnet_hum_read']) {
-                        $shell->out("========= UPDATE BACNET! ===========".$type."-".$tempSensorTypeId);
-                        switch($type) {
+                        $shell->out("========= UPDATE BACNET! ===========" . $type . "-" . $tempSensorTypeId);
+                        switch ($type) {
                             case $tempSensorTypeId:
                                 $shell->out('Update Temp Point');
                                 $fahrenheit = ($value * 9 / 5) + 32;
@@ -387,7 +390,7 @@ class ZonesTable extends Table
 
                                 $setPoint = $this->SetPoints->getSetPointForTarget($this->SetPoints->enumValueToKey('target_type', 'Zone'), $zone, $tempSensorTypeId);
                                 if ($setPoint) {
-                                    $shell->out("Got Setpoint ID: ".$setPoint->id);
+                                    $shell->out("Got Setpoint ID: " . $setPoint->id);
                                     $setPointFahrenheit = ($setPoint->value * 9 / 5) + 32;
                                     $url = env('BACNET_URL') . $zone['bacnet_temp_set'] . '/Value/' . $setPointFahrenheit . trim(env('BACNET_AUTH'), "'");
                                     $ch = curl_init();
@@ -426,7 +429,7 @@ class ZonesTable extends Table
                                 break;
                             case $humiditySensorTypeId:
                                 $shell->out('Update Hum Point');
-                                $url = env('BACNET_URL') . $zone['bacnet_hum_read'] . '/Value/' . $value . trim(env('BACNET_AUTH'),"'");
+                                $url = env('BACNET_URL') . $zone['bacnet_hum_read'] . '/Value/' . $value . trim(env('BACNET_AUTH'), "'");
                                 $ch = curl_init();
                                 curl_setopt($ch, CURLOPT_URL, $url);
                                 curl_setopt($ch, CURLOPT_RETURNTRANSFER, $url);
@@ -458,9 +461,9 @@ class ZonesTable extends Table
                                     );
                                 }
 
-                                $setPoint = $this->SetPoints->getSetPointForTarget($this->SetPoints->enumValueToKey('target_type','Zone'), $zone, $humiditySensorTypeId);
+                                $setPoint = $this->SetPoints->getSetPointForTarget($this->SetPoints->enumValueToKey('target_type', 'Zone'), $zone, $humiditySensorTypeId);
                                 if ($setPoint) {
-                                    $url = env('BACNET_URL') . $zone['bacnet_hum_set'] . '/Value/' . $setPoint->value . trim(env('BACNET_AUTH'),"'");
+                                    $url = env('BACNET_URL') . $zone['bacnet_hum_set'] . '/Value/' . $setPoint->value . trim(env('BACNET_AUTH'), "'");
                                     $ch = curl_init();
                                     curl_setopt($ch, CURLOPT_URL, $url);
                                     curl_setopt($ch, CURLOPT_RETURNTRANSFER, $url);
@@ -491,15 +494,14 @@ class ZonesTable extends Table
                                             ]
                                         );
                                     }
-
                                 }
                                 break;
                         } # / Sensor Type Switch
                         if (isset($setPoint) && $set_point_alerts_enabled) {
-                            $shell->out('Check Set Point Value: '.$setPoint->value);
-                            $shell->out('Alarm Tolerance: '.env('SET_POINT_ALARM_TOLERANCE_PERCENTAGE'));
+                            $shell->out('Check Set Point Value: ' . $setPoint->value);
+                            $shell->out('Alarm Tolerance: ' . env('SET_POINT_ALARM_TOLERANCE_PERCENTAGE'));
                             # This says if the set point is more than the SET_POINT_ALARM_TOLERANCE_PERCENTAGE out of range, send an alert
-                            if ($setPoint && abs((($setPoint->value/$value)*100)-1) > env('SET_POINT_ALARM_TOLERANCE_PERCENTAGE')) {
+                            if ($setPoint && abs((($setPoint->value / $value) * 100) - 1) > env('SET_POINT_ALARM_TOLERANCE_PERCENTAGE')) {
                                 $shell->out('===== Send Set Point Alarm!!! ======');
                                 $notificationData = $this->Notifications->newEntity(array(
                                     'status' => 0,
@@ -507,46 +509,48 @@ class ZonesTable extends Table
                                     'notification_level' => $this->RuleActions->enumValueToKey('notification_level', 'Text Message')
                                 ));
                                 $this->Notifications->save($notificationData);
-                                print_r($notificationData); die("??");
+                                print_r($notificationData);
+                                die("??");
                             }
                         }
                     } # / If we have a valid value and bacnet points
                 } #/ Foreach
-            }
-            else {
+            } else {
                 $shell->out('No sensors by type');
             }
         }
     }
 
-    private function getSensorsByType($zone) {
+    private function getSensorsByType($zone)
+    {
         # This caching is disabled, as we would need to invalidate it when a sensor is edited (disabled/enabled).
         # TODO: Reenable this caching.
         // if (($sensorsByType = Cache::read('sensors-by-type-zone-'.$zone['id'])) === false) {
-            # We don't have it in cache, so load the sensors.
-            $zone = $this->find('all',['conditions'=>['id'=>$zone['id']]])->contain('Sensors', function ($q) {
-                return $q->where(['Sensors.status' => $this->Sensors->enumValueToKey('status','Enabled')]);
-            })->first();
-            if ($zone) {
-                $zone = $zone->toArray();
-            }
+        # We don't have it in cache, so load the sensors.
+        $zone = $this->find('all', ['conditions' => ['id' => $zone['id']]])->contain('Sensors', function ($q) {
+            return $q->where(['Sensors.status' => $this->Sensors->enumValueToKey('status', 'Enabled')]);
+        })->first();
+        if ($zone) {
+            $zone = $zone->toArray();
+        }
 
-            $sensorsByType = [];
-            if (isset($zone['sensors'])) {
-                foreach ($zone['sensors'] as $sensor) {
-                    if (!isset($sensorsByType[$sensor['sensor_type_id']]) || !is_array($sensorsByType[$sensor['sensor_type_id']])) {
-                        $sensorsByType[$sensor['sensor_type_id']] = [];
-                    }
-                    array_push($sensorsByType[$sensor['sensor_type_id']], $sensor['id']);
+        $sensorsByType = [];
+        if (isset($zone['sensors'])) {
+            foreach ($zone['sensors'] as $sensor) {
+                if (!isset($sensorsByType[$sensor['sensor_type_id']]) || !is_array($sensorsByType[$sensor['sensor_type_id']])) {
+                    $sensorsByType[$sensor['sensor_type_id']] = [];
                 }
+                array_push($sensorsByType[$sensor['sensor_type_id']], $sensor['id']);
             }
-            // Cache::write('sensors-by-type-zone-'.$zone['id'],$sensorsByType);
+        }
+        // Cache::write('sensors-by-type-zone-'.$zone['id'],$sensorsByType);
         // }
 
         return $sensorsByType;
     }
 
-    public function beforeMarshal($event, $data) {
+    public function beforeMarshal($event, $data)
+    {
         if (isset($data['room_zone_id']) && is_string($data['room_zone_id'])) {
             $Zones = TableRegistry::get("Zones");
             $room_zone_text = preg_replace('/_/', ' ', $data['room_zone_id']);
@@ -561,11 +565,11 @@ class ZonesTable extends Table
 
             if (isset($pzt)) {
                 $data['plant_zone_type_id'] = $pzt;
-            }  
+            }
         }
     }
 
-    public function beforeSave( $event, $entity)
+    public function beforeSave($event, $entity)
     {
 
         if ($entity->isNew() && is_string($entity->zone_type)) {
@@ -593,7 +597,7 @@ class ZonesTable extends Table
             $mapEntity->floorplan_id = $entity->floorplan_id;
 
             $this->MapItemTypes = TableRegistry::get("MapItemTypes");
-            $mapItemType = $this->MapItemTypes->find()->where(['label' => 'Zone' ])->first();
+            $mapItemType = $this->MapItemTypes->find()->where(['label' => 'Zone'])->first();
 
             if (!isset($mapItemType)) {
                 $mapItemType = $this->MapItemTypes->newEntity([
@@ -606,7 +610,7 @@ class ZonesTable extends Table
             //$mapEntity->map_item_type = $mapItemType;
 
             $mapEntity->type = "Zone";
-            $mapEntity->zones = [ $entity ];
+            $mapEntity->zones = [$entity];
             $mapEntity->dirty("zones");
 
             if (isset($entity->latitude) && isset($entity->longitude)) {
@@ -625,15 +629,119 @@ class ZonesTable extends Table
             }
 
             if (!$this->MapItems->save($mapEntity)) {
-                Log::write("debug", "Failed to save map item for zone: ".$entity);
+                Log::write("debug", "Failed to save map item for zone: " . $entity);
                 Log::write("debug", $mapEntity->errors());
             } else {
-//                Log::write("debug", $entity);
-                $entity->map_items = [ $mapEntity ];
+                //                Log::write("debug", $entity);
+                $entity->map_items = [$mapEntity];
                 $entity->dirty("map_items");
                 $entity->map_item_id = $mapEntity->id;
             }
         }
     }
-}
 
+    # Return an array of IDs of map_items that are currently available as plant placeholders
+    public function getAvailablePlaceholdersInZone($zone)
+    {
+        $this->MapItemTypes = TableRegistry::get('MapItemTypes');
+        $targetZones = [];
+
+        // if moving the batch to a Room.
+        if ($zone->room_zone_id == 0) {
+            // first get all bench id's in room
+            $roomBenchIds = $this->Zones->find('all', ['conditions' => [
+                'room_zone_id' => $zone->id,
+                'zone_type_id' => $this->Zones->enumValueToKey('zone_types', 'Group')
+            ], 'fields' => ['id']])->toArray();
+
+            foreach ($roomBenchIds as $id) {
+                array_push($targetZones, $id->id);
+            }
+
+            //if no benches in room, use Room's zone_id
+            if ($targetZones == []) {
+                array_push($targetZones, $zone->id);
+            }
+        } else {
+            $targetZones = $zone->id;
+        }
+
+        //find ALL currPlantsInROOM
+        $currPlantsInZone = $this->find('all', [
+            'conditions' => [
+                'zone_id IN' => $targetZones,
+                'map_item_id !=' => 0
+            ],
+            'fields' => ['map_item_id']
+        ])->toArray();
+        $plantMapItemIds = [];
+
+        //check against ALL plant place holders in room.
+        foreach ($currPlantsInZone as $currPlantInZone) {
+            array_push($plantMapItemIds, $currPlantInZone->map_item_id);
+        }
+        # If we have plants currently in the room, only return empty placeholders.
+        if ($currPlantsInZone) {
+            $available_plant_placeholders = $this->MapItems->find(
+                'all',
+                [
+                    'conditions' =>
+                    ['id NOT IN' => $plantMapItemIds, 'map_item_type_id' => $this->MapItemTypes->find()->select('id')->where(['label' => 'Plant Placeholder']), 'zone_id IN' => $targetZones],
+                    'order' => ['zone_id' => 'ASC', 'ordinal' => 'ASC']
+                ]
+            )->toArray();
+            # No plants currently in the room, return all placeholders
+        } else {
+            $available_plant_placeholders = $this->MapItems->find(
+                'all',
+                [
+                    'conditions' =>
+                    ['map_item_type_id' => $this->MapItemTypes->find()->select('id')->where(['label' => 'Plant Placeholder']), 'zone_id IN' => $targetZones],
+                    'order' => ['zone_id' => 'ASC', 'ordinal' => 'ASC']
+                ]
+            )->toArray();
+        }
+
+        return $available_plant_placeholders;
+    }
+
+    # Return the total number of plant placeholders in a zone
+    public function getTotalPlaceholderCount($zone)
+    {
+        $this->MapItems = TableRegistry::get('MapItems');
+        $this->MapItemTypes = TableRegistry::get('MapItemTypes');
+        $targetZones = [];
+
+        // if moving the batch to a Room.
+        if ($zone->room_zone_id == 0) {
+            // first get all bench id's in room
+            $roomBenchIds = $this->find('all', ['conditions' => [
+                'room_zone_id' => $zone->id,
+                'zone_type_id' => $this->enumValueToKey('zone_types', 'Group')
+            ], 'fields' => ['id']])->toArray();
+
+            foreach ($roomBenchIds as $id) {
+                array_push($targetZones, $id->id);
+            }
+
+            //if no benches in room, use Room's zone_id
+            if ($targetZones == []) {
+                array_push($targetZones, $zone->id);
+            }
+        } else {
+            $targetZones = $zone->id;
+        }
+
+        $totalPlantPlaceholders = $this->MapItems->find('all', [
+                'conditions' => [
+                    'map_item_type_id' => $this->MapItemTypes->find()->select('id')->where(['label' => 'Plant Placeholder']), 'zone_id IN' => $targetZones
+                ],
+                'order' => [
+                    'zone_id' => 'ASC', 'ordinal' => 'ASC'
+                ]
+            ]
+        );
+
+        return $totalPlantPlaceholders->count();
+    }
+}

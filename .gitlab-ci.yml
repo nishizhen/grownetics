@@ -18,8 +18,6 @@ before_script:
 
 'Build Handbook':
   stage: build
-  # tags:
-  #   - dev
   script:
     - mkdocs build
     - cp .htpasswd site/
@@ -29,8 +27,6 @@ before_script:
 'Build Cron':
   stage: build
   retry: 1
-  tags:
-    - dev
   script:
     - docker build Server/html --pull --no-cache -t code.cropcircle.io:4567/grownetics/grownetics/supercron:$CI_PIPELINE_ID -f Server/html/images/supercron/Dockerfile
     - docker push code.cropcircle.io:4567/grownetics/grownetics/supercron:$CI_PIPELINE_ID
@@ -38,8 +34,6 @@ before_script:
 'Build Socket':
   stage: build
   retry: 1
-  tags:
-    - dev
   script:
     - docker build Server/html/images/socketio --pull --no-cache -t code.cropcircle.io:4567/grownetics/grownetics/socketio:$CI_PIPELINE_ID -f Server/html/images/socketio/Dockerfile
     - docker push code.cropcircle.io:4567/grownetics/grownetics/socketio:$CI_PIPELINE_ID
@@ -47,8 +41,6 @@ before_script:
 'Build GrowServer':
   stage: build
   retry: 1
-  tags:
-    - dev
   script:
     - cd Server/
     - mkdocs build
@@ -75,8 +67,6 @@ before_script:
 'Build growctl':
   stage: build
   retry: 1
-  tags:
-    - dev
   script:
     - docker build src --no-cache -t code.cropcircle.io:4567/grownetics/grownetics/growctl:$CI_PIPELINE_ID -f src/code.cropcircle.io/grownetics/growctl/Dockerfile
     - docker push code.cropcircle.io:4567/grownetics/grownetics/growctl:$CI_PIPELINE_ID
@@ -87,8 +77,6 @@ before_script:
 #    changes:
 #      - Server/*
   retry: 1
-  tags:
-    - dev
   script:
     - cd Server/
     - docker-compose -p "$CI_PIPELINE_ID"rulesengine -f docker-compose.yml -f docker-compose.review.yml down || true
@@ -104,8 +92,6 @@ before_script:
 # 'Front End':
 #   stage: test
 #   retry: 2
-#   tags:
-#     - dev
 #   script:
 #     - cd Server/
 #     - docker-compose -p "$CI_PIPELINE_ID"frontend -f docker-compose.yml -f docker-compose.selenium.yml -f docker-compose.review.yml down || true
@@ -120,8 +106,6 @@ before_script:
 'Review Handbook':
   stage: review
   when: manual
-  tags:
-    - dev
   script:
     - mkdocs build
     - cp .htpasswd site/
@@ -143,8 +127,6 @@ before_script:
 
 'Stop Review Handbook':
   stage: review
-  tags:
-    - dev
   variables:
     GIT_STRATEGY: none
   script:
@@ -162,8 +144,6 @@ before_script:
 'Review GrowServer':
   stage: review
   when: manual
-  tags:
-    - dev
   script:
     - cd Server/
     - echo $CI_ENVIRONMENT_SLUG
@@ -188,8 +168,6 @@ before_script:
 
 'Stop Review GrowServer':
   stage: review
-  tags:
-    - dev
   variables:
     GIT_STRATEGY: none
   script:
@@ -208,8 +186,6 @@ before_script:
   only:
     - master
   stage: release
-  tags:
-    - rancher
   script:
     - docker pull code.cropcircle.io:4567/grownetics/grownetics/nginx:$CI_PIPELINE_ID
     - docker tag code.cropcircle.io:4567/grownetics/grownetics/nginx:$CI_PIPELINE_ID code.cropcircle.io:4567/grownetics/grownetics/nginx:latest
@@ -237,8 +213,6 @@ before_script:
   except:
     - branches
   stage: release
-  tags:
-    - rancher
   script:
     - docker pull code.cropcircle.io:4567/grownetics/grownetics/nginx:$CI_PIPELINE_ID
     - docker tag code.cropcircle.io:4567/grownetics/grownetics/nginx:$CI_PIPELINE_ID code.cropcircle.io:4567/grownetics/grownetics/nginx:$CI_COMMIT_REF_NAME
@@ -264,8 +238,6 @@ before_script:
   only:
       - master
   stage: deploy
-  tags:
-      - rancher
   allow_failure: true
   retry: 1
   script:
@@ -287,9 +259,6 @@ before_script:
     - master
   stage: deploy
   retry: 1
-  tags:
-    - dev
-    - rancher
   script:
     - echo '{"accessKey":"$RANCHER_ACCESS_KEY","secretKey":"$RANCHER_SECRET_KEY","url":"http://rancher.cropcircle.io:8080/v2-beta/schemas","environment":"1a115"}' > rancher.json
     - rancher --config rancher.json rm --type stack -s handbook || true

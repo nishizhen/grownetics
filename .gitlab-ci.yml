@@ -18,8 +18,8 @@ before_script:
 
 'Build Handbook':
   stage: build
-  tags:
-    - dev
+  # tags:
+  #   - dev
   script:
     - mkdocs build
     - cp .htpasswd site/

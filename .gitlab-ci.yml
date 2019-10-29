@@ -18,22 +18,22 @@ stages:
   script:
     - mkdocs build
     - cp .htpasswd site/
-    - docker build --pull -t code.cropcircle.io:4567/grownetics/grownetics/handbook:$CI_PIPELINE_ID -f Dockerfile.handbook .
-    - docker push code.cropcircle.io:4567/grownetics/grownetics/handbook:$CI_PIPELINE_ID
+    - docker build --pull -t grownetics/handbook:$CI_PIPELINE_ID -f Dockerfile.handbook .
+    - docker push grownetics/handbook:$CI_PIPELINE_ID
 
 'Build Cron':
   stage: build
   retry: 1
   script:
-    - docker build Server/html --pull --no-cache -t code.cropcircle.io:4567/grownetics/grownetics/supercron:$CI_PIPELINE_ID -f Server/html/images/supercron/Dockerfile
-    - docker push code.cropcircle.io:4567/grownetics/grownetics/supercron:$CI_PIPELINE_ID
+    - docker build Server/html --pull --no-cache -t grownetics/supercron:$CI_PIPELINE_ID -f Server/html/images/supercron/Dockerfile
+    - docker push grownetics/supercron:$CI_PIPELINE_ID
 
 'Build Socket':
   stage: build
   retry: 1
   script:
-    - docker build Server/html/images/socketio --pull --no-cache -t code.cropcircle.io:4567/grownetics/grownetics/socketio:$CI_PIPELINE_ID -f Server/html/images/socketio/Dockerfile
-    - docker push code.cropcircle.io:4567/grownetics/grownetics/socketio:$CI_PIPELINE_ID
+    - docker build Server/html/images/socketio --pull --no-cache -t grownetics/socketio:$CI_PIPELINE_ID -f Server/html/images/socketio/Dockerfile
+    - docker push grownetics/socketio:$CI_PIPELINE_ID
 
 'Build GrowServer':
   stage: build
@@ -55,18 +55,18 @@ stages:
     # Building nginx here and growdash below can't be separated due to the asset_compress build step above.
     # Using gitlab ci artifacts may fix this, for now this is the next best solution.
 
-    - docker build Server/html --pull --no-cache -t code.cropcircle.io:4567/grownetics/grownetics/nginx:$CI_PIPELINE_ID -f Server/html/images/nginx/Dockerfile
-    - docker push code.cropcircle.io:4567/grownetics/grownetics/nginx:$CI_PIPELINE_ID
+    - docker build Server/html --pull --no-cache -t grownetics/nginx:$CI_PIPELINE_ID -f Server/html/images/nginx/Dockerfile
+    - docker push grownetics/nginx:$CI_PIPELINE_ID
 
-    - docker build Server/html --pull --no-cache -t code.cropcircle.io:4567/grownetics/grownetics/growdash:$CI_PIPELINE_ID -f Server/html/images/growdash/Dockerfile
-    - docker push code.cropcircle.io:4567/grownetics/grownetics/growdash:$CI_PIPELINE_ID
+    - docker build Server/html --pull --no-cache -t grownetics/growdash:$CI_PIPELINE_ID -f Server/html/images/growdash/Dockerfile
+    - docker push grownetics/growdash:$CI_PIPELINE_ID
 
 'Build growctl':
   stage: build
   retry: 1
   script:
-    - docker build src --no-cache -t code.cropcircle.io:4567/grownetics/grownetics/growctl:$CI_PIPELINE_ID -f src/code.cropcircle.io/grownetics/growctl/Dockerfile
-    - docker push code.cropcircle.io:4567/grownetics/grownetics/growctl:$CI_PIPELINE_ID
+    - docker build src --no-cache -t grownetics/growctl:$CI_PIPELINE_ID -f src/code.cropcircle.io/grownetics/growctl/Dockerfile
+    - docker push grownetics/growctl:$CI_PIPELINE_ID
 
 'Rules Engine':
   stage: test
@@ -106,8 +106,8 @@ stages:
   script:
     - mkdocs build
     - cp .htpasswd site/
-    - docker build -t code.cropcircle.io:4567/grownetics/grownetics/handbook:$CI_PIPELINE_ID .
-    - docker push code.cropcircle.io:4567/grownetics/grownetics/handbook:$CI_PIPELINE_ID
+    - docker build -t grownetics/handbook:$CI_PIPELINE_ID .
+    - docker push grownetics/handbook:$CI_PIPELINE_ID
     - echo $CI_ENVIRONMENT_SLUG
     - export IMAGE=$CI_PIPELINE_ID
     - echo '{"accessKey":"$RANCHER_ACCESS_KEY","secretKey":"$RANCHER_SECRET_KEY","url":"http://rancher.cropcircle.io:8080/v2-beta/schemas","environment":"1a5"}' > rancher.json
@@ -184,25 +184,25 @@ stages:
     - master
   stage: release
   script:
-    - docker pull code.cropcircle.io:4567/grownetics/grownetics/nginx:$CI_PIPELINE_ID
-    - docker tag code.cropcircle.io:4567/grownetics/grownetics/nginx:$CI_PIPELINE_ID code.cropcircle.io:4567/grownetics/grownetics/nginx:latest
-    - docker push code.cropcircle.io:4567/grownetics/grownetics/nginx:latest
+    - docker pull grownetics/nginx:$CI_PIPELINE_ID
+    - docker tag grownetics/nginx:$CI_PIPELINE_ID grownetics/nginx:latest
+    - docker push grownetics/nginx:latest
 
-    - docker pull code.cropcircle.io:4567/grownetics/grownetics/growdash:$CI_PIPELINE_ID
-    - docker tag code.cropcircle.io:4567/grownetics/grownetics/growdash:$CI_PIPELINE_ID code.cropcircle.io:4567/grownetics/grownetics/growdash:latest
-    - docker push code.cropcircle.io:4567/grownetics/grownetics/growdash:latest
+    - docker pull grownetics/growdash:$CI_PIPELINE_ID
+    - docker tag grownetics/growdash:$CI_PIPELINE_ID grownetics/growdash:latest
+    - docker push grownetics/growdash:latest
 
-    - docker pull code.cropcircle.io:4567/grownetics/grownetics/growctl:$CI_PIPELINE_ID
-    - docker tag code.cropcircle.io:4567/grownetics/grownetics/growctl:$CI_PIPELINE_ID code.cropcircle.io:4567/grownetics/grownetics/growctl:latest
-    - docker push code.cropcircle.io:4567/grownetics/grownetics/growctl:latest
+    - docker pull grownetics/growctl:$CI_PIPELINE_ID
+    - docker tag grownetics/growctl:$CI_PIPELINE_ID grownetics/growctl:latest
+    - docker push grownetics/growctl:latest
 
-    - docker pull code.cropcircle.io:4567/grownetics/grownetics/supercron:$CI_PIPELINE_ID
-    - docker tag code.cropcircle.io:4567/grownetics/grownetics/supercron:$CI_PIPELINE_ID code.cropcircle.io:4567/grownetics/grownetics/supercron:latest
-    - docker push code.cropcircle.io:4567/grownetics/grownetics/supercron:latest
+    - docker pull grownetics/supercron:$CI_PIPELINE_ID
+    - docker tag grownetics/supercron:$CI_PIPELINE_ID grownetics/supercron:latest
+    - docker push grownetics/supercron:latest
 
-    - docker pull code.cropcircle.io:4567/grownetics/grownetics/socketio:$CI_PIPELINE_ID
-    - docker tag code.cropcircle.io:4567/grownetics/grownetics/socketio:$CI_PIPELINE_ID code.cropcircle.io:4567/grownetics/grownetics/socketio:latest
-    - docker push code.cropcircle.io:4567/grownetics/grownetics/socketio:latest
+    - docker pull grownetics/socketio:$CI_PIPELINE_ID
+    - docker tag grownetics/socketio:$CI_PIPELINE_ID grownetics/socketio:latest
+    - docker push grownetics/socketio:latest
 
 'Tag Images for Release':
   only:
@@ -211,25 +211,25 @@ stages:
     - branches
   stage: release
   script:
-    - docker pull code.cropcircle.io:4567/grownetics/grownetics/nginx:$CI_PIPELINE_ID
-    - docker tag code.cropcircle.io:4567/grownetics/grownetics/nginx:$CI_PIPELINE_ID code.cropcircle.io:4567/grownetics/grownetics/nginx:$CI_COMMIT_REF_NAME
-    - docker push code.cropcircle.io:4567/grownetics/grownetics/nginx:$CI_COMMIT_REF_NAME
+    - docker pull grownetics/nginx:$CI_PIPELINE_ID
+    - docker tag grownetics/nginx:$CI_PIPELINE_ID grownetics/nginx:$CI_COMMIT_REF_NAME
+    - docker push grownetics/nginx:$CI_COMMIT_REF_NAME
 
-    - docker pull code.cropcircle.io:4567/grownetics/grownetics/growdash:$CI_PIPELINE_ID
-    - docker tag code.cropcircle.io:4567/grownetics/grownetics/growdash:$CI_PIPELINE_ID code.cropcircle.io:4567/grownetics/grownetics/growdash:$CI_COMMIT_REF_NAME
-    - docker push code.cropcircle.io:4567/grownetics/grownetics/growdash:$CI_COMMIT_REF_NAME
+    - docker pull grownetics/growdash:$CI_PIPELINE_ID
+    - docker tag grownetics/growdash:$CI_PIPELINE_ID grownetics/growdash:$CI_COMMIT_REF_NAME
+    - docker push grownetics/growdash:$CI_COMMIT_REF_NAME
 
-    - docker pull code.cropcircle.io:4567/grownetics/grownetics/growctl:$CI_PIPELINE_ID
-    - docker tag code.cropcircle.io:4567/grownetics/grownetics/growctl:$CI_PIPELINE_ID code.cropcircle.io:4567/grownetics/grownetics/growctl:$CI_COMMIT_REF_NAME
-    - docker push code.cropcircle.io:4567/grownetics/grownetics/growctl:$CI_COMMIT_REF_NAME
+    - docker pull grownetics/growctl:$CI_PIPELINE_ID
+    - docker tag grownetics/growctl:$CI_PIPELINE_ID grownetics/growctl:$CI_COMMIT_REF_NAME
+    - docker push grownetics/growctl:$CI_COMMIT_REF_NAME
     
-    - docker pull code.cropcircle.io:4567/grownetics/grownetics/supercron:$CI_PIPELINE_ID
-    - docker tag code.cropcircle.io:4567/grownetics/grownetics/supercron:$CI_PIPELINE_ID code.cropcircle.io:4567/grownetics/grownetics/supercron:$CI_COMMIT_REF_NAME
-    - docker push code.cropcircle.io:4567/grownetics/grownetics/supercron:$CI_COMMIT_REF_NAME
+    - docker pull grownetics/supercron:$CI_PIPELINE_ID
+    - docker tag grownetics/supercron:$CI_PIPELINE_ID grownetics/supercron:$CI_COMMIT_REF_NAME
+    - docker push grownetics/supercron:$CI_COMMIT_REF_NAME
     
-    - docker pull code.cropcircle.io:4567/grownetics/grownetics/socketio:$CI_PIPELINE_ID
-    - docker tag code.cropcircle.io:4567/grownetics/grownetics/socketio:$CI_PIPELINE_ID code.cropcircle.io:4567/grownetics/grownetics/socketio:$CI_COMMIT_REF_NAME
-    - docker push code.cropcircle.io:4567/grownetics/grownetics/socketio:$CI_COMMIT_REF_NAME
+    - docker pull grownetics/socketio:$CI_PIPELINE_ID
+    - docker tag grownetics/socketio:$CI_PIPELINE_ID grownetics/socketio:$CI_COMMIT_REF_NAME
+    - docker push grownetics/socketio:$CI_COMMIT_REF_NAME
 
 'Deploy: QA':
   only:

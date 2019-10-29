@@ -64,6 +64,8 @@ stages:
 'Build growctl':
   stage: build
   retry: 1
+  tags:
+    - docker
   script:
     - docker build src --no-cache -t grownetics/growctl:$CI_PIPELINE_ID -f src/code.cropcircle.io/grownetics/growctl/Dockerfile
     - docker push grownetics/growctl:$CI_PIPELINE_ID

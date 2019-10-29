@@ -1,4 +1,4 @@
-image: code.cropcircle.io:4567/grownetics/grownetics/build:1.0
+image: grownetics/build:1.0
 
 variables:
   DOCKER_DRIVER: overlay2

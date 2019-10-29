@@ -13,9 +13,6 @@ stages:
   - release
   - deploy
 
-before_script:
-  - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN code.cropcircle.io:4567
-
 'Build Handbook':
   stage: build
   script:

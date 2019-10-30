@@ -27,7 +27,7 @@ You can pass in a specific image with '-d GrowDash' to just build one, or build 
 		fmt.Println(growutil.Highlight("Building docker images..."))
 		fmt.Println()
 
-		url := "code.cropcircle.io:4567/grownetics/grownetics/"
+		url := "grownetics/"
 		images := []string{"php","growdash","nginx","growctl"}
 
         var dockerfile string

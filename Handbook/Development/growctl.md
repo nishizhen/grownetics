@@ -12,7 +12,9 @@ GrowCtl is an internal utility that we use to perform a variety of development a
 
 To use Go with our setup correctly, you need to add the root of the Grownetics repo to your GoPath. So if you have your repo checked out to ~/Code/Grownetics you need to first run `export GOPATH=$GOPATH:~/Code/Grownetics`
 
-Now run `go get src/code.cropcircle.io/grownetics/growctl/` to download the necessary Go packages. This will take some time.
+If you get an error about 'Port in map index' make sure you are at least on Go version 1.11 and run `export GO111MODULE=on` before trying the command again.
+
+Now run `go get code.cropcircle.io/grownetics/growctl/` to download the necessary Go packages. This will take some time.
 
 Then you can run `go run src/code.cropcircle.io/grownetics/growctl/main.go update` to install the code as an executable on your machine.
 

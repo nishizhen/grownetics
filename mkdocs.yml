@@ -56,7 +56,6 @@ pages:
   - 'On Call Handbook': 'on-call.md'
 - Biz Dev: 
   - 'Introduction': 'biz-dev.md'
-  - 'Marketing and Design': 'marketing.md'
 - Project Delivery & Manufacturing: 
   - 'Project Kickoff': 'kickoff.md'
   - 'Manufacturing': 'manufacturing.md'

@@ -62,5 +62,5 @@ We deploy and manage our stack using Docker. Our docker-compose files in this di
 ### Building docker base images
 
 ```
-docker build Server/html --no-cache -t code.cropcircle.io:4567/grownetics/grownetics/build:1.0 -f Server/html/images/build/Dockerfile
+docker build Server/html --no-cache -t grownetics/build:1.0 -f Server/html/images/build/Dockerfile
 ```

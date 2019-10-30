@@ -7,7 +7,6 @@ services:
   - docker:dind
 
 stages:
-  - pages
   - build
   - test
   - review
@@ -16,6 +15,7 @@ stages:
 
 pages:
   image: python:3.7.3-alpine
+  stage: build
   script:
     - pip install mkdocs
     - pip install mkdocs-material

@@ -1,4 +1,5 @@
-image: grownetics/build:1.0
+# image: grownetics/build:1.0
+image: docker:19.03
 
 variables:
   DOCKER_DRIVER: overlay2

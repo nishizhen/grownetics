@@ -15,14 +15,11 @@ stages:
 
 pages:
   stage: build
-  image:
-    name: gcr.io/kaniko-project/executor:debug
-    entrypoint: [""]
   script:
-    - echo "{\"auths\":{\"$CI_REGISTRY\":{\"username\":\"$CI_REGISTRY_USER\",\"password\":\"$CI_REGISTRY_PASSWORD\"}}}" > /kaniko/.docker/config.json
+    # - echo "{\"auths\":{\"$CI_REGISTRY\":{\"username\":\"$CI_REGISTRY_USER\",\"password\":\"$CI_REGISTRY_PASSWORD\"}}}" > /kaniko/.docker/config.json
     - mkdocs build
     # - docker build --pull -t grownetics/handbook:$CI_PIPELINE_ID -f Dockerfile.handbook .
-    - /kaniko/executor --context . --dockerfile Dockerfile.handbook --destination grownetics/handbook:$CI_PIPELINE_ID
+    # - /kaniko/executor --context . --dockerfile Dockerfile.handbook --destination grownetics/handbook:$CI_PIPELINE_ID
     # - docker push grownetics/handbook:$CI_PIPELINE_ID
     - mv site public
   artifacts:

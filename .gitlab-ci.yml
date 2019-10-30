@@ -15,7 +15,11 @@ stages:
 
 pages:
   stage: build
+  image: python:3.7.3-alpine
   script:
+    - pip install mkdocs
+    - pip install mkdocs-material
+
     # - echo "{\"auths\":{\"$CI_REGISTRY\":{\"username\":\"$CI_REGISTRY_USER\",\"password\":\"$CI_REGISTRY_PASSWORD\"}}}" > /kaniko/.docker/config.json
     - mkdocs build
     # - docker build --pull -t grownetics/handbook:$CI_PIPELINE_ID -f Dockerfile.handbook .

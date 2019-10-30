@@ -14,26 +14,17 @@ stages:
   - deploy
 
 pages:
-  image: python:3.7.3-alpine
   stage: build
   script:
-    - pip install mkdocs
-    - pip install mkdocs-material
     - mkdocs build
+    - docker build --pull -t grownetics/handbook:$CI_PIPELINE_ID -f Dockerfile.handbook .
+    - docker push grownetics/handbook:$CI_PIPELINE_ID
     - mv site public
   artifacts:
     paths:
       - public
   only:
     - master
-
-'Build Handbook':
-  stage: build
-  script:
-    - mkdocs build
-    - cp .htpasswd site/
-    - docker build --pull -t grownetics/handbook:$CI_PIPELINE_ID -f Dockerfile.handbook .
-    - docker push grownetics/handbook:$CI_PIPELINE_ID
 
 'Build Cron':
   stage: build

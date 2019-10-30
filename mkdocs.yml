@@ -20,9 +20,6 @@ pages:
   - 'Working with our docs': 'documentation.md'
   - 'Holding Meetings': 'meetings.md'
   - 'Team Directory': 'team-dir.md'
-- Clients:
-  - 'DR - Dalwhinnie Ranch': 'Clients/dr.md'
-  - 'ACS - Alternative Compassion Services': 'Clients/acs.md'
 - Development:
   - 'ACLs': 'Development/acls.md'
   - 'BACnet': 'Development/bacnet.md'

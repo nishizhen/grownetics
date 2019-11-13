@@ -1,5 +1,5 @@
 growfaker:
-  image: code.cropcircle.io:4567/grownetics/grownetics/growctl:${VERSION}
+  image: grownetics/growctl:${VERSION}
   command: ./growctl faker --host nginx:81 --consul_host consul:8500 --influx_host influxdb:8086 --json
   restart: always
   links:

@@ -1,4 +1,4 @@
-FROM code.cropcircle.io:4567/grownetics/grownetics/growdash:latest
+FROM grownetics/growdash:latest
 
 # Install Supercronic to run the job as a cronjob.
 ENV SUPERCRONIC_URL=https://github.com/aptible/supercronic/releases/download/v0.1.5/supercronic-linux-amd64 \

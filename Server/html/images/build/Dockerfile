@@ -1,4 +1,4 @@
-FROM code.cropcircle.io:4567/grownetics/grownetics/php:1.0
+FROM grownetics/php:1.0
 
 RUN apt-get update && apt-get install -y \
          apt-transport-https \

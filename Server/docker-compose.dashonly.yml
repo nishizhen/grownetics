@@ -36,7 +36,7 @@ growdash:
     - SMTP_HOST
     - SMTP_USER
     - SMTP_PASS
-  image: code.cropcircle.io:4567/grownetics/grownetics/growdash:${VERSION}
+  image: grownetics/growdash:${VERSION}
   volumes:
     - ./html:/var/www/html:cached
     - ./tmp:/tmp:cached
@@ -74,13 +74,13 @@ deviceapi:
     - RABBIT_PASS
     - INFLUX_HOST
     - INFLUX_PORT
-  image: code.cropcircle.io:4567/grownetics/grownetics/growdash:${VERSION}
+  image: grownetics/growdash:${VERSION}
   volumes:
     - ./html:/var/www/html:cached
     - ./tmp:/tmp:cached
 
 nginx:
-  image: code.cropcircle.io:4567/grownetics/grownetics/nginx:latest
+  image: grownetics/nginx:latest
   volumes:
     - ./html:/var/www/html
     - ./html/images/nginx/:/var/www/templates
@@ -113,7 +113,7 @@ redis:
   restart: always
 
 growsocket:
-  image: code.cropcircle.io:4567/grownetics/grownetics/socketio:latest
+  image: grownetics/socketio:latest
   restart: always
   ports:
     - "8989:8989"

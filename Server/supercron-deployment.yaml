@@ -40,7 +40,7 @@ spec:
         - name: RABBIT_USER
         - name: REDIS_HOSTNAME
         - name: REMOTE_URL
-        image: code.cropcircle.io:4567/grownetics/grownetics/supercron:latest
+        image: grownetics/supercron:latest
         name: supercron
         resources: {}
       restartPolicy: Always

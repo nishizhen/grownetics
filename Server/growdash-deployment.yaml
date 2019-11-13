@@ -56,7 +56,7 @@ spec:
       #   - name: TWILIO_SID
       #   - name: TWILIO_TOKEN
       #   - name: VERSION
-        image: code.cropcircle.io:4567/grownetics/grownetics/growdash:latest
+        image: grownetics/growdash:latest
         name: growdash
         resources: {}
         ports:

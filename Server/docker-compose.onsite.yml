@@ -56,7 +56,7 @@ grafana:
     - GF_SERVER_ROOT_URL=http://onsite.grownetics.co/grafana
 
 growbot:
-  image: code.cropcircle.io:4567/grownetics/grownetics/growctl:${VERSION}
+  image: grownetics/growctl:${VERSION}
   command: ./growctl mattermost -j --growdash_version=${version} --bot_name=GrowBot-${HOSTNAME}
 
 supercron:

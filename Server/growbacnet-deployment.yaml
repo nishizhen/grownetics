@@ -50,7 +50,7 @@ spec:
         - name: THRESHOLD_CT_ON
         - name: THRESHOLD_DATA_RECEIVED
         - name: THRESHOLD_DEVICE_BOOTS
-        image: code.cropcircle.io:4567/grownetics/grownetics/growdash:latest
+        image: grownetics/growdash:latest
         name: growbacnet
         resources: {}
       restartPolicy: Always

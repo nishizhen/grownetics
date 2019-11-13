@@ -1,6 +1,6 @@
 # The dashboard interface that humans access
 growdash:
-  image: code.cropcircle.io:4567/grownetics/grownetics/growdash:${VERSION}
+  image: grownetics/growdash:${VERSION}
   restart: always
   links:
     - appdb
@@ -67,7 +67,7 @@ growdash:
 
 # The API that devices talk to
 deviceapi:
-  image: code.cropcircle.io:4567/grownetics/grownetics/growdash:${VERSION}
+  image: grownetics/growdash:${VERSION}
   restart: always
   links:
     - appdb
@@ -110,7 +110,7 @@ deviceapi:
 
 # Responsible for maintaining the socket connection to the dashboard for live data and chat
 growsocket:
-  image: code.cropcircle.io:4567/grownetics/grownetics/socketio:latest
+  image: grownetics/socketio:latest
   restart: always
   links:
     - rabbitmq
@@ -122,7 +122,7 @@ growsocket:
 # Responsible for communicating with the onsite BACnet system
 # Only runs if BACNET_URL is set.
 growbacnet:
-  image: code.cropcircle.io:4567/grownetics/grownetics/growdash:${VERSION}
+  image: grownetics/growdash:${VERSION}
   restart: always
   command: /var/www/html/growbacnet.sh
   links:
@@ -167,7 +167,7 @@ growbacnet:
 # 'Pulses' at a regular interval to calucate and process zone and time based rules
 # Also sends notifications and monitors device health
 growpulse:
-  image: code.cropcircle.io:4567/grownetics/grownetics/growdash:${VERSION}
+  image: grownetics/growdash:${VERSION}
   restart: always
   command: /var/www/html/growpulse.sh
   links:
@@ -208,7 +208,7 @@ growpulse:
     io.rancher.scheduler.affinity:host_label_ne: onsite=true
 
 notifications:
-  image: code.cropcircle.io:4567/grownetics/grownetics/growdash:${VERSION}
+  image: grownetics/growdash:${VERSION}
   restart: always
   command: bash -c "chmod +x /var/www/html/notification.sh && /var/www/html/notification.sh"
   links:
@@ -255,7 +255,7 @@ notifications:
 # Responsible for communicating with the onsite Argus system
 # Only runs if ARGUS_URL is set.
 argus:
-  image: code.cropcircle.io:4567/grownetics/grownetics/growdash:${VERSION}
+  image: grownetics/growdash:${VERSION}
   restart: always
   command: /var/www/html/argus.sh
   links:
@@ -303,7 +303,7 @@ argus:
 
 # Dispatches web requests
 nginx:
-  image: code.cropcircle.io:4567/grownetics/grownetics/nginx:${VERSION}
+  image: grownetics/nginx:${VERSION}
   restart: always
   links:
     - growdash
@@ -394,7 +394,7 @@ rabbitmq:
     - RABBITMQ_DEFAULT_PASS=rabbit
 
 # supercron:
-#   image: code.cropcircle.io:4567/grownetics/grownetics/supercron:${VERSION}
+#   image: grownetics/supercron:${VERSION}
 #   links:
 #     - consul
 #     - appdb

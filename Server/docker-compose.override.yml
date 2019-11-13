@@ -1,5 +1,5 @@
 growdash:
-  image: code.cropcircle.io:4567/grownetics/grownetics/growdash:dev
+  image: grownetics/growdash:dev
   volumes:
     - ./html:/var/www/html:cached
     - ./tmp:/tmp:cached
@@ -91,7 +91,7 @@ chronograf:
     - "8888:8888"
 
 # growfaker:
-#   image: code.cropcircle.io:4567/grownetics/grownetics/growctl:latest
+#   image: grownetics/growctl:latest
 #   command: ./growctl faker --host nginx:81 --consul_host consul:8500 --influx_host influxdb:8086 --json
 #   links:
 #     - nginx
@@ -114,7 +114,7 @@ grafana:
     - "3000:3000"
 
 # supercron:
-#   image: code.cropcircle.io:4567/grownetics/grownetics/supercron:latest
+#   image: grownetics/supercron:latest
 #   volumes:
 #     - ./html:/var/www/html:cached
 #     - ./tmp:/tmp:cached

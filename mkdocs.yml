@@ -10,7 +10,7 @@ theme:
     primary: 'green'
     accent: 'green'
   logo: 'logo.png'
-pages:
+nav:
 - Home: 'index.md'
 - How We Work: 
   - 'Introduction': 'how-we-work.md'

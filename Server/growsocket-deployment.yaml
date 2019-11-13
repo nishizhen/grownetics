@@ -21,7 +21,7 @@ spec:
         io.kompose.service: growsocket
     spec:
       containers:
-      - image: code.cropcircle.io:4567/grownetics/grownetics/socketio:latest
+      - image: grownetics/socketio:latest
         name: growsocket
         ports:
         - containerPort: 8989

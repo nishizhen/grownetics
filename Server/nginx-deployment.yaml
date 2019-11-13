@@ -21,7 +21,7 @@ spec:
       imagePullSecrets:
       - name: regcred
       containers:
-      - image: code.cropcircle.io:4567/grownetics/grownetics/nginx:latest
+      - image: grownetics/nginx:latest
         name: nginx
         ports:
         - containerPort: 80

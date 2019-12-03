@@ -1,4 +1,23 @@
-# PHPStorm
+
+## Getting going
+
+### Warning: require(/var/www/html/vendor/autoload.php): failed to open stream: No such file or directory
+
+Run `docker exec -it growserver_growdash_1 composer install`
+
+### Fatal error: Uncaught PDOException: SQLSTATE[HY000] [14] unable to open database file
+
+Run `docker exec -it growserver_growdash_1 mkdir tmp`
+
+### SQLSTATE[42S02]: Base table or view not found: 1146 Table 'grownetics.roles' doesn't exist
+
+Run `docker exec -it growserver_growdash_1 bin/cake migrations migrate`
+
+Then `docker exec -it growserver_growdash_1 bin/cake migrations seed`
+
+### Could not locate ../js/bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css for all.css in any configured path.
+
+Run `docker exec -it growserver_growdash_1 apt update && apt install -y git && bower install`
 
 ## Testing with PHPUnit
 

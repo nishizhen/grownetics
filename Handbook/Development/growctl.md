@@ -14,9 +14,9 @@ To use Go with our setup correctly, you need to add the root of the Grownetics r
 
 If you get an error about 'Port in map index' make sure you are at least on Go version 1.11 and run `export GO111MODULE=on` before trying the command again.
 
-Now run `go get code.cropcircle.io/grownetics/growctl/` to download the necessary Go packages. This will take some time.
+Now run `go get gitlab.com/grownetics/grownetics/growctl/` to download the necessary Go packages. This will take some time.
 
-Then you can run `go run src/code.cropcircle.io/grownetics/growctl/main.go update` to install the code as an executable on your machine.
+Then you can run `go run src/gitlab.com/grownetics/grownetics/growctl/main.go update` to install the code as an executable on your machine.
 
 Or you can run `go build -o growctl src/code.cropcircle.io/grownetics/growctl/main.go && mv growctl /usr/local/bin/` to install 'by hand'.
 

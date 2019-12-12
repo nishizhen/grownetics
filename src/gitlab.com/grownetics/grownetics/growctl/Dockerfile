@@ -6,7 +6,7 @@ FROM golang
 ADD . /go/src/
 WORKDIR /go/src
 #RUN cd /go/src/code.cropcircle.io/grownetics/growctl && glide install
-RUN go get code.cropcircle.io/grownetics/growctl && go build -o growctl code.cropcircle.io/grownetics/growctl
+RUN go get gitlab.com/grownetics/grownetics/growctl && go build -o growctl gitlab.com/grownetics/grownetics/growctl
 CMD ["./growctl","faker","--url","http://nginx:81/","--json"]
 
 # This shit is too future for us right now.

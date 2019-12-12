@@ -8,6 +8,8 @@ growdash:
       - DEV=0
 deviceapi:
   image: grownetics/growdash:$CI_PIPELINE_ID
+argus:
+  image: grownetics/growdash:$CI_PIPELINE_ID
 growsocket:
   image: grownetics/socketio:$CI_PIPELINE_ID
 growbacnet:
@@ -21,8 +23,8 @@ supercron:
 notifications:
   image: grownetics/growdash:$CI_PIPELINE_ID
 
-growfaker:
-  image: grownetics/growctl:$CI_PIPELINE_ID
+# growfaker:
+#   image: grownetics/growctl:$CI_PIPELINE_ID
 
 grafana:
   environment:

@@ -1,0 +1,106 @@
+# The dashboard interface that humans access
+growdash:
+  image: grownetics/growdash:$CI_PIPELINE_ID
+  restart: always
+  links:
+    - appdb
+    - redis
+    - influxdb
+    - consul
+  environment:
+    - DEV
+    - FACILITY_NAME
+    - FACILITY_ID
+    - CERES
+    - DEMO
+    - ENVIRONMENT
+    - REMOTE_URL
+    - VERSION
+    - SHORT_NAME
+    - SALT
+    - ONSITE
+
+    - SET_POINT_ALARM_TOLERANCE_PERCENTAGE
+    - BURNOUT_PROTECTION_DELAY
+
+    - DB_HOSTNAME
+    - MYSQL_ROOT_PASSWORD
+    - MYSQL_DATABASE
+    - MYSQL_TEST_DATABASE
+    - MYSQL_USER
+    - MYSQL_PASSWORD
+
+    - REDIS_HOSTNAME
+    - RABBIT_HOST
+    - RABBIT_PORT
+    - RABBIT_USER
+    - RABBIT_PASS
+    - INFLUX_HOST
+    - INFLUX_PORT
+
+    - TWILIO_SID
+    - TWILIO_TOKEN
+
+    - THRESHOLD_DEVICE_BOOTS
+    - THRESHOLD_DATA_RECEIVED
+    - THRESHOLD_CT_ON
+
+    - TIMEZONE_OFFSET
+    - TIMEZONE
+
+    - BACNET_URL
+    - BACNET_AUTH
+    - BACNET_RATE
+    - BACNET_ENABLED
+
+    - ARGUS_RATE
+    - ARGUS_URL
+
+    - SMTP_HOST
+    - SMTP_USER
+    - SMTP_PASS
+
+  labels:
+    io.rancher.container.pull_image: always
+    io.rancher.scheduler.affinity:host_label_ne: onsite=true
+
+# Dispatches web requests
+nginx:
+  image: grownetics/nginx:$CI_PIPELINE_ID
+  restart: always
+  links:
+    - growdash
+  labels:
+    io.rancher.container.pull_image: always
+    io.rancher.scheduler.affinity:host_label_ne: onsite=true
+
+# Stores all application info, users, zones, devices, rules, notifications, etc.
+appdb:
+  image: mariadb:10.3
+  restart: always
+  command: mysqld --sql_mode=""
+  environment:
+    - MYSQL_ROOT_PASSWORD
+    - MYSQL_DATABASE
+    - MYSQL_TEST_DATABASE
+    - MYSQL_USER
+    - MYSQL_PASSWORD
+
+# Caching engine for GrowDash, GrowSocket, and GrowPulse
+redis:
+  image: redis
+  restart: always
+
+#
+# Service Discovery - Consul
+#
+consul:
+  image: bitnami/consul
+  restart: always
+
+# Holds all data points, as well as system performance data and other time series metrics
+influxdb:
+  image: influxdb
+  restart: always
+  environment:
+    - INFLUXDB_HTTP_LOG_ENABLED=false

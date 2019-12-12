@@ -40,16 +40,19 @@ class PlantsTableTest extends TestCase
 
     public function testMoveToZone()
     {
+        $this->markTestIncomplete('Not implemented yet.');
         $this->assertEquals(true,false);
     }
 
     public function testMoveToBench()
     {
+        $this->markTestIncomplete('Not implemented yet.');
         $this->assertEquals(true,false);
     }
 
     public function testMoveToFullZone()
     {
+        $this->markTestIncomplete('Not implemented yet.');
         $this->assertEquals(true,false);
     }
 

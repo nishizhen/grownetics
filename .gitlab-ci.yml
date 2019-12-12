@@ -1,20 +1,15 @@
-# image: grownetics/build:1.0
 image: docker:19.03
 
-variables:
-  DOCKER_DRIVER: overlay2
-  # Create the certificates inside this directory for both the server
-  # and client. The certificates used by the client will be created in
-  # /certs/client so we only need to share this directory with the
-  # volume mount in `config.toml`.
-  DOCKER_TLS_CERTDIR: "/certs"
-  DOCKER_HOST: tcp://localhost:2375
-
 services:
-  - docker:19.03.0-dind
+  - name: docker:19.03.0-dind
+    alias: docker
+
+before_script:
+  - echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" --password-stdin docker.io
 
 stages:
   - build
+  - package
   - test
   - review
   - release
@@ -27,11 +22,7 @@ pages:
     - pip install mkdocs
     - pip install mkdocs-material
 
-    # - echo "{\"auths\":{\"$CI_REGISTRY\":{\"username\":\"$CI_REGISTRY_USER\",\"password\":\"$CI_REGISTRY_PASSWORD\"}}}" > /kaniko/.docker/config.json
     - mkdocs build
-    # - docker build --pull -t grownetics/handbook:$CI_PIPELINE_ID -f Dockerfile.handbook .
-    # - /kaniko/executor --context . --dockerfile Dockerfile.handbook --destination grownetics/handbook:$CI_PIPELINE_ID
-    # - docker push grownetics/handbook:$CI_PIPELINE_ID
     - mv site public
   artifacts:
     paths:
@@ -39,26 +30,30 @@ pages:
   only:
     - master
 
-'Build Cron':
-  stage: build
-  retry: 1
+'Package Cron':
+  stage: package
   script:
-    - ls -l /cert/
     - docker build Server/html --pull --no-cache -t grownetics/supercron:$CI_PIPELINE_ID -f Server/html/images/supercron/Dockerfile
     - docker push grownetics/supercron:$CI_PIPELINE_ID
 
 'Build Socket':
   stage: build
-  retry: 1
   script:
     - docker build Server/html/images/socketio --pull --no-cache -t grownetics/socketio:$CI_PIPELINE_ID -f Server/html/images/socketio/Dockerfile
     - docker push grownetics/socketio:$CI_PIPELINE_ID
 
 'Build GrowServer':
+  image: grownetics/build:1.1
   stage: build
-  retry: 1
+  variables:
+    DOCKER_TLS_CERTDIR: "/certs"
+  artifacts:
+    paths:
+      - Server/html/
   script:
     - cd Server/
+    - pip install --upgrade setuptools
+    - mkdocs --version
     - mkdocs build
     - mv site html/webroot/docs
     - cd html/
@@ -71,42 +66,45 @@ pages:
     - BUILD_DATE=`date +%Y-%m-%d:%H:%M:%S` && echo "<?php return ['BUILD_ID' => '$CI_PIPELINE_ID','BUILD_DATE' => '$BUILD_DATE'];" > config/build_info.php
     - cd ../../
 
-    # Building nginx here and growdash below can't be separated due to the asset_compress build step above.
-    # Using gitlab ci artifacts may fix this, for now this is the next best solution.
-
+'Package NGINX':
+  stage: package
+  dependencies:
+    - 'Build GrowServer'
+  script:
     - docker build Server/html --pull --no-cache -t grownetics/nginx:$CI_PIPELINE_ID -f Server/html/images/nginx/Dockerfile
     - docker push grownetics/nginx:$CI_PIPELINE_ID
 
-    - docker build Server/html --pull --no-cache -t grownetics/growdash:$CI_PIPELINE_ID -f Server/html/images/growdash/Dockerfile
+'Package GrowServer':
+  stage: package
+  dependencies:
+    - 'Build GrowServer'
+  script:
+    - docker build Server/html --pull --no-cache -t grownetics/growdash:$CI_PIPELINE_ID -f Server/html/images/growdash/Dockerfile.dev
     - docker push grownetics/growdash:$CI_PIPELINE_ID
 
 'Build growctl':
   stage: build
-  retry: 1
   tags:
     - docker
   script:
-    - docker build src --no-cache -t grownetics/growctl:$CI_PIPELINE_ID -f src/code.cropcircle.io/grownetics/growctl/Dockerfile
+    - docker build src --no-cache -t grownetics/growctl:$CI_PIPELINE_ID -f src/gitlab.com/grownetics/grownetics/growctl/Dockerfile
     - docker push grownetics/growctl:$CI_PIPELINE_ID
 
 'Rules Engine':
   stage: test
-#  only:
-#    changes:
-#      - Server/*
-  retry: 1
   script:
     - cd Server/
-    - docker-compose -p "$CI_PIPELINE_ID"rulesengine -f docker-compose.yml -f docker-compose.review.yml down || true
-    - docker-compose -p "$CI_PIPELINE_ID"rulesengine -f docker-compose.yml -f docker-compose.review.yml up -d
-    - echo "Give mariaDB time to come online" && sleep 20
+    - apk add --no-cache py-pip python-dev libffi-dev openssl-dev gcc libc-dev make
+    - pip install docker-compose
+    - docker-compose -p "$CI_PIPELINE_ID"rulesengine -f docker-compose.citest.yml down || true
+    - docker-compose -p "$CI_PIPELINE_ID"rulesengine -f docker-compose.citest.yml up -d
+    - echo "Give mariaDB time to come online" && sleep 60
     - docker exec "$CI_PIPELINE_ID"rulesengine_growdash_1 /bin/sh /var/www/html/seed.sh
-    - docker exec "$CI_PIPELINE_ID"rulesengine_growdash_1 /bin/sh /var/www/html/test.sh --testsuite RulesEngine --coverage-text --colors=never --stop-on-failure
+    - docker exec "$CI_PIPELINE_ID"rulesengine_growdash_1 /bin/sh /var/www/html/test.sh --testsuite BackEnd --stop-on-failure --coverage-text --colors=never
   after_script:
     - cd Server/
-    - docker-compose -p "$CI_PIPELINE_ID"rulesengine -f docker-compose.yml -f docker-compose.review.yml down || true
+    - docker-compose -p "$CI_PIPELINE_ID"rulesengine -f docker-compose.citest.yml down || true
 
-      
 # 'Front End':
 #   stage: test
 #   retry: 2
@@ -225,6 +223,10 @@ pages:
     - docker tag grownetics/socketio:$CI_PIPELINE_ID grownetics/socketio:latest
     - docker push grownetics/socketio:latest
 
+    - docker pull grownetics/handbook:$CI_PIPELINE_ID
+    - docker tag grownetics/handbook:$CI_PIPELINE_ID grownetics/handbook:latest
+    - docker push grownetics/handbook:latest
+
 'Tag Images for Release':
   only:
     - /^v.*$/
@@ -251,6 +253,10 @@ pages:
     - docker pull grownetics/socketio:$CI_PIPELINE_ID
     - docker tag grownetics/socketio:$CI_PIPELINE_ID grownetics/socketio:$CI_COMMIT_REF_NAME
     - docker push grownetics/socketio:$CI_COMMIT_REF_NAME
+
+    - docker pull grownetics/handbook:$CI_PIPELINE_ID
+    - docker tag grownetics/handbook:$CI_PIPELINE_ID grownetics/handbook:$CI_COMMIT_REF_NAME
+    - docker push grownetics/handbook:$CI_COMMIT_REF_NAME
 
 'Deploy: QA':
   only:

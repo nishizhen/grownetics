@@ -1,4 +1,6 @@
 FROM grownetics/php:dev
 
+RUN apt update && apt install -y default-mysql-client
+
 ADD images/growdash/growdash.ini  /usr/local/etc/php/conf.d/growdash.ini
 ADD . /var/www/html

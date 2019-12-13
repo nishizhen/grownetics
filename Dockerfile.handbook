@@ -1,5 +1,5 @@
 FROM nginx
 
-COPY site/ /usr/share/nginx/html
+COPY public/ /usr/share/nginx/html
 
 CMD 'nginx'

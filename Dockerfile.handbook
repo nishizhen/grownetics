@@ -1,7 +1,5 @@
-FROM kyma/docker-nginx
+FROM nginx
 
-COPY nginx.default /etc/nginx/sites-enabled/default
-
-COPY site/ /var/www
+COPY site/ /usr/share/nginx/html
 
 CMD 'nginx'

@@ -15,7 +15,7 @@ stages:
   - release
   - deploy
 
-pages:
+'Build Handbook':
   stage: build
   image: python:3.7.3-alpine
   script:
@@ -30,6 +30,14 @@ pages:
   only:
     - master
 
+'Package Handbook':
+  stage: package
+  script:
+    - docker build -t grownetics/handbook:$CI_PIPELINE_ID .
+    - docker push grownetics/handbook:$CI_PIPELINE_ID
+  only:
+    - master
+  
 'Package Cron':
   stage: package
   script:
@@ -124,7 +132,6 @@ pages:
   when: manual
   script:
     - mkdocs build
-    - cp .htpasswd site/
     - docker build -t grownetics/handbook:$CI_PIPELINE_ID .
     - docker push grownetics/handbook:$CI_PIPELINE_ID
     - echo $CI_ENVIRONMENT_SLUG

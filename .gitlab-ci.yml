@@ -33,7 +33,7 @@ stages:
 'Package Handbook':
   stage: package
   script:
-    - docker build -t grownetics/handbook:$CI_PIPELINE_ID .
+    - docker build -t grownetics/handbook:$CI_PIPELINE_ID -f Dockerfile.handbook .
     - docker push grownetics/handbook:$CI_PIPELINE_ID
   only:
     - master

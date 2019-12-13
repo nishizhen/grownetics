@@ -127,43 +127,6 @@ stages:
 #     - cd Server/
 #     - docker-compose -p "$CI_PIPELINE_ID"frontend -f docker-compose.yml -f docker-compose.selenium.yml -f docker-compose.review.yml down || true
 
-'Review Handbook':
-  stage: review
-  when: manual
-  script:
-    - mkdocs build
-    - docker build -t grownetics/handbook:$CI_PIPELINE_ID .
-    - docker push grownetics/handbook:$CI_PIPELINE_ID
-    - echo $CI_ENVIRONMENT_SLUG
-    - export IMAGE=$CI_PIPELINE_ID
-    - echo '{"accessKey":"$RANCHER_ACCESS_KEY","secretKey":"$RANCHER_SECRET_KEY","url":"http://rancher.cropcircle.io:8080/v2-beta/schemas","environment":"1a5"}' > rancher.json
-    - rancher --config rancher.json rm -s handbook-"$CI_ENVIRONMENT_SLUG" || true
-    - rancher --config rancher.json up -s handbook-"$CI_ENVIRONMENT_SLUG" -d -f docker-compose.handbook.yml -f docker-compose.handbook.review.yml
-  environment:
-    name: review_handbook/$CI_COMMIT_REF_NAME
-    url: http://handbook.handbook-$CI_ENVIRONMENT_SLUG.development.cloudforest.io/
-    on_stop: 'Stop Review Handbook'
-  only:
-    - branches
-  except:
-    - master
-
-'Stop Review Handbook':
-  stage: review
-  variables:
-    GIT_STRATEGY: none
-  script:
-    - echo '{"accessKey":"$RANCHER_ACCESS_KEY","secretKey":"$RANCHER_SECRET_KEY","url":"http://rancher.cropcircle.io:8080/v2-beta/schemas","environment":"1a5"}' > rancher.json
-    - rancher --config rancher.json rm -s $CI_ENVIRONMENT_SLUG || true
-  when: manual
-  environment:
-    name: review_handbook/$CI_COMMIT_REF_NAME
-    action: stop
-  only:
-    - branches
-  except:
-    - master
-
 'Review GrowServer':
   stage: review
   when: manual
@@ -284,14 +247,3 @@ stages:
   environment:
     name: QA
     url: http://cloud.qa.development.cloudforest.io/
-
-'Deploy: Handbook':
-  only:
-    - master
-  stage: deploy
-  retry: 1
-  script:
-    - echo '{"accessKey":"$RANCHER_ACCESS_KEY","secretKey":"$RANCHER_SECRET_KEY","url":"http://rancher.cropcircle.io:8080/v2-beta/schemas","environment":"1a115"}' > rancher.json
-    - rancher --config rancher.json rm --type stack -s handbook || true
-    - rancher --config rancher.json up -s handbook -d -f docker-compose.handbook.yml
-

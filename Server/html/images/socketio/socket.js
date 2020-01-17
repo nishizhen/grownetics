@@ -60,6 +60,7 @@ http.listen(port, function(){
 });
 
 amqp.connect('amqp://rabbit:rabbit@rabbitmq', function(err, conn) {
+  console.log(err,conn)
   conn.createChannel(function(err, ch) {
     var q = 'data.sensor';
 

@@ -6,6 +6,55 @@ growdash:
   environment:
       - FACILITY_NAME=${CI_PIPELINE_ID}
       - DEV=0
+      - FACILITY_ID
+      - CERES
+      - DEMO
+      - ENVIRONMENT
+      - REMOTE_URL
+      - VERSION
+      - SHORT_NAME
+      - SALT
+      - ONSITE
+  
+      - SET_POINT_ALARM_TOLERANCE_PERCENTAGE
+      - BURNOUT_PROTECTION_DELAY
+  
+      - DB_HOSTNAME
+      - MYSQL_ROOT_PASSWORD
+      - MYSQL_DATABASE
+      - MYSQL_TEST_DATABASE
+      - MYSQL_USER
+      - MYSQL_PASSWORD
+  
+      - REDIS_HOSTNAME
+      - RABBIT_HOST
+      - RABBIT_PORT
+      - RABBIT_USER
+      - RABBIT_PASS
+      - INFLUX_HOST
+      - INFLUX_PORT
+  
+      - TWILIO_SID
+      - TWILIO_TOKEN
+  
+      - THRESHOLD_DEVICE_BOOTS
+      - THRESHOLD_DATA_RECEIVED
+      - THRESHOLD_CT_ON
+  
+      - TIMEZONE_OFFSET
+      - TIMEZONE
+  
+      - BACNET_URL
+      - BACNET_AUTH
+      - BACNET_RATE
+      - BACNET_ENABLED
+  
+      - ARGUS_RATE
+      - ARGUS_URL
+  
+      - SMTP_HOST
+      - SMTP_USER
+      - SMTP_PASS
 deviceapi:
   image: grownetics/growdash:$CI_PIPELINE_ID
 argus:

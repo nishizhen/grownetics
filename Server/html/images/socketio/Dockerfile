@@ -1,23 +1,19 @@
-FROM zzrot/alpine-node
-MAINTAINER Vo Duy Tuan <tuanmaster2012@gmail.com>
+FROM mhart/alpine-node:12
 
-RUN apk add --update \
-    supervisor \
-  && rm -rf /var/cache/apk/*
+# If possible, run your container using `docker run --init`
+# Otherwise, you can use `tini`:
+# RUN apk add --no-cache tini
+# ENTRYPOINT ["/sbin/tini", "--"]
 
-ADD supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+WORKDIR /app
+COPY . .
 
-RUN /bin/mkdir -p /srv/logs
+# If you have native dependencies, you'll need extra tools
+# RUN apk add --no-cache make gcc g++ python
 
-WORKDIR /srv
-
-RUN npm install --silent socket.io express amqplib request
-RUN npm dedupe
-
-ADD socket.js /srv/socket.js
+RUN npm ci --prod
 
 EXPOSE 8989
 
-# CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
-CMD ["/usr/bin/node", "/srv/socket.js"]
+CMD ["/usr/bin/node", "/app/socket.js"]
 

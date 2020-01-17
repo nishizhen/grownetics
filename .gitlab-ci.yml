@@ -4,13 +4,10 @@ services:
   - name: docker:19.03.0-dind
     alias: docker
 
-before_script:
-  - if [ -x "$(command -v docker)" ]; then echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" --password-stdin docker.io; fi
-
 stages:
   - build
   - package
-  - test
+  # - test
   - review
   - release
   - deploy
@@ -33,6 +30,7 @@ stages:
 'Package Handbook':
   stage: package
   script:
+    - echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" --password-stdin docker.io
     - docker build -t grownetics/handbook:$CI_PIPELINE_ID -f Dockerfile.handbook .
     - docker push grownetics/handbook:$CI_PIPELINE_ID
   only:
@@ -41,12 +39,14 @@ stages:
 'Package Cron':
   stage: package
   script:
+    - echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" --password-stdin docker.io
     - docker build Server/html --pull --no-cache -t grownetics/supercron:$CI_PIPELINE_ID -f Server/html/images/supercron/Dockerfile
     - docker push grownetics/supercron:$CI_PIPELINE_ID
 
 'Build Socket':
   stage: build
   script:
+    - echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" --password-stdin docker.io
     - docker build Server/html/images/socketio --pull --no-cache -t grownetics/socketio:$CI_PIPELINE_ID -f Server/html/images/socketio/Dockerfile
     - docker push grownetics/socketio:$CI_PIPELINE_ID
 
@@ -79,6 +79,7 @@ stages:
   dependencies:
     - 'Build GrowServer'
   script:
+    - echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" --password-stdin docker.io
     - docker build Server/html --pull --no-cache -t grownetics/nginx:$CI_PIPELINE_ID -f Server/html/images/nginx/Dockerfile
     - docker push grownetics/nginx:$CI_PIPELINE_ID
 
@@ -87,6 +88,7 @@ stages:
   dependencies:
     - 'Build GrowServer'
   script:
+    - echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" --password-stdin docker.io
     - docker build Server/html --pull --no-cache -t grownetics/growdash:$CI_PIPELINE_ID -f Server/html/images/growdash/Dockerfile.dev
     - docker push grownetics/growdash:$CI_PIPELINE_ID
 
@@ -95,23 +97,24 @@ stages:
   tags:
     - docker
   script:
+    - echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" --password-stdin docker.io
     - docker build src --no-cache -t grownetics/growctl:$CI_PIPELINE_ID -f src/gitlab.com/grownetics/grownetics/growctl/Dockerfile
     - docker push grownetics/growctl:$CI_PIPELINE_ID
 
-'Rules Engine':
-  stage: test
-  script:
-    - cd Server/
-    - apk add --no-cache py-pip python-dev libffi-dev openssl-dev gcc libc-dev make
-    - pip install docker-compose
-    - docker-compose -p "$CI_PIPELINE_ID"rulesengine -f docker-compose.citest.yml down || true
-    - docker-compose -p "$CI_PIPELINE_ID"rulesengine -f docker-compose.citest.yml up -d
-    - echo "Give mariaDB time to come online" && sleep 60
-    - docker exec "$CI_PIPELINE_ID"rulesengine_growdash_1 /bin/sh /var/www/html/seed.sh
-    - docker exec "$CI_PIPELINE_ID"rulesengine_growdash_1 /bin/sh /var/www/html/test.sh --testsuite BackEnd --stop-on-failure --coverage-text --colors=never
-  after_script:
-    - cd Server/
-    - docker-compose -p "$CI_PIPELINE_ID"rulesengine -f docker-compose.citest.yml down || true
+# 'Rules Engine':
+#   stage: test
+#   script:
+#     - cd Server/
+#     - apk add --no-cache py-pip python-dev libffi-dev openssl-dev gcc libc-dev make
+#     - pip install docker-compose
+#     - docker-compose -p "$CI_PIPELINE_ID"rulesengine -f docker-compose.citest.yml down || true
+#     - docker-compose -p "$CI_PIPELINE_ID"rulesengine -f docker-compose.citest.yml up -d
+#     - echo "Give mariaDB time to come online" && sleep 60
+#     - docker exec "$CI_PIPELINE_ID"rulesengine_growdash_1 /bin/sh /var/www/html/seed.sh
+#     - docker exec "$CI_PIPELINE_ID"rulesengine_growdash_1 /bin/sh /var/www/html/test.sh --testsuite BackEnd --stop-on-failure --coverage-text --colors=never
+#   after_script:
+#     - cd Server/
+#     - docker-compose -p "$CI_PIPELINE_ID"rulesengine -f docker-compose.citest.yml down || true
 
 # 'Front End':
 #   stage: test
@@ -132,17 +135,20 @@ stages:
   when: manual
   script:
     - cd Server/
+    - wget https://github.com/rancher/cli/releases/download/v0.6.2/rancher-linux-amd64-v0.6.2.tar.gz
+    - tar -zxvf rancher-linux-amd64-v0.6.2.tar.gz
+    - chmod +x rancher-v0.6.2/rancher
     - echo $CI_ENVIRONMENT_SLUG
     - export IMAGE=$CI_PIPELINE_ID
     - echo '{"accessKey":"$RANCHER_ACCESS_KEY","secretKey":"$RANCHER_SECRET_KEY","url":"http://rancher.cropcircle.io:8080/v2-beta/schemas","environment":"1a5"}' > rancher.json
-    - rancher --config rancher.json rm -s $CI_ENVIRONMENT_SLUG || true
+    - ./rancher-v0.6.2/rancher --config rancher.json rm -s $CI_ENVIRONMENT_SLUG || true
     - cp .env env.yaml
     # Set the Remote URL to the correct value
     - sed -i "s/localhost/cloud.$CI_ENVIRONMENT_SLUG.development.cloudforest.io/g" env.yaml
-    - rancher --config rancher.json up -e env.yaml -f docker-compose.yml -f docker-compose.rancher.yml -f docker-compose.faker.yml -f docker-compose.review.yml -s $CI_ENVIRONMENT_SLUG -d
-    - echo "Give MariaDB time to come online before running the DemoSeeds. 60 seconds.."
-    - sleep 60
-    - rancher --config rancher.json exec "$CI_ENVIRONMENT_SLUG"-growdash-1 /bin/sh /var/www/html/bin/cake migrations seed --source DemoSeeds;
+    - ./rancher-v0.6.2/rancher --config rancher.json up -e env.yaml -f docker-compose.yml -f docker-compose.rancher.yml -f docker-compose.faker.yml -f docker-compose.review.yml -s $CI_ENVIRONMENT_SLUG -d
+    # - echo "Give MariaDB time to come online before running the DemoSeeds. 60 seconds.."
+    # - sleep 60
+    # - ./rancher-v0.6.2/rancher --config rancher.json exec "$CI_ENVIRONMENT_SLUG"-growdash-1 /bin/sh /var/www/html/bin/cake migrations seed --source DemoSeeds;
   environment:
     name: review/$CI_COMMIT_REF_NAME
     url: http://cloud.$CI_ENVIRONMENT_SLUG.development.cloudforest.io/
@@ -157,8 +163,11 @@ stages:
   variables:
     GIT_STRATEGY: none
   script:
+    - wget https://github.com/rancher/cli/releases/download/v0.6.2/rancher-linux-amd64-v0.6.2.tar.gz
+    - tar -zxvf rancher-linux-amd64-v0.6.2.tar.gz
+    - chmod +x rancher-v0.6.2/rancher
     - echo '{"accessKey":"$RANCHER_ACCESS_KEY","secretKey":"$RANCHER_SECRET_KEY","url":"http://rancher.cropcircle.io:8080/v2-beta/schemas","environment":"1a5"}' > rancher.json
-    - rancher --config rancher.json rm -s $CI_ENVIRONMENT_SLUG || true
+    - ./rancher-v0.6.2/rancher --config rancher.json rm -s $CI_ENVIRONMENT_SLUG || true
   when: manual
   environment:
     name: review/$CI_COMMIT_REF_NAME
@@ -173,6 +182,7 @@ stages:
     - master
   stage: release
   script:
+    - echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" --password-stdin docker.io
     - docker pull grownetics/nginx:$CI_PIPELINE_ID
     - docker tag grownetics/nginx:$CI_PIPELINE_ID grownetics/nginx:latest
     - docker push grownetics/nginx:latest
@@ -204,6 +214,7 @@ stages:
     - branches
   stage: release
   script:
+    - echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" --password-stdin docker.io
     - docker pull grownetics/nginx:$CI_PIPELINE_ID
     - docker tag grownetics/nginx:$CI_PIPELINE_ID grownetics/nginx:$CI_COMMIT_REF_NAME
     - docker push grownetics/nginx:$CI_COMMIT_REF_NAME
@@ -236,13 +247,16 @@ stages:
   retry: 1
   script:
     - cd Server/
+    - wget https://github.com/rancher/cli/releases/download/v0.6.2/rancher-linux-amd64-v0.6.2.tar.gz
+    - tar -zxvf rancher-linux-amd64-v0.6.2.tar.gz
+    - chmod +x rancher-v0.6.2/rancher
     - echo '{"accessKey":"$RANCHER_ACCESS_KEY","secretKey":"$RANCHER_SECRET_KEY","url":"http://rancher.cropcircle.io:8080/v2-beta/schemas","environment":"1a5"}' > rancher.json
     - export IMAGE=$CI_PIPELINE_ID
-    - rancher --config rancher.json rm -s qa || true
-    - rancher --config rancher.json up -e qa.env -s qa -d -f docker-compose.yml -f docker-compose.faker.yml -f docker-compose.rancher.yml -f docker-compose.qa.yml
+    - ./rancher-v0.6.2/rancher --config rancher.json rm -s qa || true
+    - ./rancher-v0.6.2/rancher --config rancher.json up -e qa.env -s qa -d -f docker-compose.yml -f docker-compose.faker.yml -f docker-compose.rancher.yml -f docker-compose.qa.yml
     - echo "Give MariaDB time to come online before running the DemoSeeds. 60 seconds.."
     - sleep 60
-    - rancher --config rancher.json exec qa-growdash-1 /bin/sh /var/www/html/bin/cake migrations seed --source DemoSeeds;
+    - ./rancher-v0.6.2/rancher --config rancher.json exec qa-growdash-1 /bin/sh /var/www/html/bin/cake migrations seed --source DemoSeeds;
 
   environment:
     name: QA

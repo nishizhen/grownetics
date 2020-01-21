@@ -4,7 +4,7 @@ For inspiration, start here: [GitLab's Handbook](https://about.gitlab.com/handbo
 
 ## Quick Links
 
-### [Master Client List](https://docs.google.com/spreadsheets/d/1s8Ox_82EWDONmTTmy-WRBpw4Av-fKEwSLYSFHLm-VJo/edit)
+### [Grownetics Website](https://grownetics.co)
 
 ### Important Dates for Contractors
 * Hours should be logged from the 25th to the 25th of each month. Please submit your hours by end of day on the 25th of each month.

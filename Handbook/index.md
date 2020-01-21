@@ -1,6 +1,6 @@
 # Grownetics Handbook
 
-For inspiration, start here: [GitLab's Handbook](https://about.gitlab.com/handbook/) or [Clef's Handbook](https://github.com/clef/handbook)
+If you're looking for something use the search tool!
 
 ## Quick Links
 

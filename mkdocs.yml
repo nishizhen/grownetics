@@ -3,6 +3,8 @@
 
 site_name: Grownetics Company Handbook
 site_url: http://handbook.cloudforest.io/
+repo_url: https://gitlab.com/grownetics/grownetics
+edit_uri: edit/master/Handbook
 docs_dir: Handbook
 theme:
   name: 'material'

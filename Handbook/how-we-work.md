@@ -1,6 +1,37 @@
 # Introduction and How We Work
 
-This manual should be an ever evolving resource for those seeking to build the best tools to help farmers in growing the highest quality food and medicine with maximum efficiency. It covers everything from sales and marketing, ideation, development, and mass production. 
+This manual should be an ever evolving resource for those seeking to build the best tools to help farmers grow the highest quality food and medicine with maximum efficiency. It covers everything from sales and marketing, ideation, development, and mass production. 
+
+## Why Handbook First
+
+Very good explanation here [gitlab Why Handbook First?](https://about.gitlab.com/handbook/handbook-usage/#why-handbook-first)
+
+This excerpt from the Gitlab CEO sums it up well.
+
+"Documenting in the handbook before taking an action may require more time initially because you have to think about where to make the change, integrate it with the existing content, and then possibly add to or refactor the handbook to have a proper foundation. But, it saves time in the long run, and this communication is essential to our ability to continue scaling and adapting our organization.
+
+This process is not unlike writing tests for your software. Only communicate a (proposed) change via a change to the handbook; don't use a presentation, email, chat message, or another medium to communicate the components of the change. These other forms of communication might be more convenient for the presenter, but they make it harder for the audience to understand the context and the implications for other potentially affected processes.
+
+Having a "handbook first" mentality ensures there is no duplication; the handbook is always up to date, and others are better able to contribute.
+
+
+When asked during an INSEAD case study interview (shown above) about challenges related to being all-remote, GitLab co-founder and CEO Sid Sijbrandij provided the following reply.
+
+The biggest problem is GitLab not working handbook first. We have an amazing handbook that allows us to collaborate, onboard new people, and think collectively.
+
+However, it is counterintuitive to communicate changes to the handbook. The default of people, when they wish to communicate a change, is to send a Slack message, send an email, give a presentation, or tell people in a meeting — anything but make a change in the handbook.
+
+It's slower for them. It's quicker to use any other form. If they make a change in the handbook, they first have to find the relevant part of the handbook, they sometimes have to adjust the handbook to make sure their change will fit in, they have to go through a technical process and a review or two, and they have to wait a bit before it's deployed.
+
+It's slower than any other option. However, it allows people that commit a change after that to build upon a change. When they take that extra time, it's building a foundation for the next thing.
+
+I think of it as brick laying. Every piece of information is a brick. At GitLab, there is a well-structured house, and everyone adds to that one house. Because we're pretty particular on how we build it, it has a strong foundation and we can build it very high.
+
+In every other company, they send the brick into the hands of people. Everyone is receiving bricks daily that they have to add to the house they're building internally. They forget things and things are unclear. A lot of context has to be created because there is no context around where to place the bricks.
+
+So, you can end up with a thousand houses that look quite different, that are all hanging a bit, and each time you add a brick to the top one pops out at the bottom. — GitLab co-founder and CEO Sid Sijbrandij"
+
+
 
 ## Building Great Teams of Two or More
 

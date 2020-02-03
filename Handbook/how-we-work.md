@@ -2,6 +2,20 @@
 
 This manual should be an ever evolving resource for those seeking to build the best tools to help farmers grow the highest quality food and medicine with maximum efficiency. It covers everything from sales and marketing, ideation, development, and mass production. 
 
+## Grownetics Values
+
+Compassion - Practice empathy towards yourself, your co-workers, your clients, and your planet.
+Honest & Open - Honesty, Fairness, Open and Collaborative
+Ownership - Take Ownership, Do Whatever it Takes, Grit, Self Starter, Indomitable
+Humble - Tolerance, Freedom, Humble, Respectful
+Creative - Question the Status Quo, Get to first principles
+Efficient - Work smart, not hard, while maximizing efficiency and minimizing waste.
+Detail Oriented - Get it done attitude w/precision and attention to detail  
+
+## Choose Your Level of Excellence
+
+We will never silo your passion. If you'd like to take a stab at anything just ask.
+
 ## Why Handbook First
 
 Very good explanation here [gitlab Why Handbook First?](https://about.gitlab.com/handbook/handbook-usage/#why-handbook-first)
@@ -13,7 +27,6 @@ This excerpt from the Gitlab CEO sums it up well.
 This process is not unlike writing tests for your software. Only communicate a (proposed) change via a change to the handbook; don't use a presentation, email, chat message, or another medium to communicate the components of the change. These other forms of communication might be more convenient for the presenter, but they make it harder for the audience to understand the context and the implications for other potentially affected processes.
 
 Having a "handbook first" mentality ensures there is no duplication; the handbook is always up to date, and others are better able to contribute.
-
 
 When asked during an INSEAD case study interview (shown above) about challenges related to being all-remote, GitLab co-founder and CEO Sid Sijbrandij provided the following reply.
 
@@ -31,29 +44,13 @@ In every other company, they send the brick into the hands of people. Everyone i
 
 So, you can end up with a thousand houses that look quite different, that are all hanging a bit, and each time you add a brick to the top one pops out at the bottom. — GitLab co-founder and CEO Sid Sijbrandij"
 
+## A Remote Culture
 
+About working remotely: http://www.remoteonly.org/ 
 
 ## Building Great Teams of Two or More
 
 In order to design a resilient company we aim for no single point of failure. We will always try to have at least two people trained to do any one job in the company. This manual should help assist you in taking your participation to the next level, if it does not please suggest an improvement via the [issues page][https://gitlab.com/grownetics/grownetics/issues] to support us in this goal.
-
-## Grownetics Values
-
-Compassion - Practice empathy towards yourself, your co-workers, your clients, and your planet.
-Honest & Open - Honesty, Fairness, Open and Collaborative
-Ownership - Take Ownership, Do Whatever it Takes, Grit, Self Starter, Indomitable
-Humble - Tolerance, Freedom, Humble, Respectful
-Creative - Question the Status Quo, Get to first principles
-Efficient - Work smart, not hard, while maximizing efficiency and minimizing waste.
-Detail Oriented - Get it done attitude w/precision and attention to detail  
-
-## A Remote First Culture
-
-About working remotely: http://www.remoteonly.org/ 
-
-## Choose Your Level of Excellence
-
-We will never silo your passion. If you'd like to take a stab at anything just ask.
 
 ## What’s an Agile Waterfall?
 

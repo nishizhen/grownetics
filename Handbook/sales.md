@@ -1,4 +1,4 @@
-# Biz Dev
+# Sales
 
 ## Common Resources
 
@@ -8,7 +8,7 @@
 
 #### How to pick a logo
 
-+ Primary logo is always the green one with the icon above the logotype, only use alternatives when absolutely necessary.  
++ Primary logo is always the green one with the icon above the logotype, only use alternatives when if it's a tight horizontal format.  
 + Always pick the highest resolution logo possible, and ensure there is enough white space around wherever it is placed. Refer to style guide if unsure how to use the logo.  
 + Use .png when transparent background is needed  
 + Horizontal logo is for just that  
@@ -42,12 +42,8 @@ tl;dr - 5% commission for 1st year maximum $50,000 per deal. Usually use Mutual 
 
 
 ## Strategic Overview & Planning
-[Grownetics 5yr Plan Working Doc](https://docs.google.com/document/d/1VktLboYT5nMG1l5LHR6p0DIDCTmHh9XA4NbjUhX2YhE/edit?usp=sharing)
 
-[Monthly Epics Meetings](https://drive.google.com/drive/folders/1obAv-LVOwmKVb36Q1g2eClgAhMH4YfGw?usp=sharing)
-
-## Marketing & Content Creation
-[Marketing & Design Folder](https://drive.google.com/drive/folders/1R3v35di1C7pBSAsJiUlRQ0VhQe7lwUQ_?usp=sharing)
+See EOS Meeting Notes
 
 ## Lead Development
 

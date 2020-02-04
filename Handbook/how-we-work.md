@@ -1,41 +1,65 @@
 # Introduction and How We Work
 
-This manual should be an ever evolving resource for those seeking to improve the world as we know it. It covers everything from sales and marketing, ideation, development, and mass production. Together we will build the best tools, and provide the best service to help our customers **grow every plant better.**
+This manual should be an ever evolving resource for those seeking to build the best tools to help farmers grow the highest quality food and medicine with maximum efficiency. It covers everything from sales and marketing, ideation, development, and mass production. 
 
-## Building Great Teams of Two or More
+## Grownetics Values
 
-In order to design a resilient company there must be no single point of failure. Which is why we try to have at least two people trained to do any one job in the company. This manual helps you take your participation to the next level.
-
-We're going to give you access to everything and be as transparent as possible. With that comes great responsibility.
-
-## Attributes of a good team member
-
-Get it done attitude w/precision and attention to detail  
-Work smart not hard (continuous improvement on process and methods)  
-Show integrity and extreme ownership  
-Collective/Team awareness  
-Pull together  
-In Step  
-Max Transparency  
-Earn your seat at the table  
-Show initiative in team goals and problem solving  
-
-## A Remote First Culture
-
-About working remotely: http://www.remoteonly.org/ 
+Compassion - Practice empathy towards yourself, your co-workers, your clients, and your planet.
+Honest & Open - Honesty, Fairness, Open and Collaborative
+Ownership - Take Ownership, Do Whatever it Takes, Grit, Self Starter, Indomitable
+Humble - Tolerance, Freedom, Humble, Respectful
+Creative - Question the Status Quo, Get to first principles
+Efficient - Work smart, not hard, while maximizing efficiency and minimizing waste.
+Detail Oriented - Get it done attitude w/precision and attention to detail  
 
 ## Choose Your Level of Excellence
 
 We will never silo your passion. If you'd like to take a stab at anything just ask.
 
+## Why Handbook First
+
+Very good explanation here [gitlab Why Handbook First?](https://about.gitlab.com/handbook/handbook-usage/#why-handbook-first)
+
+This excerpt from the Gitlab CEO sums it up well.
+
+"Documenting in the handbook before taking an action may require more time initially because you have to think about where to make the change, integrate it with the existing content, and then possibly add to or refactor the handbook to have a proper foundation. But, it saves time in the long run, and this communication is essential to our ability to continue scaling and adapting our organization.
+
+This process is not unlike writing tests for your software. Only communicate a (proposed) change via a change to the handbook; don't use a presentation, email, chat message, or another medium to communicate the components of the change. These other forms of communication might be more convenient for the presenter, but they make it harder for the audience to understand the context and the implications for other potentially affected processes.
+
+Having a "handbook first" mentality ensures there is no duplication; the handbook is always up to date, and others are better able to contribute.
+
+When asked during an INSEAD case study interview (shown above) about challenges related to being all-remote, GitLab co-founder and CEO Sid Sijbrandij provided the following reply.
+
+The biggest problem is GitLab not working handbook first. We have an amazing handbook that allows us to collaborate, onboard new people, and think collectively.
+
+However, it is counterintuitive to communicate changes to the handbook. The default of people, when they wish to communicate a change, is to send a Slack message, send an email, give a presentation, or tell people in a meeting — anything but make a change in the handbook.
+
+It's slower for them. It's quicker to use any other form. If they make a change in the handbook, they first have to find the relevant part of the handbook, they sometimes have to adjust the handbook to make sure their change will fit in, they have to go through a technical process and a review or two, and they have to wait a bit before it's deployed.
+
+It's slower than any other option. However, it allows people that commit a change after that to build upon a change. When they take that extra time, it's building a foundation for the next thing.
+
+I think of it as brick laying. Every piece of information is a brick. At GitLab, there is a well-structured house, and everyone adds to that one house. Because we're pretty particular on how we build it, it has a strong foundation and we can build it very high.
+
+In every other company, they send the brick into the hands of people. Everyone is receiving bricks daily that they have to add to the house they're building internally. They forget things and things are unclear. A lot of context has to be created because there is no context around where to place the bricks.
+
+So, you can end up with a thousand houses that look quite different, that are all hanging a bit, and each time you add a brick to the top one pops out at the bottom. — GitLab co-founder and CEO Sid Sijbrandij"
+
+## A Remote Culture
+
+About working remotely: http://www.remoteonly.org/ 
+
+## Building Great Teams of Two or More
+
+In order to design a resilient company we aim for no single point of failure. We will always try to have at least two people trained to do any one job in the company. This manual should help assist you in taking your participation to the next level, if it does not please suggest an improvement via the [issues page][https://gitlab.com/grownetics/grownetics/issues] to support us in this goal.
+
 ## What’s an Agile Waterfall?
 
-Our workflow methodology is what drives our team to excel on a daily basis. It is a combination of David Allen’s “Getting Things Done”, Agile/Scrum, and Waterfall for Strategy and Road mapping.
+Our workflow methodology is what drives our team to excel on a daily basis. For individuals we recommend some variation of David Allen’s “Getting Things Done”, for teams we run Agile/Scrum for our daily and weekly work, and Waterfall for strategy and project planning.
 
 ### Start with GTD
 
 Brain Dump to remove all the noise, use the system!
-Anything that can get done in under 2 minutes do it now, everything else put in the list/get it on a post-it.
+Anything that can get done in under 2 minutes do it now, everything else get it in wrike or your personal GTD system.
 Break bigger to-do’s into actions that start with verbs.
 
 ### Agile is Our Week
@@ -44,7 +68,7 @@ We run a 1 week sprint cycle with Sprint Review and following week's Sprint Plan
 
 Independent of the team's sprint review and planning there will be separate code review, hardware review, design review, and milestone meetings.
 
-Each of these meeting types has a template in the All Company/SOP Templates G-Drive. Prior to the review meetings it is ideal for each member of the team contributes to the agenda and outline, simply listing the issue's you'll be discussing is fine. Once the meeting actually begins there should always be one person in the meeting writing bulleted notes on what's being discussed and the outcome. Each bulleted item on the agenda/meeting notes should end with an action whether an issue was made in gitlab, or card made in wrike - next actions should be the outcome.
+Use the google doc meeting notes template for your meeting notes in G-Drive and Open Wrike project management software or gitlab to update tasks/issues in real time. Prior to the review meetings it is ideal for each member of the team contributes to the agenda and outline, simply listing the issue's you'll be discussing is fine. Once the meeting actually begins there should always be one person in the meeting writing bulleted notes on what's being discussed and the outcome. Each bulleted item on the agenda/meeting notes should end with an action whether an issue was made in gitlab, or card made in wrike - next actions should be the outcome.
 
 #### Sprint Review
 
@@ -86,13 +110,17 @@ SOP’s are the best way we know how to do an action to date and should always b
 
 ## Automate and Optimize
 
-The key to maximum efficiency is not endless refining of the same thing but a deeper understanding of the problem paired with an elegantly automated solution. The key to an optimized system is a culture of continuous improvement and learning, not one of complacency. 
+The key to maximum efficiency is not endless refining of the same thing but a deeper understanding of the problem paired with an elegantly automated solution. The key to an optimized system is a culture of continuous improvement and learning, not one of complacency. As we automate for our customers to drive efficiency, we should do the same internally for our company.
 
 These two words ‘Automate & Optimize’ are at the core of what we deliver to our customers, and at the core of how we stay lean while we scale this company. Automation is the pairing of novel tools to create ‘no-touch’ or ‘ low-touch’ work and process flows. Optimization is accomplished by adding a measurement analytics layer to improve upon every single cycle. 
 
 ## Human Guided Optimization
 
+Or optimization with humane values ;p. Don't let process get in the way of productivity and flow, but make sure to measure what matters. 
+
 ### Gamify Real Value Creation
+
+It's a known fact that people work best when the feel like they're challenged while being in an open fun environment. 
 
 ### Process Automation
 

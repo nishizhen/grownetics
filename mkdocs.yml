@@ -3,6 +3,8 @@
 
 site_name: Grownetics Company Handbook
 site_url: http://handbook.cloudforest.io/
+repo_url: https://gitlab.com/grownetics/grownetics
+edit_uri: edit/master/Handbook
 docs_dir: Handbook
 theme:
   name: 'material'
@@ -16,17 +18,14 @@ nav:
   - 'Introduction': 'how-we-work.md'
   - 'Onboarding': 'onboarding.md'
   - 'Team Processes': 'team-processes.md'
-  - 'Internal Tools': 'tools.md'
   - 'Working with our docs': 'documentation.md'
   - 'Holding Meetings': 'meetings.md'
-  - 'Team Directory': 'team-dir.md'
 - Development:
   - 'ACLs': 'Development/acls.md'
   - 'BACnet': 'Development/bacnet.md'
   - 'Best Practices': 'Development/best-practices.md'
   - 'Dev Xdebug': 'Development/dev-xdebug.md'
   - 'Dev OSX': 'Development/dev-osx.md'
-  - 'DevOps': 'Development/devops.md'
   - 'Environmental Controls': 'Development/environmental-control.md'
   - 'Firmware': 'Development/firmware.md'
   - 'growctl': 'Development/growctl.md'
@@ -34,22 +33,18 @@ nav:
   - 'How We Develop': 'Development/how-we-develop.md'
   - 'Onsite Server Setup Guide': 'Development/onsite-server-setup.md'
   - 'Organizations': 'Development/organizations.md'
-  - 'Release Guide': 'Development/releases.md'
   - 'Rules Engine': 'Development/rules-engine.md'
   - 'Testing': 'Development/testing.md'
   - 'Tor Access': 'Development/tor.md'
   - 'UI/UX': 'Development/ux.md'
-  - 'Useful Commands': 'Development/commands.md'
   - 'Writing Changelogs': 'Development/changelogs.md'
 - Feature Flags:
   - 'Overview': 'FeatureFlags/overview.md'
   - 'Home Screen': 'FeatureFlags/home-screen.md'
 - System:
-  - 'Argus API Integration': 'System/argus.md'
   - 'Burnout Protection': 'System/burnout-protection.md'
   - 'Data': 'System/data.md'
 - Support: 
-  - 'Start Here': 'support.md'
   - 'On Call Handbook': 'on-call.md'
 - Biz Dev: 
   - 'Introduction': 'biz-dev.md'

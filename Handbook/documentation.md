@@ -1,5 +1,7 @@
 # Working with our Documentation
 
+For inspiration, start here: [GitLab's Handbook](https://about.gitlab.com/handbook/) or [Clef's Handbook](https://github.com/clef/handbook)
+
 ## Using these docs
 
 This is our company documentation. Everything anyone needs to know about how to work at Grownetics should be here. Anything you would need to train someone else to do should have a step by step guide somewhere in this repository that you can point people to. Check out http://remoteonly.org/

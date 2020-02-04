@@ -5,6 +5,7 @@ RUN apt-get update \
     && curl -sL https://deb.nodesource.com/setup_6.x | bash - \
     && apt-get -y install \
     autoconf \
+    default-mysql-client \
     g++ \
     iputils-ping \
     libicu-dev \
@@ -12,7 +13,6 @@ RUN apt-get update \
     libmcrypt-dev \
     libpng-dev \
     libxml2-dev \
-    default-mysql-client \
     make \
     nodejs \
     npm \

@@ -4,7 +4,9 @@ RUN apt-get update \
     && apt-get -y install \
     autoconf \
     curl \
+    default-mysql-client \
     g++ \
+    gnupg2 \
     iputils-ping \
     libicu-dev \
     libcurl4-gnutls-dev \
@@ -14,15 +16,18 @@ RUN apt-get update \
     libxml2-dev \
     make \
     nodejs \
-    npm \
     ruby \
     ruby-dev \
     unzip \
     vim \
+    yarn \
     zip \
+    && curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
+    echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list \
+    && apt install yarn \
     && pecl install mcrypt-1.0.2 \
     && gem install -n /usr/local/bin sass \
-    && npm install -g bower grunt-cli \
+    && yarn add bower grunt-cli \
     && echo '{ "allow_root": true }' > /root/.bowerrc \
     && docker-php-source extract \
     && pecl install xdebug \

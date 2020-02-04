@@ -19,3 +19,7 @@ RUN apt-get update && apt-get install -y \
     wget https://releases.rancher.com/cli/v0.6.1/rancher-linux-amd64-v0.6.1.tar.gz && \
     tar -xvzf rancher-linux-amd64-v0.6.1.tar.gz && \
     mv rancher-v0.6.1/rancher /usr/local/bin/
+
+ENV DOCKER_TLS_CERTDIR=/certs
+# also, ensure the directory pre-exists and has wide enough permissions for "dockerd-entrypoint.sh" to create subdirectories, even when run in "rootless" mode
+RUN mkdir /certs /certs/client && chmod 1777 /certs /certs/client

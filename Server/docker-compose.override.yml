@@ -1,5 +1,5 @@
 growdash:
-  image: grownetics/growdash:dev
+  image: grownetics/growdash
   volumes:
     - ./html:/var/www/html:cached
     - ./tmp:/tmp:cached

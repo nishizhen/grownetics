@@ -6,35 +6,9 @@
 - [Google Drive](https://drive.google.com) - Calendar, Mail, Drive
 - [Wrike](http://wrike.com) - Project Management
 - [Grownetics GitLab](https://code.cropcircle.io) - Git, Dev Issues, Wiki
-- [Mattermost Chat](https://chat.cropcircle.io)
-      This is our 'office'. If you are online, you are considered to be working and available. Though we do things in a very async way, if you are online try and be as responsive as possible to @mentions, questions, and direct messages. 
-      Mattermost app links for desktop, android, and ios can be found at the bottom of this page.
-      https://about.mattermost.com/download/
+- [Mattermost Chat](https://grownetics.zulipchat.com)
+      This is our 'office'. If you are online, you are considered to be working and available.
 - [Google Meet: Video Chat and Conferencing](https://meet.google.com)
-      - [Our Company Hangout](https://hangouts.google.com/hangouts/_/grownetics.co/grownetics)
-- [Lastpass](https://www.lastpass.com/)
-- [Zendesk](https://support.grownetics.co) - Support Ticketing System
-
-### OS X
-* VPN - [Viscosity](http://www.sparklabs.com/viscosity/), [Tunnelblick](https://tunnelblick.net/) 
-
-### Linux/Ubuntu
-* [VPN Setup](https://github.com/sovereign/sovereign/wiki/OpenVPN-client-setup) 
-
-### Windoze
-* VPN - [Secure Point OpenVPN Client](https://sourceforge.net/projects/securepoint/)
-
-### More Tools
-- [BulletNotes](http://bulletnotes.io) - Nick's side project
-- [MindMeister](https://www.mindmeister.com/) - Mind Maps
-- [Google Meet](meet.google.com)
-- [KeyBr](http://www.keybr.com/) - Best Typing Tutor 
-
-### Resources
-1. [Recorded Webinars](https://drive.google.com/drive/folders/0B8sp43Yj-1NKdWdBNTF2bHdfRTA?usp=sharing)
-2. [Linux Academy](https://linuxacademy.com)
-      + username: vince.h@grownetics.co
-      + pass: gLXSgL3k8LRm
 
 ### Video Conference Backups
 Every now and again you need a backup, two we like are

@@ -3,10 +3,10 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 # Rooms to look at
-rooms = np.array([7,8,9,10])
+rooms = np.array([5,7,8,9,10])
 
 # Median wet weight data across different rooms
-median_ww = np.array([7,7.75,7,6.5])
+median_ww = np.array([2,7,7.75,7,6.5])
 
 inputData = pd.read_csv('/home/input.csv')
 
@@ -27,25 +27,17 @@ def softmax(v):
 weights = softmax(median_ww)
 
 # Convert from pandas DataFrame to numpy array
-tempf07 = np.array(inputData.loc[(inputData['source_id'] == 7) & (inputData['type'] == 3)]['sensor_data.mean_value'])
-tempf08 = np.array(inputData.loc[(inputData['source_id'] == 8) & (inputData['type'] == 3)]['sensor_data.mean_value'])
-tempf09 = np.array(inputData.loc[(inputData['source_id'] == 9) & (inputData['type'] == 3)]['sensor_data.mean_value'])
-tempf10 = np.array(inputData.loc[(inputData['source_id'] == 10) & (inputData['type'] == 3)]['sensor_data.mean_value'])
+temp_samp = []
+hum_samp = []
+co2_samp = []
 
-humf07 = np.array(inputData.loc[(inputData['source_id'] == 7) & (inputData['type'] == 2)]['sensor_data.mean_value'])
-humf08 = np.array(inputData.loc[(inputData['source_id'] == 8) & (inputData['type'] == 2)]['sensor_data.mean_value'])
-humf09 = np.array(inputData.loc[(inputData['source_id'] == 9) & (inputData['type'] == 2)]['sensor_data.mean_value'])
-humf10 = np.array(inputData.loc[(inputData['source_id'] == 10) & (inputData['type'] == 2)]['sensor_data.mean_value'])
+# Loop through our list of rooms
+for roomId in rooms:
+    temp_samp.append(np.array(inputData.loc[(inputData['source_id'] == roomId) & (inputData['type'] == 3)]['sensor_data.mean_value']))
+    hum_samp.append(np.array(inputData.loc[(inputData['source_id'] == roomId) & (inputData['type'] == 2)]['sensor_data.mean_value']))
+    co2_samp.append(np.array(inputData.loc[(inputData['source_id'] == roomId) & (inputData['type'] == 4)]['sensor_data.mean_value']))
 
-co2f07 = np.array(inputData.loc[(inputData['source_id'] == 7) & (inputData['type'] == 4)]['sensor_data.mean_value'])
-co2f08 = np.array(inputData.loc[(inputData['source_id'] == 8) & (inputData['type'] == 4)]['sensor_data.mean_value'])
-co2f09 = np.array(inputData.loc[(inputData['source_id'] == 9) & (inputData['type'] == 4)]['sensor_data.mean_value'])
-co2f10 = np.array(inputData.loc[(inputData['source_id'] == 10) & (inputData['type'] == 4)]['sensor_data.mean_value'])
-
-# Rearrange into sample matrices
-temp_samp = np.array([tempf07,tempf08,tempf09,tempf10])
-hum_samp = np.array([humf07,humf08,humf09,humf10])
-co2_samp = np.array([co2f07,co2f08,co2f09,co2f10])
+temp_samp=np.asarray(temp_samp)
 
 # Expected value of samples given the softmax weights
 # Multiply the weights by the sample matrices

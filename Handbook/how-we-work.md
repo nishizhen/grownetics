@@ -24,13 +24,25 @@ This excerpt sums it up well.
 
 "Documenting in the handbook before taking an action may require more time initially because you have to think about where to make the change, integrate it with the existing content, and then possibly add to or refactor the handbook to have a proper foundation. But, it saves time in the long run, and this communication is essential to our ability to continue scaling and adapting our organization."
 
+**The Remote Manifesto**
+
+1. Hiring and working from all over the world instead of from a central location.
+2. Flexible working hours over set working hours.
+3. Writing down and recording knowledge over verbal explanations.
+4. Written down processes over on-the-job training.
+5. Public sharing of information over need-to-know access.
+6. Opening up every document for editing by anyone over top-down control of documents.
+7. Asynchronous communication over synchronous communication.
+8. The results of work over the hours put in.
+9. Formal communication channels over informal communication channels.
+
+[Gitlab guide to remote work](https://about.gitlab.com/company/culture/all-remote/guide/) 
+
+
 ## Wrike or Gitlab Second
 
 We track all tasks and projects through [Wrike](https://wrike.com). We try to keep our company wide tools to a minimum so you only have to look in a few places to do your work (Handbook, Wrike, Zulip, G-Suite). For the handfull we do use we expect team members to be entirely competent. 
 
-## A Remote Culture
-
-About working remotely: http://www.remoteonly.org/ 
 
 ## Building Great Teams of Two or More
 

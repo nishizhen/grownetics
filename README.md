@@ -28,6 +28,8 @@ If you find a bug with the documentation, or something that could be improved, p
 
 # Community
 
+Please join us and let us know what you think!
+
 ## [Chat](https://grownetics.zulipchat.com/)
 ## [Reddit](https://reddit.com/r/Grownetics/)
 ## [Twitch](https://www.twitch.tv/nickbusey/)

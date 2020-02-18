@@ -4,13 +4,13 @@ This manual should be an ever evolving resource for those seeking to build the b
 
 ## Grownetics Values
 
-Compassion - Practice empathy towards yourself, your co-workers, your clients, and your planet.
-Honest & Open - Honesty, Fairness, Open and Collaborative
-Ownership - Take Ownership, Do Whatever it Takes, Grit, Self Starter, Indomitable
-Humble - Tolerance, Freedom, Humble, Respectful
-Creative - Question the Status Quo, Get to first principles
-Efficient - Work smart, not hard, while maximizing efficiency and minimizing waste.
-Detail Oriented - Get it done attitude w/precision and attention to detail  
+- **Compassion** - Practice empathy towards yourself, your co-workers, your clients, and your planet.
+- **Transparency** - Honesty and Openness, Fair and Collaborative
+- **Ownership** - To take ownership of something is to be responsible for it. Responsability doesn't mean blame, just owning the ability to respond.
+- **Humble** - Tolerance, Freedom, Humble, Respectful
+- **Creative** - Question the Status Quo, Get to first principles
+- **Efficient** - Work smart, not hard, while maximizing efficiency and minimizing waste.
+- **Detail Oriented** - Get it done attitude w/precision and attention to detail  
 
 ## Choose Your Level of Excellence
 

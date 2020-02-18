@@ -3,7 +3,7 @@
 If you're looking for something use the search tool!
 
 ## Introduction
-The Grownetics team handbook is inspired by open organizations like Gitlab and Redhat aiming to maximize resource effiency through open innovation and transparency. 
+The Grownetics team handbook is inspired by open organizations like [Gitlab](gitlab.org) and [Red Hat](redhat.com) aiming to maximize resource effiency through open innovation and transparency. 
 
 As a handbook first (remote first) company, this handbook is the central repository for how we work. As part of our value of being transparent the handbook is open to the world, and we welcome feedback. Please make a [merge request](https://gitlab.com/grownetics/grownetics/-/merge_requests) to suggest improvements or add clarifications. Please use [issues](https://gitlab.com/grownetics/grownetics/issues) to ask questions.
 

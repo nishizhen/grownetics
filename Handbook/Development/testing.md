@@ -1,5 +1,7 @@
 # Manual QA
 
+[Link to QA sandbox, as this is QA things may be broken](http://cloud.qa.development.cloudforest.io./)
+
 ## Documenting Your Tests
 
 The preferred method of documentation is screen-capture with audio commentary and written notes. To do this most easily use the [loom chrome extension](http://useloom.com) and make a short test video first with the demo open to see if audio and video are recording correctly. record 30s to 1m and check. If you prefer more control and reliable recording use OBS ([Open Broadcaster System](https://obsproject.com/))

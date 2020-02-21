@@ -53,5 +53,6 @@ nav:
 - Project Delivery & Manufacturing: 
   - 'Project Kickoff': 'kickoff.md'
   - 'Manufacturing': 'manufacturing.md'
+  - 'Ordering from MacroFab': 'macrofab.md'
   - 'Installations': 'installations.md'
   - 'Safety and Precautions': 'safety.md'

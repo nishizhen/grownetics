@@ -13,16 +13,15 @@ as much of it as we can. As we do that, there will be problems, bugs,
 etc. This repository can be considered unstable.
 
 # Handbook
-
 [Grownetics Company Handbook](http://docs.grownetics.co/)
 
 # Technical Documentation
 
-## [GrowServer](Server/README.md)
-## [Hardware](Hardware/README.md)
-## [Firmware](Firmware/README.md)
-## [DevOps](DevOps/README.md)
-## [GrowCtl](src/code.cropcircle.io/grownetics/growctl/README.md)
+* [GrowServer](Server/README.md)
+* [Hardware](Hardware/README.md)
+* [Firmware](Firmware/README.md)
+* [DevOps](DevOps/README.md)
+* [GrowCtl](src/code.cropcircle.io/grownetics/growctl/README.md)
 
 # Reporting bugs
 

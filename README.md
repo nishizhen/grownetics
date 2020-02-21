@@ -8,12 +8,13 @@ This repository will contain as much as we can possibly open source.
 
 ## Repository Status
 
-Until recently all of our source was closed. We are moving to open
-as much of it as we can. As we do that, there will be problems, bugs,
-etc. This repository can be considered unstable.
+Until recently all of our source was closed. We are moving to open as much of it as we can. As we do that, there will be problems, bugs, etc. This repository can be considered unstable.
 
 # Handbook
+
 [Grownetics Company Handbook](http://docs.grownetics.co/)
+
+[Using our Documentation](http://docs.grownetics.co/documentation/)
 
 # Technical Documentation
 
@@ -26,8 +27,6 @@ etc. This repository can be considered unstable.
 # Reporting bugs
 
 If you find a bug with the documentation, or something that could be improved, please open an [issue](https://code.cropcircle.io/Grownetics/Grownetics/issues).
-
-# [Using our Documentation](http://docs.grownetics.co/documentation/)
 
 # Community
 

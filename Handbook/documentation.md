@@ -30,7 +30,7 @@ Using VSCode with `Markdown Preview Enhanced` extension installed is the best in
 
 ### mkdocs
 
-We use mkdocs to render our handbook into a nice HTML page which is served at https://handbook.grownetics.co/
+We use mkdocs to render our handbook into a nice HTML page which is served at https://docs.grownetics.co/
 
 #### Local Editing
 

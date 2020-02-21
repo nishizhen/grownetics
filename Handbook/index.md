@@ -11,8 +11,8 @@ As a handbook first (remote first) company, this handbook is the central reposit
 ## Quick Links
 
 ### [Grownetics Website](https://grownetics.co)
-### [This Handbook Rendered](docs.grownetics.co)
-### [Open Source Code Repo](gitlab.com/grownetics)
+### [This Handbook Rendered](https://docs.grownetics.co)
+### [Open Source Code Repo](https://gitlab.com/grownetics)
 ### [Gitlab Handbook](https://about.gitlab.com/handbook/)
 
 ### Important Dates for Contractors

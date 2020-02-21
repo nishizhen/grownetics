@@ -5,7 +5,7 @@
 ### Intake Funnel
 
 
-### Lead Folder and Integratio Plan Setup
+### Lead Folder and Integration Plan Setup
 
 Create new lead folder and subdirectory with client drawings, upload client drawings from email.
 

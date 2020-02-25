@@ -21,6 +21,11 @@ The integration plan is made up of an Adobe Illustrator .ai file which is a rudi
 
 Duplicate the most recent sensor reference map from a previous lead folder and rename to [Client Name - Sensor Ref Map.ai]
 
+## Sourcing Vendors and Subcontractors
+
+If we don't have a preferred vendor for a specific work functioin always source at least 3, get 3+ opinions, or quotes/bids.
+
+
 
 
 

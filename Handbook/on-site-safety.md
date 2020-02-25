@@ -2,6 +2,10 @@
 
 Since we do go onsite to facilities of varying quality and safety regulations, bringing our own safety with us is very important.
 
+## Electrical and Low Voltage Work
+
+Grownetics employee's are not allowed to work on any on-site electrical systems. All electrical work must be done by an insured and licensed electrician, or if working on low voltage systems they should be worked on by certified low voltage installer (IT services company) or an electrician. 
+
 ## What are safe levels of CO2 and CO in rooms?
 
 ### CO2

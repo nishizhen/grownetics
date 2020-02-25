@@ -51,7 +51,7 @@ nav:
 - Support: 
   - 'On Call Handbook': 'on-call.md'
 - Biz Dev: 
-  - 'Introduction': 'biz-dev.md'
+  - 'Introduction': 'sales.md'
 - Project Delivery & Manufacturing: 
   - 'Project Kickoff': 'kickoff.md'
   - 'Manufacturing': 'manufacturing.md'

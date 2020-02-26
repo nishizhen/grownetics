@@ -14,6 +14,7 @@ As a handbook first (remote first) company, this handbook is the central reposit
 ### [This Handbook Rendered](https://docs.grownetics.co)
 ### [Open Source Code Repo](https://gitlab.com/grownetics)
 ### [Gitlab Handbook](https://about.gitlab.com/handbook/)
+### [Grownetics Community Chat](https://grownetics.zulipchat.com/)
 
 ### Important Dates for Contractors
 * Hours should be logged from the 25th to the 25th of each month. Please submit your hours by end of day on the 25th of each month.

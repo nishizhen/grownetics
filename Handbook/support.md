@@ -47,3 +47,6 @@ Make sure you're matching their browser as closely as possible, and if you are g
 2. Create top level column headings for middleware device,  and each sensor type (separate combo sensors to their individual)
 3. Pull up dashboard and go to devices page, check which devices are offline and log in the google sheet
 4. Pull up dashboard map and cycle through each sensor type to see if any read 0 or 32 degrees, or 259 degrees those are the maximum ranges of the hardware. Be sure to wait a few minutes on each sensor type, sometimes there is a delay where a CO2 sensor will read 0 but then get populated as the loop makes it back around to that device.
+
+If a device is online but the sensors aren't they could be unplugged, first step is to check all hardwire connections. If only one of the sensors is out on a combo sensor then it's most likely a hardware fault and should be replaced. If the hardware was installed within two years then it is covered under warranty, if outside of two years then the customer will have to purchase replacement hardware.
+

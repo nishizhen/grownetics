@@ -16,7 +16,7 @@ This manual should be an ever evolving resource for those seeking to build the b
 
 We will never silo your passion. If you'd like to take a stab at anything just ask.
 
-## Why Handbook First
+## Handbook First, Why?
 
 Very good explanation here [gitlab Why Handbook First?](https://about.gitlab.com/handbook/handbook-usage/#why-handbook-first)
 
@@ -43,6 +43,15 @@ This excerpt sums it up well.
 
 We track all tasks and projects through [Wrike](https://wrike.com). We try to keep our company wide tools to a minimum so you only have to look in a few places to do your work (Handbook, Wrike, Zulip, G-Suite). For the handfull we do use we expect team members to be entirely competent. 
 
+## Daily Kickoff Checklist
+Open handbook and this draft doc to put edits/thoughts that come up. Briefly review every task that’s Sprint Priority and higher status in Wrike Ops Board, comment on any that you need more info on, or are unsure of how it fits into a project or weekly sprint cycle. Filter Ops Board to show all unassigned tasks and tasks assigned to ops@grownetics.co. Assign, comment, or take next steps on all tasks in Sprint Priority or above. Open email to groom inbox and create any more tasks/updates in wrike.
+
+Post standup in Zulip using this format:
+**Yesterday I:** 
+**Today I will:** 
+**Team Blockers:** THIS SHOULD BE A PRIORITY IF THERE ARE ANY
+**Availability:** If you’re going to be out of office sometime today/during the week.
+**MIT:** (Most Important Task)
 
 ## Building Great Teams of Two or More
 

@@ -4,7 +4,29 @@ We try to systematize our weekly team meetings to allow everyone to schedule the
 
 So you've run into an issue and you dont think you can move forward. Now you might think you need to call a meeting, but wait, review this handy 'Should I hold a meeting' infographic and then proceed.
 
-##### [Should I hold a meeting infographic link](https://hbr.org/resources/images/article_assets/2015/03/W150317_SAUNDERS_SHOULDHOLDMEETING.png)
+## Regular Meetings at Grownetics
+
+These are regularly scheduled meetings for our sprint workflow and company wide EOS implementation
+
+### Monday
+- Project/Sprint Planning Meeting
+    - Purpose: To review all projects to prioritize and remove blockers. Go project by project in wrike and update in both project folder and Ops Board as needed.
+
+- L10
+    - Purpose: Review company wide projects and initiatives, ensure we're on track for quarterly rocks, IDS any issues.
+
+### Friday
+- Project/Sprint Review Meeting
+    - Purpose to review the weeks work and sync before the weekend
+- EOS Scorecard Meeting
+    - Co-working to populate company scorecard
+
+
+##### Should I hold a meeting?
+
+Probably not, we have regularly scheduled meetings to cover all operations. If you need information from someone to get a task done add a comment and @ the person in the wrike task to bring them in to help. If you need to co-work on a big task to get it done with some other people schedule a co-working session for that specific task.
+
+[Should I hold a meeting infographic link](https://hbr.org/resources/images/article_assets/2015/03/W150317_SAUNDERS_SHOULDHOLDMEETING.png)
 
 Okay, so now you're either back at work or still stuck. In the case of still being stuck and you've exhausted your quick wins, get in touch with someone who can remove your blocker, if it's urgent CALL! If it's not as much put it in chat or propose a meeting date with the team members you'd like input from.
 

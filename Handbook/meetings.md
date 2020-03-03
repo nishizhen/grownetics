@@ -6,7 +6,7 @@ So you've run into an issue and you dont think you can move forward. Now you mig
 
 ## Regular Meetings at Grownetics
 
-These are regularly scheduled meetings for our sprint workflow and company wide EOS implementation
+These are regularly scheduled meetings for our sprint workflow and company wide EOS implementation.
 
 ### Monday
 - Project/Sprint Planning Meeting
@@ -21,6 +21,13 @@ These are regularly scheduled meetings for our sprint workflow and company wide 
 - EOS Scorecard Meeting
     - Co-working to populate company scorecard
 
+## Documenting your Meetings
+
+For internal meetings do your best to just put the work where it should live. We got rid of our old internal meeting minutes doc for the weekly project review meetings and used wrike as the living meeting tool with comments for each task getting added to the task. 
+
+We're tesing fireflies.ai so you can use that on internal meetings for text based searchable recordings from your meetings. 
+
+For meetings with external parties just take notes in a doc under All Company/Meeting Notes/Client Name or by hand if in person (handwritten notes should be transcribed into a google doc with any tasks mentioned created in Wrike ASAP).
 
 ##### Should I hold a meeting?
 

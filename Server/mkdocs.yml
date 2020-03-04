@@ -5,10 +5,11 @@ theme:
     primary: 'green'
     accent: 'green'
 
-pages:
+nav:
 - Home: 'index.md'
 - FAQ:
   - 'How do I create plants?': 'create-plants.md'
+  - 'How do I create recipes?': 'create-recipe.md'
   - 'How do I add a user?': 'create-users.md'
   - 'How do I add someone to receive alerts?': 'add-user-alerts.md'
   - "How do I move a Batch from Zone 'A' to Zone 'B'?": 'move-batch.md'
@@ -21,3 +22,6 @@ pages:
   - 'Grafana': 'grafana.md'
 - Hardware:
   - 'Hardware Debugging Procedures': 'hardware-debugging.md'
+- Plants:
+  - 'Plant Tagging Standard': 'plant-tagging-standard.md'
+  

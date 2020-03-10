@@ -21,7 +21,8 @@ nav:
   - 'Onboarding': 'onboarding.md'
   - 'Team Processes': 'team-processes.md'
   - 'Working with our docs': 'documentation.md'
-  - 'Holding Meetings': 'meetings.md'
+  - 'Meetings at Grownetics': 'meetings.md'
+  - 'Legal Docs & Contracts (NDA's etc.)': 'legal.md'
 - Development:
   - 'ACLs': 'Development/acls.md'
   - 'BACnet': 'Development/bacnet.md'

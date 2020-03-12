@@ -51,46 +51,20 @@ pages:
     - docker push grownetics/socketio:$CI_PIPELINE_ID
 
 'Build GrowServer':
-  image: grownetics/build:1.1
   stage: build
-  variables:
-    DOCKER_TLS_CERTDIR: "/certs"
-  artifacts:
-    paths:
-      - Server/html/
   script:
     - cd Server/
-    - pip install --upgrade setuptools
-    - mkdocs --version
-    - mkdocs build
-    - mv site html/webroot/docs
-    - cd html/
-    - mkdir tmp webroot/cache_js webroot/cache_css || true
-    - chmod -R 777 webroot tmp
-    - composer install
-    - bower install
-    - bin/cake asset_compress build
+    - docker run -v ${PWD}:/var/www grownetics/build:1.1 /var/www/build.sh
+    - cd ../
 
-    - BUILD_DATE=`date +%Y-%m-%d:%H:%M:%S` && echo "<?php return ['BUILD_ID' => '$CI_PIPELINE_ID','BUILD_DATE' => '$BUILD_DATE'];" > config/build_info.php
-    - cd ../../
+    - echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" --password-stdin docker.io
+    - docker build Server/html --pull --no-cache -t grownetics/growdash:$CI_PIPELINE_ID -f Server/html/images/growdash/Dockerfile.dev
+    - docker push grownetics/growdash:$CI_PIPELINE_ID
 
-'Package NGINX':
-  stage: package
-  dependencies:
-    - 'Build GrowServer'
-  script:
     - echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" --password-stdin docker.io
     - docker build Server/html --pull --no-cache -t grownetics/nginx:$CI_PIPELINE_ID -f Server/html/images/nginx/Dockerfile
     - docker push grownetics/nginx:$CI_PIPELINE_ID
 
-'Package GrowServer':
-  stage: package
-  dependencies:
-    - 'Build GrowServer'
-  script:
-    - echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" --password-stdin docker.io
-    - docker build Server/html --pull --no-cache -t grownetics/growdash:$CI_PIPELINE_ID -f Server/html/images/growdash/Dockerfile.dev
-    - docker push grownetics/growdash:$CI_PIPELINE_ID
 
 'Build growctl':
   stage: build

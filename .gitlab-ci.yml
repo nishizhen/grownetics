@@ -35,13 +35,6 @@ pages:
     - docker push grownetics/handbook:$CI_PIPELINE_ID
   only:
     - master
-  
-'Package Cron':
-  stage: package
-  script:
-    - echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" --password-stdin docker.io
-    - docker build Server/html --pull --no-cache -t grownetics/supercron:$CI_PIPELINE_ID -f Server/html/images/supercron/Dockerfile
-    - docker push grownetics/supercron:$CI_PIPELINE_ID
 
 'Build Socket':
   stage: build
@@ -65,6 +58,9 @@ pages:
     - docker build Server/html --pull --no-cache -t grownetics/nginx:$CI_PIPELINE_ID -f Server/html/images/nginx/Dockerfile
     - docker push grownetics/nginx:$CI_PIPELINE_ID
 
+    - echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" --password-stdin docker.io
+    - docker build Server/html --pull --no-cache -t grownetics/supercron:$CI_PIPELINE_ID -f Server/html/images/supercron/Dockerfile
+    - docker push grownetics/supercron:$CI_PIPELINE_ID
 
 'Build growctl':
   stage: build

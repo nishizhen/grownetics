@@ -15,3 +15,7 @@ FACILITY / LOCATION ID - YEAR - CULTIVAR ID / SEED LOT ID - BATCH ID - PLANT ID
 ```
 
 This plant tag refers to the 42nd plant in the 12th batch of Bubba Kush varietal #13 grown in the year 2020 at the 123 Pine St. location.
+
+## Physical Tagging
+
+We use Metrc compatible tags.

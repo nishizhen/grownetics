@@ -1,4 +1,4 @@
-site_name: Grownetics Server Documentation
+site_name: Grownetics Documentation
 theme:
   name: 'material'
   palette:
@@ -23,5 +23,5 @@ nav:
 - Hardware:
   - 'Hardware Debugging Procedures': 'hardware-debugging.md'
 - Plants:
-  - 'Plant Tagging Standard': 'plant-tagging-standard.md'
+  - 'Plant ID/Tag Standard': 'plant-id-standard.md'
   

@@ -18,11 +18,9 @@ Until recently all of our source was closed. We are moving to open as much of it
 
 # Technical Documentation
 
-* [GrowServer](Server/README.md)
-* [Hardware](Hardware/README.md)
-* [Firmware](Firmware/README.md)
-* [DevOps](DevOps/README.md)
-* [GrowCtl](src/code.cropcircle.io/grownetics/growctl/README.md)
+* [GrowServer](http://docs.grownetics.co/Development/growserver/)
+* [Firmware](http://docs.grownetics.co/Development/firmware/)
+* [GrowCtl](http://docs.grownetics.co/Development/growctl/)
 
 # Reporting bugs
 

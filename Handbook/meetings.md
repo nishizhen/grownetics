@@ -9,13 +9,17 @@ So you've run into an issue and you dont think you can move forward. Now you mig
 These are regularly scheduled meetings for our sprint workflow and company wide EOS implementation.
 
 ### Monday
-- Project/Sprint Planning Meeting
-    - Purpose: To review all projects to prioritize and remove blockers. Go project by project in wrike and update in both project folder and Ops Board as needed.
+
+- Client Project Review Meeting
+    - Purpose: To review all client projects, to prioritize and remove blockers. Go project by project in wrike and update in both project folder and Ops Board as needed.
+
+### Tuesday
 
 - L10
     - Purpose: Review company wide projects and initiatives, ensure we're on track for quarterly rocks, IDS any issues.
 
 ### Friday
+
 - Project/Sprint Review Meeting
     - Purpose to review the weeks work and sync before the weekend
 - EOS Scorecard Meeting

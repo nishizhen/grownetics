@@ -2,6 +2,7 @@ image: docker:19.03
 
 services:
   - name: docker:19.03.0-dind
+    command: ["--experimental"]
     alias: docker
 
 stages:
@@ -45,8 +46,6 @@ pages:
 
 'Build GrowServer':
   stage: build
-  variables:
-    DOCKER_CLI_EXPERIMENTAL: enabled
   script:
     - cd Server/
     - docker run -v ${PWD}:/var/www grownetics/build:1.1 /var/www/build.sh

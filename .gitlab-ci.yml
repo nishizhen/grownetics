@@ -51,9 +51,10 @@ pages:
     - docker run -v ${PWD}:/var/www grownetics/build:1.1 /var/www/build.sh
     - cd ../
     - echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" --password-stdin docker.io
-    - docker build Server/html --pull --no-cache -t grownetics/growdash:$CI_PIPELINE_ID -f Server/html/images/growdash/Dockerfile.dev
-    - docker build Server/html --platform linux/arm64 --pull --no-cache -t grownetics/growdash:$CI_PIPELINE_ID -f Server/html/images/growdash/Dockerfile.dev
-    - docker push grownetics/growdash:$CI_PIPELINE_ID
+    - docker build Server/html --pull --no-cache -t grownetics/growdash:dev-amd64 -f Server/html/images/growdash/Dockerfile.dev
+    - docker build Server/html --platform linux/arm64 --pull --no-cache -t grownetics/growdash:dev-arm64 -f Server/html/images/growdash/Dockerfile.dev
+    - docker push grownetics/growdash:dev-amd64
+    - docker push grownetics/growdash:dev-arm64
 
     - echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" --password-stdin docker.io
     - docker build Server/html --pull --no-cache -t grownetics/nginx:$CI_PIPELINE_ID -f Server/html/images/nginx/Dockerfile

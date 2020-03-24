@@ -49,7 +49,7 @@ pages:
     - cd Server/
     - docker run -v ${PWD}:/var/www grownetics/build:1.1 /var/www/build.sh
     - cd ../
-
+    - export DOCKER_CLI_EXPERIMENTAL=enabled
     - echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" --password-stdin docker.io
     - docker build Server/html --pull --no-cache -t grownetics/growdash:$CI_PIPELINE_ID -f Server/html/images/growdash/Dockerfile.dev
     - docker build Server/html --platform linux/arm64 --pull --no-cache -t grownetics/growdash:$CI_PIPELINE_ID -f Server/html/images/growdash/Dockerfile.dev

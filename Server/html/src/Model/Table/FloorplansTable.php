@@ -151,6 +151,7 @@ class FloorplansTable extends Table
             TRUNCATE TABLE `appliances_zones`;
             TRUNCATE TABLE `batch_notes`;
             TRUNCATE TABLE `batch_recipe_entries`;
+            TRUNCATE TABLE `cultivars`;
             TRUNCATE TABLE `devices`;
             TRUNCATE TABLE `floorplans`;
             TRUNCATE TABLE `harvest_batches`;
@@ -159,11 +160,13 @@ class FloorplansTable extends Table
             TRUNCATE TABLE `map_item_types`;
             TRUNCATE TABLE `map_items_zones`;
             TRUNCATE TABLE `notes`;
+            TRUNCATE TABLE `notifications`;
             TRUNCATE TABLE `plants`;
             TRUNCATE TABLE `recipe_entries`;
             TRUNCATE TABLE `recipes`;
             TRUNCATE TABLE `sensors`;
             TRUNCATE TABLE `sensors_zones`;
+            TRUNCATE TABLE `set_points`;
             TRUNCATE TABLE `tasks`;
             TRUNCATE TABLE `zones`;
         ');

@@ -61,7 +61,7 @@ $actions = [
     $this->Html->link(__('New Facility'), ['controller' => 'Facilities', 'action' => 'add'])
 ];
 
-if (isset($role) && $role == 'Admin') {
+if (isset($navRole) && $navRole == 'Admin') {
     $actions = array_merge($actions, [
         $this->Form->postLink(__('Wipe Floorplan'), ['controller' => 'Floorplans', 'action' => 'clearImport'], ['confirm' => __('Are you sure you want to clear the floorplan (including all devices, zones, sensors, etc?)')]),
         $this->Form->postLink(__('Import Demo Floorplan'), ['controller' => 'Floorplans', 'action' => 'importDemo'], ['confirm' => __('Sure you want to seed a demo floorplan and overwrite any existing floorplan, device, zone data?')])

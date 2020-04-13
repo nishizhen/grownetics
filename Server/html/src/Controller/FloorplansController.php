@@ -442,7 +442,7 @@ class FloorplansController extends AppController
         $migrations = new Migrations();
         $seeded = $migrations->seed(['source' => 'DemoSeeds']);
 
-        $this->Flash->success(__('The floorplan has been deleted.'));
+        $this->Flash->success(__('Demo floorplan imported successfully.'));
         return $this->redirect(['controller' => 'Dash', 'action' => 'index']);
     }
 }

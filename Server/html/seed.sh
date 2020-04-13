@@ -13,6 +13,8 @@ curl -i -XPOST http://influxdb:8086/query --data-urlencode "q=CREATE DATABASE fa
 curl -i -XPOST http://influxdb:8086/query --data-urlencode "q=CREATE DATABASE integration_data"
 
 mkdir webroot/cache_js webroot/cache_css
+mkdir -p tmp/cache tmp/sessions
+chmod -R 777 tmp/
 
 mysql -happdb -uroot -pgrownetics -e 'create database if not exists grownetics_test; grant all privileges on grownetics_test.* to grownetics;';
 

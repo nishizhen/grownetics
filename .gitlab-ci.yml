@@ -4,6 +4,10 @@ services:
   - name: docker:19.03.0-dind
     alias: docker
 
+variables:
+  GIT_SUBMODULE_STRATEGY: recursive
+  HUGO_VERSION: 0.68.3
+
 stages:
   - build
   - package

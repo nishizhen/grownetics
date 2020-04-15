@@ -1,4 +1,4 @@
 .PHONY: web
 
 web:
-	cd Website && hugo
+	cd Website && hugo -d ../site

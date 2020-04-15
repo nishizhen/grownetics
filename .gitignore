@@ -1,6 +1,7 @@
 Ansible/fetch/
 .terraform
 DevOps/secret
+site/
 *.vagrant
 Server/data
 *.retry

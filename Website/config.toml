@@ -1,6 +1,6 @@
 ################################# Default configuration ###################
-baseURL = "https://examplesite.com"
-title = "Meghna"
+baseURL = "https://open.grownetics.co"
+title = "Grownetics Open Source"
 theme = "meghna-hugo"
 # post pagination
 paginate = "6"

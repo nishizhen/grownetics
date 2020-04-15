@@ -1,7 +1,5 @@
-{{ $data := index .Site.Data .Site.Language.Lang }}
-
-{{ if $data.feature.feature.enable }}
-{{ with $data.feature.feature }}
+{{ if .Site.Data.feature.feature.enable }}
+{{ with .Site.Data.feature.feature }}
 {{"<!-- feature -->" | safeHTML}}
 <section class="section section-bg about-2 padding-0" id="feature">
 	<div class="container-fluid">

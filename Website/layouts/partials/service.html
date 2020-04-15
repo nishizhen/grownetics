@@ -1,7 +1,5 @@
-{{ $data := index .Site.Data .Site.Language.Lang }}
-
-{{ if $data.service.service.enable}}
-{{ with $data.service.service}}
+{{ if .Site.Data.service.service.enable}}
+{{ with .Site.Data.service.service}}
 {{"<!-- service -->" | safeHTML }}
 <section id="services" class="bg-one section">
 	<div class="container">

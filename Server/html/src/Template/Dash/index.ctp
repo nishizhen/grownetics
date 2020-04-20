@@ -25,6 +25,7 @@
         <?php if (env('DEV')) {
             //echo $this->cell('Widgets');
         } ?>
+        <?php if ($floorplan) { ?>
         <div class="row"> <!-- Map -->
             <div class="col-lg-12 col-12">
                 <div class="green-panel content-panel" style="background-color: transparent;">
@@ -49,6 +50,7 @@
                 </div>
             </div>
         </div> <!--/ Map -->
+        <?php } ?>
 
 <div class="row">
 

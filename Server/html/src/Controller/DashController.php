@@ -44,15 +44,6 @@ class DashController extends AppController {
             $this->floorplan = NULL;
         }
 
-        if (is_null($this->floorplan)) {
-            // No Floorplan? hopefully you're setting up a new GrowServer
-            $this->Flash->error(__('No floorplans found. Please upload a floorplan.'));
-
-            return $this->redirect(
-                ['controller' => 'Floorplans', 'action' => 'add']
-            );
-        }
-
         $this->loadModel('Chats');
         $params = array(
             'order' => array('Chats.created' => 'asc'),

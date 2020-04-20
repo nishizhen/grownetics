@@ -146,16 +146,14 @@ class FloorplansTable extends Table
     public function clearImport()
     {
         $connection = ConnectionManager::get('default');
-        $results = $connection->execute('
+        $results = $connection->query('
             TRUNCATE TABLE `appliances`;
             TRUNCATE TABLE `appliances_zones`;
-            TRUNCATE TABLE `batch_notes`;
             TRUNCATE TABLE `batch_recipe_entries`;
             TRUNCATE TABLE `cultivars`;
             TRUNCATE TABLE `devices`;
             TRUNCATE TABLE `floorplans`;
             TRUNCATE TABLE `harvest_batches`;
-            TRUNCATE TABLE `harvest_batch_logs`;
             TRUNCATE TABLE `map_items`;
             TRUNCATE TABLE `map_item_types`;
             TRUNCATE TABLE `map_items_zones`;

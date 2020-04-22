@@ -17,6 +17,7 @@ stages:
   - deploy
 
 pages:
+  stage: build
   image: python:3.8.2
   script:
     - curl -SL https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/hugo_${HUGO_VERSION}_Linux-64bit.tar.gz -o /tmp/hugo.tar.gz

@@ -16,6 +16,8 @@ mkdir webroot/cache_js webroot/cache_css
 mkdir -p tmp/cache tmp/sessions
 chmod -R 777 tmp/
 
+composer install
+
 mysql -happdb -uroot -pgrownetics -e 'create database if not exists grownetics_test; grant all privileges on grownetics_test.* to grownetics;';
 
 /var/www/html/bin/cake migrations migrate

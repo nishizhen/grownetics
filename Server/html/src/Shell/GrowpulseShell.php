@@ -9,6 +9,7 @@ use Cake\Mailer\Email;
 use Cake\Core\Configure;
 use App\Lib\SystemEventRecorder;
 use App\Lib\SystemHealth;
+use App\Lib\IntegrationsManager;
 use App\Lib\Controls\OverrideDetector;
 
 
@@ -42,6 +43,7 @@ class GrowpulseShell extends Shell
         $recorder = new SystemEventRecorder();
         $systemHealth = new SystemHealth();
         $detector = new OverrideDetector();
+        $integrations = new IntegrationsManager();
 
         while (true) {
 
@@ -74,7 +76,12 @@ class GrowpulseShell extends Shell
                 $systemHealth->storeStatuses();
 
                 # Detect power overrides
+                $this->out('Detect Power Overrides');
                 $detector->detect();
+
+                # Query Remote Integrations/APIs
+                $this->out('Query Remote Integrations');
+                $integrations->scrape();
 
                 $time = time();
                 $this->out("Tick: " . $time);

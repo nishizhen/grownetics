@@ -39,9 +39,13 @@ class SystemHealth {
     public function appdb()
     {
         $Floorplans = TableRegistry::get('Floorplans');
-        $floorplan = $Floorplans->get(1);
-        if ($floorplan) {
-            return true;
+        try {
+            $floorplan = $Floorplans->get(1);
+            if ($floorplan) {
+                return true;
+            }
+        } catch (\Exception $e) {
+            
         }
     }
 

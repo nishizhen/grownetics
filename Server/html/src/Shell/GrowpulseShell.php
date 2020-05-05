@@ -41,6 +41,7 @@ class GrowpulseShell extends Shell
         $time = time();
         $recorder = new SystemEventRecorder();
         $systemHealth = new SystemHealth();
+        $detector = new OverrideDetector();
 
         while (true) {
 
@@ -73,7 +74,6 @@ class GrowpulseShell extends Shell
                 $systemHealth->storeStatuses();
 
                 # Detect power overrides
-                $detector = new OverrideDetector();
                 $detector->detect();
 
                 $time = time();

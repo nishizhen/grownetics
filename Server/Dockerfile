@@ -2,7 +2,7 @@ FROM php:7.1-apache
 
 LABEL maintainer "Emilien Kenler <hello@emilienkenler.com>"
 
-RUN apt-get update && apt-get install -y git libpq-dev libmcrypt-dev zlib1g-dev libicu-dev mysql-client g++ graphviz wget vim && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y git libpq-dev libmcrypt-dev zlib1g-dev libicu-dev mysql-client g++ graphviz restic wget vim && rm -rf /var/lib/apt/lists/*
 RUN docker-php-ext-install pdo_pgsql pdo_mysql mbstring mcrypt zip sockets intl bcmath
 
 RUN curl -o /usr/local/bin/composer https://getcomposer.org/composer.phar && \

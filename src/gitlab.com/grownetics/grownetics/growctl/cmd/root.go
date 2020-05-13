@@ -46,7 +46,7 @@ func init() {
 }
 
 func getVersion() string {
-    file, err := os.Open(viper.GetString("RepoPath")+"/src/gitlab.com/grownetics/grownetics/growctl/cmd/root.go")
+    file, err := os.Open(viper.GetString("RepoPath")+"/src/code.cropcircle.io/grownetics/growctl/cmd/root.go")
     if err != nil {
         if !returnJson {
             fmt.Println(err)

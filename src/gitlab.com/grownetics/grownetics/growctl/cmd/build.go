@@ -67,7 +67,7 @@ You can pass in a specific image with '-d GrowDash' to just build one, or build 
 			fmt.Println()
 		}
 
-		dockerfile_path := viper.GetString("RepoPath")+"/src/gitlab.com/grownetics/grownetics/growctl/Dockerfile"
+		dockerfile_path := viper.GetString("RepoPath")+"/src/code.cropcircle.io/grownetics/growctl/Dockerfile"
 		build_target := url + "growctl:" + tag
 
 		s := spinner.New(spinner.CharSets[5], 100*time.Millisecond)  // Build our new spinner

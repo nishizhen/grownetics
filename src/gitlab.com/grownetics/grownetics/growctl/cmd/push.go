@@ -23,7 +23,7 @@ to quickly create a Cobra application.`,
 		fmt.Println(growutil.Highlight("Building docker images..."))
 		fmt.Println()
 
-		url := "grownetics/grownetics/"
+		url := "code.cropcircle.io:4567/grownetics/grownetics/"
 		images := []string{"php","growdash"}
 		tag := "latest"
 

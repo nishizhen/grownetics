@@ -18,7 +18,7 @@ Now run `go get gitlab.com/grownetics/grownetics/growctl/` to download the neces
 
 Then you can run `go run src/gitlab.com/grownetics/grownetics/growctl/main.go update` to install the code as an executable on your machine.
 
-Or you can run `go build -o growctl src/gitlab.com/grownetics/grownetics/growctl/main.go && mv growctl /usr/local/bin/` to install 'by hand'.
+Or you can run `go build -o growctl src/gitlab.com/grownetics/grownetics/growctl/cmd/root.go && mv growctl /usr/local/bin/` to install 'by hand'.
 
 ## Commands
 

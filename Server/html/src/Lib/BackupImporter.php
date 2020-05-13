@@ -7,7 +7,8 @@ class BackupImporter {
 
     public function getHostList() {
         $output = [];
-        exec('AWS_SECRET_ACCESS_KEY="9xatb1QGWS1/lcIuyg7iQRVBVEk3fvqjB/3Y7Djb" AWS_ACCESS_KEY_ID=AKIAJFNWE4SGKUTKIOIQ RESTIC_REPOSITORY="s3:https://s3.amazonaws.com/grownetics-backups" RESTIC_PASSWORD="qrbWcxjpugLjp8gxjUJcjLT" restic -r s3:s3.amazonaws.com/grownetics-backups snapshots --json --last',$output,$returnVar);
+        $command = "AWS_SECRET_ACCESS_KEY=".env('AWS_SECRET_ACCESS_KEY')." AWS_ACCESS_KEY_ID=\"".env('AWS_ACCESS_KEY_ID')."\" RESTIC_REPOSITORY=".env('RESTIC_REPOSITORY')." RESTIC_PASSWORD=\"".env('RESTIC_PASSWORD')."\" restic snapshots --json --last";
+        exec($command,$output,$returnVar);
         return json_decode($output[0]);
     }
 
@@ -15,7 +16,7 @@ class BackupImporter {
         $output = [];
 
         # Restore the sql file from restic.
-        $command = 'AWS_SECRET_ACCESS_KEY="9xatb1QGWS1/lcIuyg7iQRVBVEk3fvqjB/3Y7Djb" AWS_ACCESS_KEY_ID=AKIAJFNWE4SGKUTKIOIQ RESTIC_REPOSITORY="s3:https://s3.amazonaws.com/grownetics-backups" RESTIC_PASSWORD="qrbWcxjpugLjp8gxjUJcjLT" restic -r s3:s3.amazonaws.com/grownetics-backups restore -H "' . $hostname . '" -i "appdb.sql" latest -t /var/www/html/tmp/backups 2>&1';
+        $command = "AWS_SECRET_ACCESS_KEY=".env('AWS_SECRET_ACCESS_KEY')." AWS_ACCESS_KEY_ID=\"".env('AWS_ACCESS_KEY_ID')."\" RESTIC_REPOSITORY=".env('RESTIC_REPOSITORY')." RESTIC_PASSWORD=\"".env('RESTIC_PASSWORD')."\" restic -r s3:s3.amazonaws.com/grownetics-backups restore -H \"" . $hostname . "\" -i \"appdb.sql\" latest -t /var/www/html/tmp/backups 2>&1";
         exec($command,$output,$returnVar);
 
         if ($returnVar) {

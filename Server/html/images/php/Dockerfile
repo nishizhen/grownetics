@@ -16,6 +16,7 @@ RUN apt-get update \
     make \
     nodejs \
     npm \
+    restic \
     ruby \
     ruby-dev \
     unzip \

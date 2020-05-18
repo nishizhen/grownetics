@@ -63,16 +63,18 @@ pages:
     - cd ../
 
     - echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" --password-stdin docker.io
+    - docker build Server/html --pull --no-cache -t grownetics/php:dev -t grownetics/php:$CI_PIPELINE_ID -f Server/html/images/php/Dockerfile
+    - docker push grownetics/php:$CI_PIPELINE_ID
+    - docker push grownetics/php:dev
+
     - docker build Server/html --pull --no-cache -t grownetics/growdash:dev -t grownetics/growdash:$CI_PIPELINE_ID -f Server/html/images/growdash/Dockerfile.dev
     - docker push grownetics/growdash:$CI_PIPELINE_ID
     - docker push grownetics/growdash:dev
 
-    - echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" --password-stdin docker.io
     - docker build Server/html --pull --no-cache -t grownetics/nginx:dev -t grownetics/nginx:$CI_PIPELINE_ID -f Server/html/images/nginx/Dockerfile
     - docker push grownetics/nginx:$CI_PIPELINE_ID
     - docker push grownetics/nginx:dev
 
-    - echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" --password-stdin docker.io
     - docker build Server/html --pull --no-cache -t grownetics/supercron:dev -t grownetics/supercron:$CI_PIPELINE_ID -f Server/html/images/supercron/Dockerfile
     - docker push grownetics/supercron:$CI_PIPELINE_ID
     - docker push grownetics/supercron:dev

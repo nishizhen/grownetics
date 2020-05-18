@@ -80,16 +80,16 @@ pages:
     - docker tag grownetics/supercron:$CI_PIPELINE_ID grownetics/supercon:dev
     - docker push grownetics/supercron:dev
 
-'Build growctl':
-  stage: build
-  tags:
-    - docker
-  script:
-    - echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" --password-stdin docker.io
-    - docker build src --no-cache -t grownetics/growctl:$CI_PIPELINE_ID -f src/gitlab.com/grownetics/grownetics/growctl/Dockerfile
-    - docker push grownetics/growctl:$CI_PIPELINE_ID
-    - docker tag grownetics/growctl:$CI_PIPELINE_ID grownetics/growctl:dev
-    - docker push grownetics/growctl:dev
+# 'Build growctl':
+#   stage: build
+#   tags:
+#     - docker
+#   script:
+#     - echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" --password-stdin docker.io
+#     - docker build src --no-cache -t grownetics/growctl:$CI_PIPELINE_ID -f src/gitlab.com/grownetics/grownetics/growctl/Dockerfile
+#     - docker push grownetics/growctl:$CI_PIPELINE_ID
+#     - docker tag grownetics/growctl:$CI_PIPELINE_ID grownetics/growctl:dev
+#     - docker push grownetics/growctl:dev
 
 # 'Rules Engine':
 #   stage: test

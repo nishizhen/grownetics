@@ -169,7 +169,7 @@ class SetPointsTable extends Table
                 ]
         ])->first();
         // if setPoint hasn't been overridden, use default setPoint value
-        if ($setPoint->default_setpoint_id != 0) {
+        if ($setPoint && $setPoint->default_setpoint_id != 0) {
             $defaultSetPoint = $this->get($setPoint->default_setpoint_id);
             $setPoint->value = $defaultSetPoint->value;
             return $setPoint;

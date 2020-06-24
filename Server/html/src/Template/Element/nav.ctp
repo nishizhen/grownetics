@@ -73,21 +73,12 @@
       </a>
     </li>
     <?php } ?>
-    <?php if ((isset($navRole) && $navRole == 'Admin') || ($this->Acl->hasAccess($navAcls, "wikis", "view"))) { ?>
-    <li class="sub-menu">
-      <a href="/wikis/"<?php if ($this->request->params['controller']=='Wikis'){?> class='active'<?php }?>>
-      <i class="fa fa-info"></i>
-      <span>Ops Wiki</span>
-      </a>
-    </li>
-    <?php } ?>
     <li class="sub-menu">
       <a href="javascript:;"<?php if ($this->request->params['controller']=='Devices' || $this->request->params['controller']=='Zones' || $this->request->params['controller']=='Rules' || $this->request->params['controller']=='Notifications' || $this->request->params['controller']=='Users'){?> class='active'<?php }?>>
         <i class="fa fa-cog"></i>
         <span>Settings</span>
       </a>
       <ul class="sub">
-
         <?php if ((isset($navRole) && $navRole == 'Admin') || ($this->Acl->hasAccess($navAcls, "devices", "index"))) { ?>
         <li class="">
           <a href="/devices">

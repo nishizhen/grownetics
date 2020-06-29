@@ -81,7 +81,7 @@ class UsersController extends AppController
                         'expires' => '+30 days',
                         'httpOnly' => true
                     ]);
-                    $siteSalt = 'cLJvJ2K}c#4mY7zp7s.mh';
+                    $siteSalt = env('SALT');
                     $userEntity = $this->Users->get($user['id']);
                     $token = substr(hash('ripemd160', $siteSalt . time() . uniqid() . $this->data['password']), 0, 10);
                     $userEntity->access_code =  $token;

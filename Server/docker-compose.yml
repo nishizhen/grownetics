@@ -423,24 +423,3 @@ rabbitmq:
 #     - RABBIT_PASS
 #     - INFLUX_HOST
 #     - INFLUX_PORT
-
-bookstack-mysql:
-  image: mysql:5.7.21
-  restart: always
-  environment:
-    - MYSQL_ROOT_PASSWORD=secret
-    - MYSQL_DATABASE=bookstack
-    - MYSQL_USER=bookstack
-    - MYSQL_PASSWORD=secret
-
-bookstack:
-  image: solidnerd/bookstack:0.22.0
-  restart: always
-  links:
-    - bookstack-mysql
-  environment:
-    - DB_HOST=bookstack-mysql:3306
-    - DB_DATABASE=bookstack
-    - DB_USERNAME=bookstack
-    - DB_PASSWORD=secret
-

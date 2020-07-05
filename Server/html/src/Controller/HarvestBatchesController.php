@@ -407,7 +407,7 @@ class HarvestBatchesController extends AppController
         }
         $cultivars = $this->HarvestBatches->Cultivars->find('list');
         if (sizeof($cultivars->toArray()) == 0) {
-            $this->Flash->error(__("Please create a cultivar for the batch."));
+            $this->Flash->error(__("Please create a cultivar first. Example: Cherry Tomatoes"));
             return $this->redirect(
                 ['controller' => 'Cultivars', 'action' => 'add']
             );

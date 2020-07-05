@@ -19,7 +19,7 @@ class GrowFakerHelper extends Helper
 
     public function getRequests($device_id) {
         try {
-            $sf = new \SensioLabs\Consul\ServiceFactory(['base_uri' => 'http://consul:8500']);
+            $sf = new \SensioLabs\Consul\ServiceFactory(['base_uri' => 'http://' . env('CONSUL_HOST') . ':8500']);
             $kv = $sf->get('kv');
             return $kv->get('faker/devices/' . $device_id . '/stats/requests', ['raw' => true])->getBody();
         } catch (\Exception $e) {
@@ -29,7 +29,7 @@ class GrowFakerHelper extends Helper
 
     public function getMode($device_id) {
         try {
-            $sf = new \SensioLabs\Consul\ServiceFactory(['base_uri' => 'http://consul:8500']);
+            $sf = new \SensioLabs\Consul\ServiceFactory(['base_uri' => 'http://' . env('CONSUL_HOST') . ':8500']);
             $kv = $sf->get('kv');
             $mode = $kv->get('faker/devices/' . $device_id . '/mode', ['raw' => true])->getBody();
             switch ($mode) {

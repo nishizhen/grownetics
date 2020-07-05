@@ -303,7 +303,7 @@ class SystemHealth {
         $recorder->recordEvent('system_events', 'system_status', $this->bacnetUpdates(), ['component'=>'bacnetUpdates']);
         $recorder->recordEvent('system_events', 'system_status', $this->overrides(), ['component'=>'overrides']);
         $recorder->recordEvent('system_events', 'system_status', $this->ruleAlerts(), ['component'=>'ruleAlerts']);
-        $recorder->recordEvent('system_events', 'system_status', $this->outputSchedules(), ['component'=>'outputSchedules']);
+        #$recorder->recordEvent('system_events', 'system_status', $this->outputSchedules(), ['component'=>'outputSchedules']);
         $recorder->recordEvent('system_events', 'system_status', $this->notifications(), ['component'=>'notifications']);
         $recorder->recordEvent('system_events', 'system_status', $this->powerPanels(), ['component'=>'powerPanels']);
     }

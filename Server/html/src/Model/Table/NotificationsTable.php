@@ -232,7 +232,7 @@ class NotificationsTable extends Table
             $outgoing_number = '4696434769';
 
             if ($notification->notification_level > 0 && !env('DEV')) {
-                $command = 'curl https://grownetics.zulipchat.com/api/v1/messages -u growbot-bot@grownetics.zulipchat.com:kYKZ4EDs7gcbIff55ud7aMKM3x86QFR8 -d "type=stream" -d "to=alerts" -d "subject=' . env('FACILITY_NAME') . '" -d "content=** Notification Level: ' . $this->RuleActions->enumKeyToValue('notification_level', $notification->notification_level) . ' - *Alert:* ' . $notification['message'] . '"';
+                $command = 'curl ' . env('ZULIP_URL') . ' -u ' . env('ZULIP_CREDS') . ' -d "type=stream" -d "to=alerts" -d "subject=' . env('FACILITY_NAME') . '" -d "content=** Notification Level: ' . $this->RuleActions->enumKeyToValue('notification_level', $notification->notification_level) . ' - *Alert:* ' . $notification['message'] . '"';
                 exec($command);
                 echo $command;
             }

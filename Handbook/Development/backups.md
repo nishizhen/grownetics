@@ -30,3 +30,11 @@ mysql -happdb -ugrownetics -pgrownetics grownetics < /var/data/backups/appdb.sql
 ```
 
 During development, there is a Backup Restore page under the Admin section of the navigation.
+
+`docker exec $(docker ps -q --filter name=influxdb) /usr/bin/influxd backup -database user_actions -retention autogen /tmp/backups/user_actions && docker cp $(docker ps -q --filter name=influxdb):/tmp/backups/user_actions /var/data/backups/influxdb/user_actions`
+
+influxd restore -db user_actions -host tick_influxdb_1 tmp/backups/var/data/backups/influxdb/user_actions
+
+influxd restore -host tick_influxdb_1 -metadir /var/lib/influxdb/meta -datadir /var/lib/influxdb/data/ /var/www/html/tmp/backups/var/data/backups/influxdb/user_actions/user_actions/
+
+influxd restore -host tick_influxdb_1 -metadir /var/lib/influxdb/meta -datadir /var/lib/influxdb/data/ /var/www/html/tmp/backups/var/data/backups/influxdb/system_events/system_events/

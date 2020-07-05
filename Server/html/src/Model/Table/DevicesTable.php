@@ -790,7 +790,7 @@ class DevicesTable extends Table
 
     public function enableBurnoutProtection($device) {
         $current_time = time();
-        $sf = new \SensioLabs\Consul\ServiceFactory(['base_uri' => 'http://consul:8500']);
+        $sf = new \SensioLabs\Consul\ServiceFactory(['base_uri' => 'http://' . env('CONSUL_HOST') . ':8500']);
         $kv = $sf->get('kv');
         $kv->put('devices/'.$device->id.'/burnout_protection_time', $current_time);
 

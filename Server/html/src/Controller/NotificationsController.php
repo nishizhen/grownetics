@@ -28,8 +28,7 @@ class NotificationsController extends AppController
             $query = $this->Notifications;
         }
         $notifications = $this->paginate($query);
-
-        $unsent_notification_count = $this->Notifications->find()->where(['Notifications.status =' => $this->Notifications->enumValueToKey('status','Unsent')])->count();
+        $unsent_notification_count = $this->Notifications->find()->where(['Notifications.status =' => $this->Notifications->enumValueToKey('status','Queued')])->count();
 
         $this->set(compact('notifications','notification_level', 'unsent_notification_count'));
         $this->set('_serialize', ['notifications','notification_level', 'unsent_notification_count']);

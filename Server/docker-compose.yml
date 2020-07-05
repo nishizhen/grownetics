@@ -61,10 +61,6 @@ growdash:
     - SMTP_USER
     - SMTP_PASS
 
-  labels:
-    io.rancher.container.pull_image: always
-    io.rancher.scheduler.affinity:host_label_ne: onsite=true
-
 # The API that devices talk to
 deviceapi:
   image: grownetics/growdash:${VERSION}
@@ -104,9 +100,6 @@ deviceapi:
     - THRESHOLD_DEVICE_BOOTS
     - THRESHOLD_DATA_RECEIVED
     - THRESHOLD_CT_ON
-  labels:
-    io.rancher.container.pull_image: always
-    io.rancher.scheduler.affinity:host_label_ne: onsite=true
 
 # Responsible for maintaining the socket connection to the dashboard for live data and chat
 growsocket:
@@ -115,9 +108,6 @@ growsocket:
   links:
     - rabbitmq
     - nginx
-  labels:
-    io.rancher.container.pull_image: always
-    io.rancher.scheduler.affinity:host_label_ne: onsite=true
 
 # Responsible for communicating with the onsite BACnet system
 # Only runs if BACNET_URL is set.
@@ -160,9 +150,6 @@ growbacnet:
     - THRESHOLD_DEVICE_BOOTS
     - THRESHOLD_DATA_RECEIVED
     - THRESHOLD_CT_ON
-  labels:
-    io.rancher.container.pull_image: always
-    io.rancher.scheduler.affinity:host_label_ne: onsite=true
 
 # 'Pulses' at a regular interval to calucate and process zone and time based rules
 # Also sends notifications and monitors device health
@@ -203,9 +190,6 @@ growpulse:
     - THRESHOLD_DEVICE_BOOTS
     - THRESHOLD_DATA_RECEIVED
     - THRESHOLD_CT_ON
-  labels:
-    io.rancher.container.pull_image: always
-    io.rancher.scheduler.affinity:host_label_ne: onsite=true
 
 notifications:
   image: grownetics/growdash:${VERSION}
@@ -248,9 +232,6 @@ notifications:
     - SMTP_HOST
     - SMTP_USER
     - SMTP_PASS
-  labels:
-    io.rancher.container.pull_image: always
-    io.rancher.scheduler.affinity:host_label_ne: onsite=true
 
 # Responsible for communicating with the onsite Argus system
 # Only runs if ARGUS_URL is set.
@@ -297,9 +278,6 @@ argus:
 
     - ARGUS_URL
     - ARGUS_RATE
-  labels:
-    io.rancher.container.pull_image: always
-    io.rancher.scheduler.affinity:host_label_ne: onsite=true
 
 # Dispatches web requests
 nginx:
@@ -310,9 +288,6 @@ nginx:
     - deviceapi
     - bookstack
     - grafana
-  labels:
-    io.rancher.container.pull_image: always
-    io.rancher.scheduler.affinity:host_label_ne: onsite=true
 
 # Stores all application info, users, zones, devices, rules, notifications, etc.
 appdb:

@@ -27,4 +27,4 @@ mysql -happdb -uroot -pgrownetics -e 'create database if not exists grownetics_t
 
 bin/cake cache clear_all
 
-curl -i -XPOST 'http://$INFLUX_HOST:8086/write?db=system_events' --data-binary "ran_seed value=1"
+curl -i -XPOST "http://$INFLUX_HOST:8086/write?db=system_events" --data-binary "ran_seed value=1"

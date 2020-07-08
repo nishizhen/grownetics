@@ -14,7 +14,7 @@ growdash:
     - CERES
     - DEMO
     - ENVIRONMENT
-    - REMOTE_URL
+    - REMOTE_DOMAIN
     - VERSION
     - SHORT_NAME
     - SALT

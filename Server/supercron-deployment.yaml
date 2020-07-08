@@ -39,7 +39,7 @@ spec:
         - name: RABBIT_PORT
         - name: RABBIT_USER
         - name: REDIS_HOSTNAME
-        - name: REMOTE_URL
+        - name: REMOTE_DOMAIN
         image: grownetics/supercron:latest
         name: supercron
         resources: {}

@@ -20,7 +20,7 @@ phpunit:
     - FACILITY_ID
     - CERES
     - ENVIRONMENT
-    - REMOTE_URL
+    - REMOTE_DOMAIN
 
     - DB_HOSTNAME
     - MYSQL_ROOT_PASSWORD

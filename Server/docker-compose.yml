@@ -15,7 +15,7 @@ growdash:
     - CERES
     - DEMO
     - ENVIRONMENT
-    - REMOTE_URL
+    - REMOTE_DOMAIN
     - VERSION
     - SHORT_NAME
     - SALT
@@ -77,7 +77,7 @@ deviceapi:
     - FACILITY_ID
     - CERES
     - ENVIRONMENT
-    - REMOTE_URL
+    - REMOTE_DOMAIN
     - SHORT_NAME
 
     - BURNOUT_PROTECTION_DELAY
@@ -125,7 +125,7 @@ growbacnet:
     - FACILITY_ID
     - CERES
     - ENVIRONMENT
-    - REMOTE_URL
+    - REMOTE_DOMAIN
     - SHORT_NAME
 
     - DB_HOSTNAME
@@ -169,7 +169,7 @@ growpulse:
     - FACILITY_ID
     - CERES
     - ENVIRONMENT
-    - REMOTE_URL
+    - REMOTE_DOMAIN
     - SHORT_NAME
     - VERSION
 
@@ -208,7 +208,7 @@ notifications:
     - FACILITY_ID
     - CERES
     - ENVIRONMENT
-    - REMOTE_URL
+    - REMOTE_DOMAIN
     - VERSION
 
     - DB_HOSTNAME
@@ -232,52 +232,6 @@ notifications:
     - SMTP_HOST
     - SMTP_USER
     - SMTP_PASS
-
-# Responsible for communicating with the onsite Argus system
-# Only runs if ARGUS_URL is set.
-argus:
-  image: grownetics/growdash:${VERSION}
-  restart: always
-  command: /var/www/html/argus.sh
-  links:
-    - appdb
-    - redis
-    - influxdb
-  environment:
-    - DEV
-    - FACILITY_NAME
-    - FACILITY_ID
-    - CERES
-    - ENVIRONMENT
-    - REMOTE_URL
-    - SHORT_NAME
-    - VERSION
-
-    - DB_HOSTNAME
-    - MYSQL_ROOT_PASSWORD
-    - MYSQL_DATABASE
-    - MYSQL_TEST_DATABASE
-    - MYSQL_USER
-    - MYSQL_PASSWORD
-
-    - REDIS_HOSTNAME
-    - RABBIT_HOST
-    - RABBIT_PORT
-    - RABBIT_USER
-    - RABBIT_PASS
-    - INFLUX_HOST
-    - INFLUX_PORT
-
-    - BACNET_URL
-    - BACNET_AUTH
-    - BACNET_RATE
-    - BACNET_ENABLED
-    - THRESHOLD_DEVICE_BOOTS
-    - THRESHOLD_DATA_RECEIVED
-    - THRESHOLD_CT_ON
-
-    - ARGUS_URL
-    - ARGUS_RATE
 
 # Dispatches web requests
 nginx:
@@ -351,13 +305,6 @@ chronograf:
     - influxdb
     - kapacitor
 
-# Better charting
-grafana:
-  image: grafana/grafana-dev:master-9fe0dcec0ed35d443b95f8f1a180d2ec93448210
-  restart: always
-  links:
-    - influxdb
-
 # Queues data points to be inserted into the local Influx, and out to the cloud. Served on port :15672 in development and onsite
 rabbitmq:
   image: rabbitmq:3.6-management-alpine
@@ -382,7 +329,7 @@ rabbitmq:
 #     - FACILITY_ID
 #     - CERES
 #     - ENVIRONMENT
-#     - REMOTE_URL
+#     - REMOTE_DOMAIN
 
 #     - DB_HOSTNAME
 #     - MYSQL_ROOT_PASSWORD

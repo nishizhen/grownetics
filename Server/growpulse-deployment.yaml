@@ -41,7 +41,7 @@ spec:
         - name: RABBIT_PORT
         - name: RABBIT_USER
         - name: REDIS_HOSTNAME
-        - name: REMOTE_URL
+        - name: REMOTE_DOMAIN
         - name: SHORT_NAME
         - name: THRESHOLD_CT_ON
         - name: THRESHOLD_DATA_RECEIVED

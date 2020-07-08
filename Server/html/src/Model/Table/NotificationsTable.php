@@ -299,7 +299,7 @@ class NotificationsTable extends Table
                             $contact_method['value'],
                             $outgoing_number,
                             array(
-                                'url' => 'http://' . env('REMOTE_URL') . '/notifications/out/' . $notification->id
+                                'url' => 'http://' . env('REMOTE_DOMAIN') . '/notifications/out/' . $notification->id
                             )
                         );
                     }

@@ -72,7 +72,7 @@ $(document).ready(function () {
 
     $('abbr.loaded').attr("title", moment().toISOString());
 
-    var socket = io('http://'+location.host+':8989/');
+    var socket = io(GrowServer.socket_address);
     GrowServer.socket = socket;
     socket.on('connect', function() {
         

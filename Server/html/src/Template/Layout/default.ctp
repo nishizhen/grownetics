@@ -80,7 +80,11 @@
             </script>
         <?php } ?>
     <?php } ?>
-    <script src="<?= env('REMOTE_URL') ?>:8989/socket.io/socket.io.js"></script>
+    <script src="http://socket.<?= env('REMOTE_DOMAIN') ?>:<?= env('PORT','80')?>/socket.io/socket.io.js"></script>
+    <script>
+      var GrowServer = GrowServer || {};
+      GrowServer.socket_address = 'http://socket.<?= env('REMOTE_DOMAIN') ?>:<?= env('PORT','80')?>/';
+    </script>
 </head>
 <body<?php if (isset($bodyClass)) {
             echo ' class="' . $bodyClass . '"';

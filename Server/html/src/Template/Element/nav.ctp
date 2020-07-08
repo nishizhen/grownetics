@@ -60,9 +60,7 @@
         <ul class="sub">
             <li><a href="/charts/">Zone</a></li>
             <li><a href="/charts/harvestBatchView">Batch</a></li>
-            <li><a href="/grafana/">Grafana</a></li>
         </ul>
-
     </li>
     <?php } ?>
     <?php if ((isset($navRole) && $navRole == 'Admin') || ($this->Acl->hasAccess($navAcls, "outputs", "index"))) { ?>

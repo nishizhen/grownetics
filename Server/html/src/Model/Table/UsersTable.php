@@ -95,40 +95,8 @@ class UsersTable extends Table
         $zones = [];
         $zones = $this->Zones->find('all', ['conditions' => ['plant_zone_type_id IN' => [$this->Zones->enumValueToKey('plant_zone_types', 'Veg'), $this->Zones->enumValueToKey('plant_zone_types', 'Bloom')]]])->toArray();
 
-        $configs = [];
-        foreach ($zones as $zone) {
-          $config = (object) ["data_type" => "", "data_label" => "", "data_symbol" => "", "data_display_class" => "", "source_type" => "", "source_id" => "", "source_label" => "", "lowThreshold" => "", "highThreshold" => ""];
-          $config->data_type = $this->Sensors->enumValueToKey('sensor_type', $sensorTypeName);
-          $config->data_label = $sensorTypeName;
-          $config->data_symbol = $this->Sensors->enumKeyToValue('sensor_symbol', $config->data_type);
-          $config->data_display_class = $this->Sensors->enumKeyToValue('sensor_display_class', $config->data_type);
-          $config->source_type = $this->DataPoints->enumValueToKey('source_type', 'Zone');
-          $config->source_id = $zone->id;
-          $config->source_label = $zone->label;
-          array_push($configs, $config);
-        }
-        $user->dashboard_config = json_encode($configs);
 
-        # Sent email invite if needed
-        $Email = new Email();
 
-        $Email->viewVars(array(
-          'token' => $user->token,
-          'user' => $user
-        ));
-
-        $Email->template('registration_invite', 'default')
-          ->emailFormat('html')
-          ->subject('Grownetics Password Reset')
-          ->to($user['email'])
-          ->from('support@grownetics.co');
-        try {
-          if ($Email->send()) {
-            return true;
-          } else {
-            return false;
-          }
-        } catch (\Exception $e) { }
         $this->save($user);
       }
     }

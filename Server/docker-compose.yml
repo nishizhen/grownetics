@@ -240,12 +240,10 @@ nginx:
   links:
     - growdash
     - deviceapi
-    - bookstack
-    - grafana
 
 # Stores all application info, users, zones, devices, rules, notifications, etc.
 appdb:
-  image: mariadb:10.3
+  image: mariadb
   restart: always
   command: mysqld --sql_mode=""
   environment:

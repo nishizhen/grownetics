@@ -14,10 +14,10 @@ growbacnet:
     - ./html:/var/www/html:cached
     - ./tmp:/tmp:cached
 
-argus:
-  volumes:
-    - ./html:/var/www/html:cached
-    - ./tmp:/tmp:cached
+# argus:
+#   volumes:
+#     - ./html:/var/www/html:cached
+#     - ./tmp:/tmp:cached
 
 growpulse:
   volumes:
@@ -106,13 +106,6 @@ documentation:
   volumes:
     - ./:/docs
 
-grafana:
-  volumes:
-    - ./html/images/grafana/conf:/etc/grafana
-    - ./data/grafana/data:/var/lib/grafana
-  ports:
-    - "3000:3000"
-
 # supercron:
 #   image: grownetics/supercron:latest
 #   volumes:
@@ -122,15 +115,3 @@ grafana:
 #   environment:
 #     - GF_SERVER_ROOT_URL=http://localhost/grafana
 
-bookstack-mysql:
-  volumes:
-  - ./data/bookstack/mysql-data:/var/lib/mysql
-
-bookstack:
-  volumes:
-    - ./data/bookstack/uploads:/var/www/bookstack/public/uploads
-    - ./data/bookstack/storage-uploads:/var/www/bookstack/public/storage
-  ports:
-    - "8283:80"
-  environment:
-    - APP_URL=http://localhost/wikis

@@ -9,12 +9,13 @@
 var GrowServer = GrowServer || {};
 GrowServer.Floorplan = GrowServer.Floorplan || {};
 
+GrowServer.Floorplan.count = 0;
+
 // anonymous namespace
 (function() {
 
     GrowServer.Floorplan.Importer = function( options) {
         $.extend(this, options);
-
         if (!this.map) {
             var mapEl = document.createElement('div');
             mapEl.setAttribute("id", "floorplan-map");
@@ -214,10 +215,10 @@ GrowServer.Floorplan = GrowServer.Floorplan || {};
 
             var zonesEl = d3.select(this.getSVGElement(this.svgXml, "Zones"));
             zonesEl.selectAll('#' + zonesEl.attr('id') + " > g").each(function () {
-                var zone_type = $(this).attr("id").replace(/_\d?_?$/, '').replace(/[^\w|^\W]|_/gi, ' ');
-                var plant_zone_type = zone_type;
+                var plant_zone_type = $(this).attr("id").replace(/_\d?_?$/, '').replace(/[^\w|^\W]|_/gi, ' ');
                 // self.plant_zone_types.push(zone_type);
-                if ( zone_type != "Plant Zone") {
+                console.log("Processing: "+plant_zone_type);
+                if ( plant_zone_type != "Plant Zone") {
                     d3.select(this).selectAll("rect").each(function () {
                         var rect = $(this);
                         // var room_zone_id;
@@ -276,7 +277,12 @@ GrowServer.Floorplan = GrowServer.Floorplan || {};
 
             plant_zones.selectAll("rect").each(function () {
                 var rect = $(this);
-                var plant_zone_id = rect.attr("id").replace(/_$/, '');
+                if (rect.attr("id")) {
+                  var plant_zone_id = rect.attr("id").replace(/_$/, '');
+                } else {
+                  var plant_zone_id = "Plant Zone " + GrowServer.Floorplan.count;
+                  GrowServer.Floorplan.count++; 
+                }
 
                 try {
                     var x = parseFloat(rect.attr("x"));
@@ -332,6 +338,7 @@ GrowServer.Floorplan = GrowServer.Floorplan || {};
                     deviceElement = this.getSVGElement(this.svgXml, "G-Devices");
                 }
             }
+            console.log(deviceElement);
 
             d3.select(deviceElement).selectAll("path").each(function () {
                 var deviceGroup = L.featureGroup();
@@ -347,7 +354,7 @@ GrowServer.Floorplan = GrowServer.Floorplan || {};
                 // //console.log(sensorIdString);
 
                 var deviceLabel = "Device " + deviceIndex++;
-
+console.log(deviceLabel);
                 var polyline = self.pathToPolyLine($(this).attr("d"));
                 if (polyline) {
                     deviceGroup.addLayer(polyline);
@@ -960,9 +967,9 @@ $(document).ready(function() {
                                 );
                                 $("#importingModal .progress").width("100%");
 
-                                setTimeout(function() {
-                                    window.location = '/floorplans/view/' + floorplanId;
-                                });
+                                // setTimeout(function() {
+                                    // window.location = '/floorplans/view/' + floorplanId;
+                                // });
                             } else {
                                 if (group == 'zones') {
                                     $.post("/floorplans/add.json", {
@@ -1044,3 +1051,4 @@ $(document).ready(function() {
       }
 
 }); // $(document).ready
+

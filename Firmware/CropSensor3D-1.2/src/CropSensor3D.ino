@@ -2,6 +2,7 @@
 #include <Ethernet.h>
 #include <OneWire.h>
 #include <Wire.h>
+#include <avr/wdt.h>
 
 #define SS 10U  //D10----- SS
 #define RST 11U //D11----- Reset
@@ -47,12 +48,13 @@ byte mac[] = {0x90, 0xA2, 0xDA, 0x0F, macs[deviceTier], macs[deviceMod]};
 
 EthernetClient client;
 int status = 0;
+int loops = 0;
 
 unsigned long lastConnectionTime = millis();
 unsigned long lastReadTime = 0;
 boolean lastConnected = false;
 boolean readingJson = false;
-int refreshRate = 1000;
+int refreshRate = 7000;
 char inData[400];
 int stringPos = 0;
 unsigned char inputCount = 0;
@@ -142,6 +144,13 @@ void loop()
 {
   sendDataToServer();
   delay(1000);
+  loops=loops+1;
+  Serial.println(loops);
+  if (loops > 20) {
+    Serial.println("Reboot!");
+    wdt_enable(WDTO_15MS);
+    delay(2000);
+  }
 }
 
 void sendDataToServer()
@@ -266,12 +275,12 @@ void transmitData(char *data)
     client.println();
     lastConnectionTime = millis();
     Serial.println("Sent");
+    delay(3000);
   }
   else
   {
     Serial.println("Failed.");
   }
-  delay(1000);
   client.stop();
   Ethernet.begin(mac);
 }

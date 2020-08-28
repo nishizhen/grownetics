@@ -70,6 +70,7 @@ class RuleActionTargetsTable extends Table
         $this->belongsTo('RuleActions', [
             'foreignKey' => 'rule_action_id'
         ]);
+
         $this->belongsTo('Outputs', [
             'foreignKey' => 'target_id',
             'conditions' => ['RuleActionTargets.target_type' => $this->enumValueToKey('target_type','Output')]

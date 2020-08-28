@@ -10,6 +10,8 @@ use Cake\Core\Configure;
 use Cake\ORM\TableRegistry;
 use App\Lib\DataConverter;
 
+use Cake\Log\Log;
+
 /**
  * SetPoints Model
  *
@@ -135,6 +137,11 @@ class SetPointsTable extends Table
                         ]
                     ])->first();
                     if (!$activeZoneSetPoint) {
+
+                        Log::write('debug',"Plant zone: ".$zone->plant_zone_type_id);
+                        Log::write('debug',"Data Type: ".$type);
+                        Log::write('debug',"Target Type: ".$this->enumValueToKey('target_type', 'Zone Type'),);
+
                         $defaultSetPoint = $this->find('all', [
                             'conditions' => [
                                 'target_type' => $this->enumValueToKey('target_type', 'Zone Type'),

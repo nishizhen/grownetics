@@ -573,6 +573,7 @@ class ZonesTable extends Table
     {
 
         if ($entity->isNew() && is_string($entity->zone_type)) {
+          
             $entity->status = 1;
             $entity->zone_type_id = $this->enumValueToKey('zone_types', $entity->zone_type);
 

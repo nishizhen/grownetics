@@ -55,18 +55,19 @@ class SensorsTable extends Table
                 'Vapor Pressure Deficit',   # 9
                 'PAR',                      # 10
                 'Soil Moisture',            # 11
-                'Weight'                    # 12
+                'Weight',                   # 12
+                'Atmospheric Pressure'                  # 13
             ],
             # This is the list of different types of sensors our system supports
             'sensor_type' => [
                 'Unspecified',              # 0
-                'Waterproof Temperature',   # 1
-                'Humidity',                 # 2
-                'Air Temperature',          # 3
+                'Waterproof Temperature',   # 1 
+                'Humidity',                 # 2 HIH3160
+                'Air Temperature',          # 3 HIH3160
                 'Co2',                      # 4
                 'pH',                       # 5 Atlas Scientific pH
-                'DO',                       # 6
-                'EC',                       # 7
+                'DO',                       # 6 Atlas Scientific DO
+                'EC',                       # 7 Analog
                 'CT',                       # 8
                 'Fill Level',               # 9
                 'Vapor Pressure Deficit',   # 10
@@ -74,7 +75,13 @@ class SensorsTable extends Table
                 'Atlas Scientific RTD',     # 12
                 'Soil Moisture',            # 13
                 '4-20ma pH',                   # 14
-                '4-20ma EC'                    #15
+                '4-20ma EC',                    #15
+                'SCD30 Co2',  # 16
+                'SCD30 Humidity', #17
+                'SCD30 Air Temperature', #18
+                'BME280 Humidity', #19
+                'BME280 Air Temperature', #20
+                'BME280 Air Pressure', #21
             ],
             # This is a lookup table, given the id of the sensor_type above, what is the data_type for it?
             'sensor_data_type' => [
@@ -93,7 +100,13 @@ class SensorsTable extends Table
                 1, #'Atlas Scientific RTD',     # 12
                 11, #'Soil Moisture'             # 13
                 4, # pH                         #14
-                6 # EC                          #15
+                6, # EC                          #15
+                3, #co2 16
+                2, #humidity 17
+                1, #air temperature 18
+                2, #humidity 19
+                1, #air temperature 20
+                13 #air pressure 21
             ],
             'sensor_display_class' => [
                 '',
@@ -383,8 +396,15 @@ class SensorsTable extends Table
         return $display_class;
     }
 
-    public function getSensorTypeName($sensor_id){
-        return $this->enumKeyToValue('sensor_type', $sensor_id);
+    public function getSensorTypeName($sensor_type_id){
+        return $this->enumKeyToValue('sensor_type', $sensor_type_id);
+    }
+
+    public function getDataTypeFromSensorType($sensor_type_id) {
+      Log::write("debug", "Got: ".$sensor_type_id);
+      Log::write("debug", "Got: ".$this->enumKeyToValue('sensor_data_type', $sensor_type_id));
+      Log::write("debug", "Got: ".$this->enumKeyToValue('data_type', $this->enumKeyToValue('sensor_data_type', $sensor_type_id)));
+      return $this->enumKeyToValue('data_type', $this->enumKeyToValue('sensor_data_type', $sensor_type_id));
     }
 //    public function beforeSave( $event, $entity, $options) {
 //        if ($entity->isNew()) {

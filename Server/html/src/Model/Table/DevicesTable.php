@@ -670,11 +670,11 @@ class DevicesTable extends Table
             $this->Sensors = TableRegistry::get("Sensors");
         }
 
-        // tempHumLow == M1
+        // tempHumLow
         $humLow = $this->Sensors->newEntity([
-            'sensor_pin' => 'M1',
-            'label' => $entity->label . ' - M1',
-            'sensor_type_id' => $this->Sensors->enumValueToKey('sensor_type','Humidity'),
+            'sensor_pin' => 'THH',
+            'label' => $entity->label . ' - THH',
+            'sensor_type_id' => $this->Sensors->enumValueToKey('sensor_type','BME280 Humidity'),
             'status' => 1,
             'floorplan_id' => $entity->floorplan_id,
             'latitude' => $entity->map_item->latitude,
@@ -694,9 +694,9 @@ class DevicesTable extends Table
         }
 
         $tempLow = $this->Sensors->newEntity([
-            'sensor_pin' => 'M1',
-            'label' => $entity->label . ' - M1',
-            'sensor_type_id' => $this->Sensors->enumValueToKey('sensor_type','Air Temperature'),
+            'sensor_pin' => 'THT',
+            'label' => $entity->label . ' - THT',
+            'sensor_type_id' => $this->Sensors->enumValueToKey('sensor_type','BME280 Air Temperature'),
             'status' => 1,
             'floorplan_id' => $entity->floorplan_id,
             'latitude' => $entity->map_item->latitude,
@@ -716,11 +716,35 @@ class DevicesTable extends Table
 
         }
 
+
+        $pressureLow = $this->Sensors->newEntity([
+          'sensor_pin' => 'THP',
+          'label' => $entity->label . ' - THP',
+          'sensor_type_id' => $this->Sensors->enumValueToKey('sensor_type','BME280 Air Pressure'),
+          'status' => 1,
+          'floorplan_id' => $entity->floorplan_id,
+          'latitude' => $entity->map_item->latitude,
+          'longitude' =>  $entity->map_item->longitude,
+          'offsetHeight' => 1
+      ]);
+      $pressureLow->zones = $entity->zones;
+      $pressureLow->dirty('zones', true);
+      $pressureLow->device = $entity;
+      $pressureLow->dontNotify = true;
+
+      if (!$this->Sensors->save($pressureLow)) {
+          //     $this->log("saved new sensor => ".$tempHumLow->label, 'debug');
+          // } else {
+          //Log::write("debug", $tempLow->errors());
+          Log::write("debug", "Failed to save Sensor.");
+
+      }
+
         // humHigh == M2
         $humHigh = $this->Sensors->newEntity([
-            'label' => $entity->label . ' - M2',
-            'sensor_pin' => 'M2',
-            'sensor_type_id' => $this->Sensors->enumValueToKey('sensor_type','Humidity'),
+            'label' => $entity->label . ' - CH',
+            'sensor_pin' => 'CH',
+            'sensor_type_id' => $this->Sensors->enumValueToKey('sensor_type','SCD30 Humidity'),
             'status' => 1,
             'floorplan_id' => $entity->floorplan_id,
             'latitude' => $entity->map_item->latitude,
@@ -741,9 +765,9 @@ class DevicesTable extends Table
         }
 
         $tempHigh = $this->Sensors->newEntity([
-            'label' => $entity->label . ' - M2',
-            'sensor_pin' => 'M2',
-            'sensor_type_id' => $this->Sensors->enumValueToKey('sensor_type','Air Temperature'),
+            'label' => $entity->label . ' - CT',
+            'sensor_pin' => 'CT',
+            'sensor_type_id' => $this->Sensors->enumValueToKey('sensor_type','SCD30 Air Temperature'),
             'status' => 1,
             'floorplan_id' => $entity->floorplan_id,
             'latitude' => $entity->map_item->latitude,
@@ -766,9 +790,9 @@ class DevicesTable extends Table
 
         //co2 High
         $co2High = $this->Sensors->newEntity([
-            'sensor_pin' => 'M3',
-            'label' => $entity->label . ' - M3',
-            'sensor_type_id' => $this->Sensors->enumValueToKey('sensor_type','Co2'),
+            'sensor_pin' => 'CC',
+            'label' => $entity->label . ' - CC',
+            'sensor_type_id' => $this->Sensors->enumValueToKey('sensor_type','SCD30 Co2'),
             'status' => 1,
             'floorplan_id' => $entity->floorplan_id,
             'latitude' => $entity->map_item->latitude,
@@ -781,6 +805,74 @@ class DevicesTable extends Table
         $co2High->dontNotify = true;
 
         if (!$this->Sensors->save($co2High)) {
+            //     $this->log("saved new sensor => ".$co2High->label, 'debug');
+            // } else {
+            // Log::write("debug", $co2High->errors());
+            Log::write("debug", "Failed to save Sensor.");
+        }
+
+        # Par
+        $par = $this->Sensors->newEntity([
+          'sensor_pin' => 'A0',
+          'label' => $entity->label . ' - Par',
+          'sensor_type_id' => $this->Sensors->enumValueToKey('sensor_type','PAR'),
+          'status' => 1,
+          'floorplan_id' => $entity->floorplan_id,
+          'latitude' => $entity->map_item->latitude,
+          'longitude' =>  $entity->map_item->longitude,
+          'offsetHeight' => 2
+      ]);
+      $par->zones = $entity->zones;
+      $par->dirty('zones', true);
+      $par->device = $entity;
+      $par->dontNotify = true;
+
+      if (!$this->Sensors->save($par)) {
+          //     $this->log("saved new sensor => ".$co2High->label, 'debug');
+          // } else {
+          // Log::write("debug", $co2High->errors());
+          Log::write("debug", "Failed to save Sensor.");
+      }
+
+      # SM1
+      $sm1 = $this->Sensors->newEntity([
+        'sensor_pin' => 'A1',
+        'label' => $entity->label . ' - Soil 1',
+        'sensor_type_id' => $this->Sensors->enumValueToKey('sensor_type','Soil Moisture'),
+        'status' => 1,
+        'floorplan_id' => $entity->floorplan_id,
+        'latitude' => $entity->map_item->latitude,
+        'longitude' =>  $entity->map_item->longitude,
+        'offsetHeight' => 2
+    ]);
+    $sm1->zones = $entity->zones;
+    $sm1->dirty('zones', true);
+    $sm1->device = $entity;
+    $sm1->dontNotify = true;
+
+    if (!$this->Sensors->save($sm1)) {
+        //     $this->log("saved new sensor => ".$co2High->label, 'debug');
+        // } else {
+        // Log::write("debug", $co2High->errors());
+        Log::write("debug", "Failed to save Sensor.");
+    }
+          # SM2
+          $sm2 = $this->Sensors->newEntity([
+            'sensor_pin' => 'A2',
+            'label' => $entity->label . ' - Soil 2',
+            'sensor_type_id' => $this->Sensors->enumValueToKey('sensor_type','Soil Moisture'),
+            'status' => 1,
+            'floorplan_id' => $entity->floorplan_id,
+            'latitude' => $entity->map_item->latitude,
+            'longitude' =>  $entity->map_item->longitude,
+            'offsetHeight' => 2
+        ]);
+        $sm2->zones = $entity->zones;
+        $sm2->dirty('zones', true);
+        $sm2->device = $entity;
+        $sm2->dontNotify = true;
+    
+        if (!$this->Sensors->save($sm2)) {
             //     $this->log("saved new sensor => ".$co2High->label, 'debug');
             // } else {
             // Log::write("debug", $co2High->errors());

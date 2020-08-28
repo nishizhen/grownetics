@@ -207,16 +207,11 @@ class ApiController extends AppController
         if ($this->request->is('get')) {
             $data = json_decode(stripslashes($this->request->getQuery('q')), true);
         } else if ($this->request->is('post')) {
-            if (isset($this->request->data['data'])) {
-                $data = $this->request->data['data']['q'];
-            } else {
-                $data = $this->request->params['q'];
-            }
+              $data = $this->request->getQueryParams()['q'];
             $data = json_decode(stripslashes($data), true);
         }
 
         $sensorsData = '';
-
         // If we received a boot request, or if we know the device to need to reboot
         try {
             // if (($device = Cache::read('device-'.$data['id'])) === false || !isset($device['id'])) {

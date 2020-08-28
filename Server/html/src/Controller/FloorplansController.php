@@ -8,6 +8,8 @@ use Cake\I18n\Number;
 use Cake\ORM\TableRegistry;
 use Migrations\Migrations;
 
+use Cake\Log\Log;
+
 
 /**
  * Floorplans Controller
@@ -248,12 +250,14 @@ class FloorplansController extends AppController
             if (!$table->saveMany($entities)) {
                 $this->log("Failed to save entities for: " . $layer, "debug");
                 $this->log($table->validator("default")->errors($entities), "debug");
+            } else {
+              $this->log("Saved entities for: " . $layer, "debug");
             }
             if ($layer == "devices") {
                 $this->loadModel("Rules");
                 $this->loadModel("SetPoints");
                 $this->Rules->generateFromDefaultRules();
-                $this->SetPoints->generateFromDefaultSetPoints();
+                // $this->SetPoints->generateFromDefaultSetPoints();
             }
 
             Cache::clear(false);
@@ -357,21 +361,24 @@ class FloorplansController extends AppController
                     'conditions' => [
                         'MapItems.floorplan_id' => $this->floorplan_id
                     ]
-                ]);//->cache('floorplan_sensors');
-                
+                ]);
 
                 if (($sensorData = Cache::read('floorplan_sensors_json_decoded')) === false) {
                     $sensorData = $query->toArray();
+                    $processed = [];
                     foreach ($sensorData as $sensor) {
                         $sensor->map_item->geoJSON = json_decode($sensor->map_item->geoJSON);
+                        $sensor->data_type = $this->Sensors->getDataTypeFromSensorType($sensor->sensor_type_id);
                         $sensor->sensor_type_label = $this->Sensors->enumKeyToValue('sensor_type', $sensor->sensor_type_id);
                         $sensor->sensor_type_symbol = $this->Sensors->enumKeyToValue('sensor_symbols', $sensor->sensor_type_id);
                         $sensor->sensor_type_metric_symbol = $this->Sensors->enumKeyToValue('sensor_metric_symbols', $sensor->sensor_type_id);
-                        unset($sensor->_matchingData);
+                        Log::write("debug", $sensor);
+                        // unset($sensor->_matchingData);
+                        array_push($processed,$sensor);
                     }
                     Cache::write('floorplan_sensors_json_decoded', $sensorData);
                 }
-                $entities = $sensorData;
+                $entities = $processed;
             } else if ($layer == "plants") {
                 $this->loadModel("Plants");
 

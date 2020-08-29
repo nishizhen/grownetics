@@ -55,6 +55,7 @@
     <?=$this->element('paginator')?>
 </div>
 <?php
+$this->Form->resetTemplates();
 $actions = [
     $this->Html->link(__('New Floorplan'), ['action' => 'add']),
     $this->Html->link(__('List Facilities'), ['controller' => 'Facilities', 'action' => 'index']),
@@ -67,7 +68,6 @@ if (isset($navRole) && $navRole == 'Admin') {
         $this->Form->postLink(__('Import Demo Floorplan'), ['controller' => 'Floorplans', 'action' => 'importDemo'], ['confirm' => __('Sure you want to seed a demo floorplan and overwrite any existing floorplan, device, zone data?')])
     ]);
 }
-$this->Form->resetTemplates();
 echo $this->element('actionsMenu',['label'=>'Actions','actions'=>$actions]);
 ?>
 

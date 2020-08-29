@@ -140,7 +140,7 @@ class SetPointsTable extends Table
 
                         Log::write('debug',"Plant zone: ".$zone->plant_zone_type_id);
                         Log::write('debug',"Data Type: ".$type);
-                        Log::write('debug',"Target Type: ".$this->enumValueToKey('target_type', 'Zone Type'),);
+                        Log::write('debug',"Target Type: ".$this->enumValueToKey('target_type', 'Zone Type'));
 
                         $defaultSetPoint = $this->find('all', [
                             'conditions' => [

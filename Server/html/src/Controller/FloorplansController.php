@@ -4,6 +4,7 @@ namespace App\Controller;
 use App\Controller\AppController;
 
 use Cake\Cache\Cache;
+use Cake\Event\Event;
 use Cake\I18n\Number;
 use Cake\ORM\TableRegistry;
 use Migrations\Migrations;
@@ -18,6 +19,11 @@ use Cake\Log\Log;
  */
 class FloorplansController extends AppController
 {
+
+  public function beforeFilter(Event $event)
+  {
+      $this->getEventManager()->off($this->Csrf);
+  }
 
     /**
      * Index method
@@ -73,12 +79,7 @@ class FloorplansController extends AppController
     {
         $floorplan = $this->Floorplans->newEntity();
         if ($this->request->is('post')) {
-            $data = $this->request->getData();
-            //            $this->log($data, "debug");
-            //
-            //            if (isset($data['floorplan_image']['size']) && $data['floorplan_image']['size'] > 0) {
-            //                //FIXME:
-            //            }
+            $data = $this->request->data;
             $floorplan = $this->Floorplans->patchEntity($floorplan, $data);
             $floorplan->latitude = Number::format($data['latitude'], ['precision' => 16]);
             $floorplan->longitude = Number::format($data['longitude'], ['precision' => 16]);

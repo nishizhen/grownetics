@@ -364,7 +364,7 @@ class FloorplansController extends AppController
                     ]
                 ]);
 
-                if (($sensorData = Cache::read('floorplan_sensors_json_decoded')) === false) {
+                // if (($sensorData = Cache::read('floorplan_sensors_json_decoded')) === false) {
                     $sensorData = $query->toArray();
                     $processed = [];
                     foreach ($sensorData as $sensor) {
@@ -377,8 +377,8 @@ class FloorplansController extends AppController
                         // unset($sensor->_matchingData);
                         array_push($processed,$sensor);
                     }
-                    Cache::write('floorplan_sensors_json_decoded', $sensorData);
-                }
+                    // Cache::write('floorplan_sensors_json_decoded', $sensorData);
+                // }
                 $entities = $processed;
             } else if ($layer == "plants") {
                 $this->loadModel("Plants");

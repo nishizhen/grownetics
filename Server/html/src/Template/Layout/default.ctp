@@ -80,10 +80,10 @@
             </script>
         <?php } ?>
     <?php } ?>
-    <script src="http://<?= env('REMOTE_DOMAIN') ?>:8989/socket.io/socket.io.js"></script>
+    <script src="https://socket.<?= env('REMOTE_DOMAIN') ?>/socket.io/socket.io.js"></script>
     <script>
       var GrowServer = GrowServer || {};
-      GrowServer.socket_address = 'http://<?= env('REMOTE_DOMAIN') ?>:8989/';
+      GrowServer.socket_address = 'https://socket.<?= env('REMOTE_DOMAIN') ?>/';
     </script>
 </head>
 <body<?php if (isset($bodyClass)) {

@@ -80,11 +80,19 @@
             </script>
         <?php } ?>
     <?php } ?>
-    <script src="https://socket.<?= env('REMOTE_DOMAIN') ?>/socket.io/socket.io.js"></script>
-    <script>
-      var GrowServer = GrowServer || {};
-      GrowServer.socket_address = 'https://socket.<?= env('REMOTE_DOMAIN') ?>/';
-    </script>
+    <?php if (env('DEV')) { ?>
+      <script src="http://<?= env('REMOTE_DOMAIN') ?>:8989/socket.io/socket.io.js"></script>
+      <script>
+        var GrowServer = GrowServer || {};
+        GrowServer.socket_address = 'http://<?= env('REMOTE_DOMAIN') ?>:8989/';
+      </script>
+    <?php } else { ?>
+      <script src="https://<?= env('REMOTE_DOMAIN') ?>/socket.io/socket.io.js"></script>
+      <script>
+        var GrowServer = GrowServer || {};
+        GrowServer.socket_address = 'https://<?= env('REMOTE_DOMAIN') ?>/';
+      </script>
+    <?php } ?>
 </head>
 <body<?php if (isset($bodyClass)) {
             echo ' class="' . $bodyClass . '"';
@@ -225,26 +233,5 @@
             jQuery("abbr.timeago").timeago();
         });
     </script>
-    <?php if (env('FACILITY_ID')) { ?>
-        <!-- Piwik -->
-        <script type="text/javascript">
-            var _paq = _paq || [];
-            _paq.push(['trackPageView']);
-            _paq.push(['enableLinkTracking']);
-            (function() {
-                _paq.push(['setTrackerUrl', 'https://api-ceecaaea119f54c83c04dc84cba63753.oasis.sandstorm.io']);
-                _paq.push(['setSiteId', <?= env('FACILITY_ID') ?>]);
-                _paq.push(['setApiToken', 'ZqcVb83PUpTqyVoBLeLFpiJRukdOoI6qJTXINRcVuLo']);
-                var d = document,
-                    g = d.createElement('script'),
-                    s = d.getElementsByTagName('script')[0];
-                g.type = 'text/javascript';
-                g.async = true;
-                g.defer = true;
-                g.src = 'https://8wr8xyxtmiu3kb9kjgfy.oasis.sandstorm.io/embed.js';
-                s.parentNode.insertBefore(g, s);
-            })();
-        </script> <?php } ?>
-    </body>
-
+  </body>
 </html>

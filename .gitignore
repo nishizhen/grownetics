@@ -1,5 +1,6 @@
 Ansible/fetch/
 .terraform
+.env
 DevOps/secret
 site/
 *.vagrant

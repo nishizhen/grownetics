@@ -213,6 +213,11 @@ class SystemHealth {
             'contain' => ['RuleActionTargets.RuleActions.Rules']
         ]);
         $outputSchedulesOk = true;
+
+        # If we don't have any outputs with rules (monitoring only) then skip this bit.
+        if ($outputs->count() < 1) {
+          return $outputSchedulesOk;
+        }
         foreach ($outputs as $output) {
             foreach ($output['rule_action_targets'] as $rat) {
                 # Ignore unused RATs

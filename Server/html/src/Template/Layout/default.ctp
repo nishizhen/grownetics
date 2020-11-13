@@ -87,7 +87,7 @@
         GrowServer.socket_address = 'http://<?= env('REMOTE_DOMAIN') ?>:8989/';
       </script>
     <?php } else { ?>
-      <script src="https://<?= env('REMOTE_DOMAIN') ?>/socket.io/socket.io.js"></script>
+      <script src="https://socket.<?= env('REMOTE_DOMAIN') ?>/socket.io/socket.io.js"></script>
       <script>
         var GrowServer = GrowServer || {};
         GrowServer.socket_address = 'https://<?= env('REMOTE_DOMAIN') ?>/';

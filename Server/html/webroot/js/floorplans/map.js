@@ -196,65 +196,65 @@ var GrowServer = GrowServer || {}
                 case 'BME280 Air Pressure':
                     GrowServer.setMapSensorType(21)
                     break
-                case 'Infisense Barometer Temperature':
+                case 'LoRa Barometer Temperature':
                     GrowServer.setMapSensorType(22)
                     break
-                case 'Infisense Barometric Pressure':
+                case 'LoRa Barometric Pressure':
                     GrowServer.setMapSensorType(23)
                     break
-                case 'Infisense Battery Level':
+                case 'LoRa Battery Level':
                     GrowServer.setMapSensorType(24)
                     break
-                case 'Infisense Capacitor Voltage 1':
+                case 'LoRa Capacitor Voltage 1':
                     GrowServer.setMapSensorType(25)
                     break
-                case 'Infisense Capacitor Voltage 2':
+                case 'LoRa Capacitor Voltage 2':
                     GrowServer.setMapSensorType(26)
                     break
-                case 'Infisense Co2 Concentration Lpf':
+                case 'LoRa Co2 Concentration Lpf':
                     GrowServer.setMapSensorType(27)
                     break
-                case 'Infisense Co2 Concentration':
+                case 'LoRa Co2 Concentration':
                     GrowServer.setMapSensorType(28)
                     break
 
-                case 'Infisense Co2 Sensor Temperature':
+                case 'LoRa Co2 Sensor Temperature':
                     GrowServer.setMapSensorType(30)
                     break
-                case 'Infisense Dielectric Permittivity':
+                case 'LoRa Dielectric Permittivity':
                     GrowServer.setMapSensorType(31)
                     break
-                case 'Infisense Electrical Conductivity':
+                case 'LoRa Electrical Conductivity':
                     GrowServer.setMapSensorType(32)
                     break
-                case 'Infisense Light Intensity':
+                case 'LoRa Light Intensity':
                     GrowServer.setMapSensorType(33)
                     break
-                case 'Infisense Photosynthetically Active Radiation':
+                case 'LoRa Photosynthetically Active Radiation':
                     GrowServer.setMapSensorType(34)
                     break
-                case 'Infisense Raw Ir Reading':
+                case 'LoRa Raw Ir Reading':
                     GrowServer.setMapSensorType(35)
                     break
-                case 'Infisense Raw Ir Reading Lpf':
+                case 'LoRa Raw Ir Reading Lpf':
                     GrowServer.setMapSensorType(36)
                     break
-                case 'Infisense Relative Humidity':
+                case 'LoRa Relative Humidity':
                     GrowServer.setMapSensorType(37)
                     break
-                case 'Infisense Rssi':
+                case 'LoRa Rssi':
                     GrowServer.setMapSensorType(38)
                     break
-                case 'Infisense Soil Temp':
+                case 'LoRa Soil Temp':
                     GrowServer.setMapSensorType(39)
                     break
-                case 'Infisense Temp':
+                case 'LoRa Temp':
                     GrowServer.setMapSensorType(40)
                     break
-                case 'Infisense Temperature':
+                case 'LoRa Temperature':
                     GrowServer.setMapSensorType(41)
                     break
-                case 'Infisense Volumetric Water Content':
+                case 'LoRa Volumetric Water Content':
                     GrowServer.setMapSensorType(42)
                     break
                 default:

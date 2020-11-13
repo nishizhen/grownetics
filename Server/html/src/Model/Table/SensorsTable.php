@@ -90,27 +90,27 @@ class SensorsTable extends Table
                 'BME280 Humidity',          # 19
                 'BME280 Air Temperature',   # 20
                 'BME280 Air Pressure',      # 21
-                'Infisense barometer_temperature',  # 22
-                'Infisense barometric_pressure',    # 23
-                'Infisense battery_level',          # 24
-                'Infisense capacitor_voltage_1',    # 25
-                'Infisense capacitor_voltage_2',    # 26
-                'Infisense co2_concentration_lpf',  # 27
-                'Infisense co2_concentration',      # 28
-                'Infisense co2_sensor_status',      # 29
-                'Infisense co2_sensor_temperature', # 30
-                'Infisense dielectric_permittivity',# 31
-                'Infisense electrical_conductivity',# 32
-                'Infisense light_intensity',        # 33
-                'Infisense photosynthetically_active_radiation', # 34
-                'Infisense raw_ir_reading',         # 35
-                'Infisense raw_ir_reading_lpf',     # 36
-                'Infisense relative_humidity',      # 37
-                'Infisense rssi',                   # 38
-                'Infisense soil_temp',              # 39
-                'Infisense temp',                   # 40
-                'Infisense temperature',            # 41
-                'Infisense volumetric_water_content'# 42
+                'LoRa barometer_temperature',  # 22
+                'LoRa barometric_pressure',    # 23
+                'LoRa battery_level',          # 24
+                'LoRa capacitor_voltage_1',    # 25
+                'LoRa capacitor_voltage_2',    # 26
+                'LoRa co2_concentration_lpf',  # 27
+                'LoRa co2_concentration',      # 28
+                'LoRa co2_sensor_status',      # 29
+                'LoRa co2_sensor_temperature', # 30
+                'LoRa dielectric_permittivity',# 31
+                'LoRa electrical_conductivity',# 32
+                'LoRa light_intensity',        # 33
+                'LoRa photosynthetically_active_radiation', # 34
+                'LoRa raw_ir_reading',         # 35
+                'LoRa raw_ir_reading_lpf',     # 36
+                'LoRa relative_humidity',      # 37
+                'LoRa rssi',                   # 38
+                'LoRa soil_temp',              # 39
+                'LoRa temp',                   # 40
+                'LoRa temperature',            # 41
+                'LoRa volumetric_water_content'# 42
             ],
             # This is a lookup table, given the id of the sensor_type above, what is the data_type for it?
             'sensor_data_type' => [

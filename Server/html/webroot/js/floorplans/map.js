@@ -53,11 +53,10 @@ var GrowServer = GrowServer || {}
                     var newValue = dataPoint.value
                     if (
                         GrowServer.showMetric == false &&
-                        ( dataPoint.type == 1 || 
-                          dataPoint.type == 3 ||
-                          dataPoint.type == 18 ||
-                          dataPoint.type == 20
-                          )
+                        (dataPoint.data_type == 1 ||
+                            dataPoint.data_type == 3 ||
+                            dataPoint.data_type == 18 ||
+                            dataPoint.data_type == 20)
                     ) {
                         newValue = parseFloat(
                             (dataPoint.value * 9) / 5 + 32
@@ -155,51 +154,111 @@ var GrowServer = GrowServer || {}
             switch (sensorType) {
                 case 'Humidity Low':
                 case 'Humidity High':
-                    GrowServer.setMapDataType(2)
+                    GrowServer.setMapSensorType(2)
                     break
                 case 'Temperature High':
                 case 'Temperature Low':
-                    GrowServer.setMapDataType(3)
+                    GrowServer.setMapSensorType(3)
                     break
                 case 'CO2':
-                    GrowServer.setMapDataType(4)
+                    GrowServer.setMapSensorType(4)
                     break
                 case 'PAR':
-                    GrowServer.setMapDataType(11)
+                    GrowServer.setMapSensorType(11)
                     break
                 case 'PH':
-                    GrowServer.setMapDataType(5)
+                    GrowServer.setMapSensorType(5)
                     break
                 case 'EC':
-                    GrowServer.setMapDataType(7)
+                    GrowServer.setMapSensorType(7)
                     break
                 case 'DO':
-                    GrowServer.setMapDataType(6)
+                    GrowServer.setMapSensorType(6)
                     break
                 case 'Waterproof Temperature':
-                    GrowServer.setMapDataType(1)
+                    GrowServer.setMapSensorType(1)
                     break
                 case 'SCD30 Co2':
-                    GrowServer.setMapDataType(16)
+                    GrowServer.setMapSensorType(16)
                     break
                 case 'SCD30 Humidity':
-                    GrowServer.setMapDataType(17)
+                    GrowServer.setMapSensorType(17)
                     break
                 case 'SCD30 Air Temperature':
-                    GrowServer.setMapDataType(18)
+                    GrowServer.setMapSensorType(18)
                     break
                 case 'BME280 Humidity':
-                    GrowServer.setMapDataType(19)
+                    GrowServer.setMapSensorType(19)
                     break
                 case 'BME280 Air Temperature':
-                    GrowServer.setMapDataType(20)
+                    GrowServer.setMapSensorType(20)
                     break
                 case 'BME280 Air Pressure':
-                    GrowServer.setMapDataType(21)
+                    GrowServer.setMapSensorType(21)
+                    break
+                case 'Infisense Barometer Temperature':
+                    GrowServer.setMapSensorType(22)
+                    break
+                case 'Infisense Barometric Pressure':
+                    GrowServer.setMapSensorType(23)
+                    break
+                case 'Infisense Battery Level':
+                    GrowServer.setMapSensorType(24)
+                    break
+                case 'Infisense Capacitor Voltage 1':
+                    GrowServer.setMapSensorType(25)
+                    break
+                case 'Infisense Capacitor Voltage 2':
+                    GrowServer.setMapSensorType(26)
+                    break
+                case 'Infisense Co2 Concentration Lpf':
+                    GrowServer.setMapSensorType(27)
+                    break
+                case 'Infisense Co2 Concentration':
+                    GrowServer.setMapSensorType(28)
                     break
 
+                case 'Infisense Co2 Sensor Temperature':
+                    GrowServer.setMapSensorType(30)
+                    break
+                case 'Infisense Dielectric Permittivity':
+                    GrowServer.setMapSensorType(31)
+                    break
+                case 'Infisense Electrical Conductivity':
+                    GrowServer.setMapSensorType(32)
+                    break
+                case 'Infisense Light Intensity':
+                    GrowServer.setMapSensorType(33)
+                    break
+                case 'Infisense Photosynthetically Active Radiation':
+                    GrowServer.setMapSensorType(34)
+                    break
+                case 'Infisense Raw Ir Reading':
+                    GrowServer.setMapSensorType(35)
+                    break
+                case 'Infisense Raw Ir Reading Lpf':
+                    GrowServer.setMapSensorType(36)
+                    break
+                case 'Infisense Relative Humidity':
+                    GrowServer.setMapSensorType(37)
+                    break
+                case 'Infisense Rssi':
+                    GrowServer.setMapSensorType(38)
+                    break
+                case 'Infisense Soil Temp':
+                    GrowServer.setMapSensorType(39)
+                    break
+                case 'Infisense Temp':
+                    GrowServer.setMapSensorType(40)
+                    break
+                case 'Infisense Temperature':
+                    GrowServer.setMapSensorType(41)
+                    break
+                case 'Infisense Volumetric Water Content':
+                    GrowServer.setMapSensorType(42)
+                    break
                 default:
-                    GrowServer.setMapDataType(3)
+                    GrowServer.setMapSensorType(3)
                     break
             }
         })
@@ -967,7 +1026,7 @@ var GrowServer = GrowServer || {}
 
             layerControl.addTo(leafletMap)
 
-            GrowServer.setMapDataType(GrowServer.map_data_type)
+            GrowServer.setMapSensorType(GrowServer.map_data_type)
         })
         ;(function () {
             var control = new L.Control({ position: 'topright' })

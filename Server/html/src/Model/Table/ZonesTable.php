@@ -168,7 +168,7 @@ class ZonesTable extends Table
     }
 
     # Determine the average value for each zone, save it into Influx
-    public function processData()
+    public function processData($shell)
     {
         $this->Sensors = TableRegistry::get('Sensors');
         $this->SetPoints = TableRegistry::get('SetPoints');
@@ -184,6 +184,7 @@ class ZonesTable extends Table
         $query->cache('zone_ids');
 
         foreach ($query as $zone) {
+            $shell->out('Process data for zone: '.$zone['id']);
             $sensorsByType = $this->getSensorsByType($zone);
 
             if ($sensorsByType) {
@@ -194,6 +195,7 @@ class ZonesTable extends Table
                     $total = 0;
                     $sensorCount = 0;
                     foreach ($sensors as $sensor) {
+                      $shell->out('Process data for sensor: '.$sensor['id']);
                         $value = Cache::read('sensor-value-' . $sensor);
                         if ($value) {
                             $total = $total + $value;
@@ -295,6 +297,8 @@ class ZonesTable extends Table
             'Zones.bacnet_hum_set',
             'Zones.bacnet_temp_read',
             'Zones.bacnet_temp_set',
+            'Zones.bacnet_co2_read',
+            'Zones.bacnet_co2_set',
             'Zones.bacnet_timestamp',
             'Zones.plant_zone_type_id',
         ]);
@@ -304,8 +308,10 @@ class ZonesTable extends Table
 
         $tempSensorTypeId = $this->Sensors->enumValueToKey('sensor_type', 'Air Temperature');
         $humiditySensorTypeId = $this->Sensors->enumValueToKey('sensor_type', 'Humidity');
+        $co2SensorTypeId = $this->Sensors->enumValueToKey('sensor_type', 'Co2');
 
         foreach ($query as $zone) {
+          sleep(1);
             $shell->out('Process zone: ' . $zone['id']);
             $sensorsByType = $this->getSensorsByType($zone);
 
@@ -316,10 +322,11 @@ class ZonesTable extends Table
                     $shell->out('Got value: ' . $value);
                     $shell->out('BACnet Humidity ID: ' . $zone['bacnet_hum_read']);
                     # If we have a valid read value, and BACnet object IDs, then go ahead and update the BACnet network
-                    if ($value > 0 && $zone['bacnet_hum_read']) {
+                    if ($value > 0) {
                         $shell->out("========= UPDATE BACNET! ===========" . $type . "-" . $tempSensorTypeId);
                         switch ($type) {
                             case $tempSensorTypeId:
+                              if ($zone['bacnet_hum_read']) {
                                 $shell->out('Update Temp Point');
                                 $fahrenheit = ($value * 9 / 5) + 32;
                                 $url = env('BACNET_URL') . $zone['bacnet_temp_read'] . '/Value/' . $fahrenheit . trim(env('BACNET_AUTH'), "'");
@@ -426,10 +433,90 @@ class ZonesTable extends Table
                                 } else {
                                     $shell->out("No setpoint found");
                                 }
+                              }
                                 break;
+                                case $co2SensorTypeId:
+                                  $shell->out('Do we have a co2 point?');
+                                  if ($zone['bacnet_co2_read']) { 
+                                  $shell->out('Update Co2 Point');
+                                  $url = env('BACNET_URL') . $zone['bacnet_co2_read'] . '/Value/' . $value . trim(env('BACNET_AUTH'), "'");
+                                  $ch = curl_init();
+                                  curl_setopt($ch, CURLOPT_URL, $url);
+                                  curl_setopt($ch, CURLOPT_RETURNTRANSFER, $url);
+                                  $result = curl_exec($ch);
+                                  $shell->out($result);
+                                  if (!$result) {
+                                      $recorder->recordEvent(
+                                          'system_events',
+                                          'bacnet_update_failed',
+                                          $value,
+                                          [
+                                              'zone_id' => $zone['id'],
+                                              'bacnet_point_id' => $zone['bacnet_co2_read'],
+                                              'sensor_type_id' => $type,
+                                              'update_type' => 'zone_value',
+                                          ]
+                                      );
+                                  } else {
+                                      $recorder->recordEvent(
+                                          'system_events',
+                                          'bacnet_update',
+                                          $value,
+                                          [
+                                              'zone_id' => $zone['id'],
+                                              'bacnet_point_id' => $zone['bacnet_co2_read'],
+                                              'sensor_type_id' => $type,
+                                              'update_type' => 'zone_value',
+                                          ]
+                                      );
+                                  }
+  
+
+  
+                                  $setPoint = $this->SetPoints->getSetPointForTarget($this->SetPoints->enumValueToKey('target_type', 'Zone'), $zone, $co2SensorTypeId);
+                                  if ($setPoint) {
+                                      $shell->out("Got Setpoint ID: " . $setPoint->id);
+                                      $url = env('BACNET_URL') . $zone['bacnet_co2_set'] . '/Value/' . $value . trim(env('BACNET_AUTH'), "'");
+                                      $ch = curl_init();
+                                      curl_setopt($ch, CURLOPT_URL, $url);
+                                      curl_setopt($ch, CURLOPT_RETURNTRANSFER, $url);
+                                      $result = curl_exec($ch);
+                                      $shell->out($result);
+                                      if (!$result) {
+                                          $recorder->recordEvent(
+                                              'system_events',
+                                              'bacnet_update_failed',
+                                              $setPoint->value,
+                                              [
+                                                  'zone_id' => $zone['id'],
+                                                  'bacnet_point_id' => $zone['bacnet_co2_set'],
+                                                  'sensor_type_id' => $type,
+                                                  'update_type' => 'set_point',
+                                              ]
+                                          );
+                                      } else {
+                                          $recorder->recordEvent(
+                                              'system_events',
+                                              'bacnet_update',
+                                              $setPoint->value,
+                                              [
+                                                  'zone_id' => $zone['id'],
+                                                  'bacnet_point_id' => $zone['bacnet_co2_set'],
+                                                  'sensor_type_id' => $type,
+                                                  'update_type' => 'set_point',
+                                              ]
+                                          );
+                                      }
+                                  } else {
+                                      $shell->out("No setpoint found");
+                                  }
+                                }
+                                  break;
                             case $humiditySensorTypeId:
+                                if ($zone['bacnet_hum_read']) {
                                 $shell->out('Update Hum Point');
                                 $url = env('BACNET_URL') . $zone['bacnet_hum_read'] . '/Value/' . $value . trim(env('BACNET_AUTH'), "'");
+                                $shell->out($url);
                                 $ch = curl_init();
                                 curl_setopt($ch, CURLOPT_URL, $url);
                                 curl_setopt($ch, CURLOPT_RETURNTRANSFER, $url);
@@ -495,6 +582,7 @@ class ZonesTable extends Table
                                         );
                                     }
                                 }
+                              }
                                 break;
                         } # / Sensor Type Switch
                         if (isset($setPoint) && $set_point_alerts_enabled) {
@@ -576,6 +664,8 @@ class ZonesTable extends Table
           
             $entity->status = 1;
             $entity->zone_type_id = $this->enumValueToKey('zone_types', $entity->zone_type);
+            Log::write("debug", "Set zone_type_id");
+            Log::write("debug", $this->enumValueToKey('zone_types', $entity->zone_type), $entity->zone_type);
 
             if (isset($entity->room_zone_id)) {
                 $Zones = TableRegistry::get("Zones");

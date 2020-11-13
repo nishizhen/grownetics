@@ -4,7 +4,7 @@ namespace App\Shell;
 
 use Cake\Console\Shell;
 use App\Lib\SystemEventRecorder;
-use App\Lib\ArgusApi;
+use App\Lib\Integrations\ArgusApi;
 use InfluxDB\Point;
 use InfluxDB\Client;
 use InfluxDB\Database;

@@ -1,9 +1,9 @@
 var GrowServer = GrowServer || {};
-GrowServer.map_data_type = 3;
-GrowServer.setMapDataType = function (data_type) {
-    this.socket.emit('leave', 'data.sensor.'+this.map_data_type);
-    this.map_data_type = data_type;
-    this.socket.emit('join', 'data.sensor.'+data_type);
+GrowServer.map_sensor_type = 3;
+GrowServer.setMapSensorType = function (sensor_type) {
+    this.socket.emit('leave', 'data.sensor.'+this.map_sensor_type);
+    this.map_sensor_type = sensor_type;
+    this.socket.emit('join', 'data.sensor.'+sensor_type);
 }
 
 function addNotification(message, className) {

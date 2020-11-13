@@ -61,7 +61,7 @@ class GrowpulseShell extends Shell
 
                 # Create Zone data points
                 $this->out('Process Zone Datapoints');
-                $this->Zones->processData();
+                $this->Zones->processData($this);
 
                 # Process Zone based Rules
                 $this->out('Process Zone Rules');
@@ -81,7 +81,7 @@ class GrowpulseShell extends Shell
 
                 # Query Remote Integrations/APIs
                 $this->out('Query Remote Integrations');
-                $integrations->scrape();
+                $integrations->poll();
 
                 $time = time();
                 $this->out("Tick: " . $time);

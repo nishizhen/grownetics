@@ -61,6 +61,8 @@ growdash:
     - SMTP_USER
     - SMTP_PASS
 
+    - INFISENSE_API_KEY
+
 # The API that devices talk to
 deviceapi:
   image: grownetics/growdash:${VERSION}

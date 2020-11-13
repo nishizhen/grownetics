@@ -74,21 +74,20 @@ class DataPointsController extends AppController
         $this->set('_serialize', ['results', 'dataSymbol']);
     }
 
-    public function map($map_data_type = 3) {
+    public function map($sensor_type_id = 3) {
         $this->loadModel('Sensors');
         $datapoints = [];
         # Load all the sensors of the data type we care about.
         # This should really only load the sensors of the type and floorplan level
         # we care about, for now this works.
-        $sensors = $this->Sensors->find('all',['conditions'=>['sensor_type_id'=>$map_data_type]]);
+        $sensors = $this->Sensors->find('all',['conditions'=>['sensor_type_id'=>$sensor_type_id]]);
 
         # Cache this query to make it faster next time.
-        $sensors->cache('sensors-for-data-type-'.$map_data_type);
+        $sensors->cache('sensors-for-sensor-type-'.$sensor_type_id);
         foreach ($sensors as $sensor) {
             # If we have a sensor value in the cache.
             # This is set in DevicesTable::savePinData.
             if (Cache::read('sensor-value-' . $sensor['id']) !== false) {
-
                 #no need to send data older than 5 minutes
                 if (strtotime(Cache::read('sensor-time-' . $sensor['id'])) >  strtotime("-5 minutes")) {
                     array_push($datapoints,(object)[

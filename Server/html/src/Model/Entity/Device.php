@@ -23,7 +23,7 @@ use Cake\ORM\Entity;
  * @property \App\Model\Entity\Sensor[] $sensors
  * @property int $map_item_id
  * @property string $version
- * @property int $api_id
+ * @property string $api_id
  */
 class Device extends Entity
 {

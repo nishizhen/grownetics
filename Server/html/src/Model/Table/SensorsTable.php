@@ -56,7 +56,15 @@ class SensorsTable extends Table
                 'PAR',                      # 10
                 'Soil Moisture',            # 11
                 'Weight',                   # 12
-                'Atmospheric Pressure'                  # 13
+                'Atmospheric Pressure',     # 13
+                'Battery Level',            # 14
+                'Voltage',                  # 15
+                'Dielectric Permittivity',  # 16
+                'Light Intensity',          # 17
+                'Raw IR',                   # 18
+                'RSSI',                     # 19
+                'Volumetric Water Content'  # 20
+
             ],
             # This is the list of different types of sensors our system supports
             'sensor_type' => [
@@ -74,14 +82,35 @@ class SensorsTable extends Table
                 'PAR',                      # 11
                 'Atlas Scientific RTD',     # 12
                 'Soil Moisture',            # 13
-                '4-20ma pH',                   # 14
-                '4-20ma EC',                    #15
-                'SCD30 Co2',  # 16
-                'SCD30 Humidity', #17
-                'SCD30 Air Temperature', #18
-                'BME280 Humidity', #19
-                'BME280 Air Temperature', #20
-                'BME280 Air Pressure', #21
+                '4-20ma pH',                # 14
+                '4-20ma EC',                # 15
+                'SCD30 Co2',                # 16
+                'SCD30 Humidity',           # 17
+                'SCD30 Air Temperature',    # 18
+                'BME280 Humidity',          # 19
+                'BME280 Air Temperature',   # 20
+                'BME280 Air Pressure',      # 21
+                'Infisense barometer_temperature',  # 22
+                'Infisense barometric_pressure',    # 23
+                'Infisense battery_level',          # 24
+                'Infisense capacitor_voltage_1',    # 25
+                'Infisense capacitor_voltage_2',    # 26
+                'Infisense co2_concentration_lpf',  # 27
+                'Infisense co2_concentration',      # 28
+                'Infisense co2_sensor_status',      # 29
+                'Infisense co2_sensor_temperature', # 30
+                'Infisense dielectric_permittivity',# 31
+                'Infisense electrical_conductivity',# 32
+                'Infisense light_intensity',        # 33
+                'Infisense photosynthetically_active_radiation', # 34
+                'Infisense raw_ir_reading',         # 35
+                'Infisense raw_ir_reading_lpf',     # 36
+                'Infisense relative_humidity',      # 37
+                'Infisense rssi',                   # 38
+                'Infisense soil_temp',              # 39
+                'Infisense temp',                   # 40
+                'Infisense temperature',            # 41
+                'Infisense volumetric_water_content'# 42
             ],
             # This is a lookup table, given the id of the sensor_type above, what is the data_type for it?
             'sensor_data_type' => [
@@ -101,12 +130,33 @@ class SensorsTable extends Table
                 11, #'Soil Moisture'             # 13
                 4, # pH                         #14
                 6, # EC                          #15
-                3, #co2 16
-                2, #humidity 17
-                1, #air temperature 18
-                2, #humidity 19
-                1, #air temperature 20
-                13 #air pressure 21
+                3, #co2                         16
+                2, #humidity                    17
+                1, #air temperature             18
+                2, #humidity                    19
+                1, #air temperature             20
+                13, #air pressure                21
+                1,                              #22
+                13,                              #23
+                14,                              #24
+                15,                              #25
+                15,                              #26
+                3,                              #27
+                3,                              #28
+                0,                              #29
+                1,                              #30
+                16,                              #31
+                6,                              #32
+                17,                              #33
+                10,                              #34
+                18,                              #35
+                18,                              #36
+                2,                              #37
+                19,                              #38
+                1,                              #39
+                1,                              #40
+                1,                              #41
+                20                              #42
             ],
             'sensor_display_class' => [
                 '',
@@ -260,36 +310,36 @@ class SensorsTable extends Table
         return $rules;
     }
 
-    public function afterSave( $event, $entity, $options) {
-        Cache::delete('floorplan_sensors_json_decoded');
-        Cache::delete('floorplan_sensors');
-        $Zones = TableRegistry::get("Zones");
+    // public function afterSave( $event, $entity, $options) {
+    //     Cache::delete('floorplan_sensors_json_decoded');
+    //     Cache::delete('floorplan_sensors');
+    //     $Zones = TableRegistry::get("Zones");
 
-        # Generate an updated list of sensors by zone
-        $sensor = $this->get($entity['id'],[
-            'contain' =>
-                [
-                    'Zones'
-                ]
-        ]);
-        foreach ($sensor['zones'] as $zone) {
-            # We don't have it in cache, so load the sensors.
-            $zone = $Zones->get($zone['id'],[
-                'contain' =>
-                    [
-                        'Sensors'
-                    ]
-            ]);
-            $sensorsByType = [];
-            foreach ($zone['sensors'] as $sensor) {
-                if (!isset($sensorsByType[$sensor['sensor_type_id']]) || !is_array($sensorsByType[$sensor['sensor_type_id']])) {
-                    $sensorsByType[$sensor['sensor_type_id']] = [];
-                }
-                array_push($sensorsByType[$sensor['sensor_type_id']], $sensor['id']);
-            }
-            Cache::write('sensors-by-type-zone-'.$zone['id'],$sensorsByType);
-        }
-    }
+    //     # Generate an updated list of sensors by zone
+    //     $sensor = $this->get($entity['id'],[
+    //         'contain' =>
+    //             [
+    //                 'Zones'
+    //             ]
+    //     ]);
+    //     foreach ($sensor['zones'] as $zone) {
+    //         # We don't have it in cache, so load the sensors.
+    //         $zone = $Zones->get($zone['id'],[
+    //             'contain' =>
+    //                 [
+    //                     'Sensors'
+    //                 ]
+    //         ]);
+    //         $sensorsByType = [];
+    //         foreach ($zone['sensors'] as $sensor) {
+    //             if (!isset($sensorsByType[$sensor['sensor_type_id']]) || !is_array($sensorsByType[$sensor['sensor_type_id']])) {
+    //                 $sensorsByType[$sensor['sensor_type_id']] = [];
+    //             }
+    //             array_push($sensorsByType[$sensor['sensor_type_id']], $sensor['id']);
+    //         }
+    //         Cache::write('sensors-by-type-zone-'.$zone['id'],$sensorsByType);
+    //     }
+    // }
 
     public function afterDelete( $event, $entity, $options) {
         Cache::delete('floorplan_sensors_json_decoded');

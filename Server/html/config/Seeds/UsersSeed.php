@@ -24,25 +24,25 @@ class UsersSeed extends AbstractSeed
         $data = [
           [
               'email'       => 'hello@grownetics.co',
-              'password'    => '$2a$10$zVl7XRZXIDYexh2AaMkxqume1ddPeWufArdNlmNzYupwraSqpgkdW',
+              'password'    => '$2y$10$2SfSC4i4BhThf.m/QeNsCekrqeE47G7i3aZBdzPjw1m/yf6y5/2V6', #GrowBetter
               'role_id'        => 4,
               'name'        => 'Demo User'
           ],
           [
               'email'       => 'admin@grownetics.co',
-              'password'    => '$2a$10$zVl7XRZXIDYexh2AaMkxqume1ddPeWufArdNlmNzYupwraSqpgkdW',
+              'password'    => '$2y$10$2SfSC4i4BhThf.m/QeNsCekrqeE47G7i3aZBdzPjw1m/yf6y5/2V6',
               'role_id'        => 1,
               'name'        => 'Admin'
           ],
           [
               'email'       => 'owner@grownetics.co',
-              'password'    => '$2a$10$zVl7XRZXIDYexh2AaMkxqume1ddPeWufArdNlmNzYupwraSqpgkdW',
+              'password'    => '$2y$10$2SfSC4i4BhThf.m/QeNsCekrqeE47G7i3aZBdzPjw1m/yf6y5/2V6',
               'role_id'        => 2,
               'name'        => 'Owner'
           ],
           [
               'email'       => 'grower@grownetics.co',
-              'password'    => '$2a$10$zVl7XRZXIDYexh2AaMkxqume1ddPeWufArdNlmNzYupwraSqpgkdW',
+              'password'    => '$2y$10$2SfSC4i4BhThf.m/QeNsCekrqeE47G7i3aZBdzPjw1m/yf6y5/2V6',
               'role_id'        => 3,
               'name'        => 'Grower'
           ]

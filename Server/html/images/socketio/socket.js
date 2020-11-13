@@ -41,7 +41,7 @@ io.on('connection', function(socket){
       { },
       function (error, response, body) {
           if (!error && response.statusCode == 200) {
-            console.log("Send on join to map: "+body)
+            console.log("Send onnn join to map: "+body)
             io.to(room).emit('data.sensor', body)
           } else {
             console.log("Error from map: "+error)
@@ -68,7 +68,8 @@ amqp.connect('amqp://rabbit:rabbit@rabbitmq', function(err, conn) {
     console.log(" [*] Waiting for messages in %s. To exit press CTRL+C", q);
     ch.consume(q, function(msg) {
       var message = JSON.parse(msg.content)
-      io.to('data.sensor.'+message[0].type).emit('data.sensor', msg.content.toString());
+      console.log("Send to data.sensor."+message[0].sensor_type)
+      io.to('data.sensor.'+message[0].sensor_type).emit('data.sensor', msg.content.toString());
     }, {noAck: true});
   });
 });

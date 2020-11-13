@@ -40,6 +40,9 @@ growdash:
     - AWS_SECRET_ACCESS_KEY
     - RESTIC_REPOSITORY
     - RESTIC_PASSWORD
+
+    - INFISENSE_API_KEY
+    
   image: grownetics/growdash:${VERSION}
   volumes:
     - ./html:/var/www/html:cached

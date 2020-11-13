@@ -2,7 +2,7 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
-use App\Lib\ArgusApi;
+use App\Lib\Integrations\ArgusApi;
 
 /**
  * Devices Controller

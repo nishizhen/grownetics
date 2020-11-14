@@ -451,9 +451,6 @@ class SensorsTable extends Table
     }
 
     public function getDataTypeFromSensorType($sensor_type_id) {
-      Log::write("debug", "Got: ".$sensor_type_id);
-      Log::write("debug", "Got: ".$this->enumKeyToValue('sensor_data_type', $sensor_type_id));
-      Log::write("debug", "Got: ".$this->enumKeyToValue('data_type', $this->enumKeyToValue('sensor_data_type', $sensor_type_id)));
       return $this->enumKeyToValue('data_type', $this->enumKeyToValue('sensor_data_type', $sensor_type_id));
     }
 //    public function beforeSave( $event, $entity, $options) {

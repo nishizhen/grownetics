@@ -373,7 +373,6 @@ class FloorplansController extends AppController
                         $sensor->sensor_type_label = $this->Sensors->enumKeyToValue('sensor_type', $sensor->sensor_type_id);
                         $sensor->sensor_type_symbol = $this->Sensors->enumKeyToValue('sensor_symbols', $sensor->sensor_type_id);
                         $sensor->sensor_type_metric_symbol = $this->Sensors->enumKeyToValue('sensor_metric_symbols', $sensor->sensor_type_id);
-                        Log::write("debug", $sensor);
                         // unset($sensor->_matchingData);
                         array_push($processed,$sensor);
                     }

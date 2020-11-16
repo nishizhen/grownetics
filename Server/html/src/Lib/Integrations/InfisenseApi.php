@@ -44,37 +44,14 @@ class InfisenseApi
     $this->Devices = TableRegistry::get("Devices");
     $this->Sensors = TableRegistry::get("Sensors");
 
+    # Store recent data in bulk
     $start = new \DateTime('-5 minutes');
     $end = new \DateTime();
-
     $data = $this->query($start, $end);
-
-    # Store Infisense Data in InfluxDB
-    $points = [];
-    foreach ($data as $dataPoint) {
-      $points[] = new Point(
-        'infisense', // name of the measurement
-        (float) $dataPoint[4], // the measurement value
-        [
-          'source_type' => 0,
-          'sensor_type' => $this->infisenseSensorTypes[$dataPoint[1]],
-          'data_type' => $this->Sensors->enumKeyToValue('sensor_data_type',$this->infisenseSensorTypes[$dataPoint[1]]),
-          'facility_id' => env('FACILITY_ID'),
-          'source_id' => $dataPoint[0],
-
-        ],
-        [], // optional additional fields
-        strtotime($dataPoint[3])
-      );
-    }
-
-    # Attempt to save the DataPoint to the local Time Series DB
-    $tsw = new TimeSeriesWrapper();
-    $tsw->store($points, 'integration_data');
+    $this->processBulkData($data);
 
     # Query for the most recent datapoints only
     $latest = $this->latest();
-
     # Submit the latest data points for rendering on the dashboard map.
     $messageQueueWrapper = new MessageQueueWrapper();
     $messages = [];
@@ -82,37 +59,12 @@ class InfisenseApi
       # Get Device ID for Inifisense ID
       $device = $this->Devices->findByApiId($dataPoint[0])->first();
       if (!$device) {
-        print_r("No device found for: ".$dataPoint[0]."\n");
+        print_r("No device found for: " . $dataPoint[0] . "\n");
         continue;
       }
-      # Look up sensor type ID
+      $sensor = $this->getSensorForDataPoint($dataPoint, $device);
       $sensorTypeId = $this->infisenseSensorTypes[$dataPoint[1]];
-      print_r("\nDatapoint id: ");
-      print_r($dataPoint[1]);
-      print_r("\nSensor type: ");
-      print_r($sensorTypeId . "\n");
-      print_r("\nData type: ");
-      print_r($this->Sensors->enumKeyToValue('sensor_data_type',$sensorTypeId) . "\n");
-      
-      # Get Sensor for sensor type
-      $sensor = $this->Sensors->find('all', [
-        'conditions' => [
-          'device_id' => $device->id,
-          'sensor_type_id' => $sensorTypeId
-        ]
-      ])->first();
-      if (!$sensor) {
-        $sensor = $this->Sensors->newEntity();
-        $sensor->device_id = $device->id;
-        $sensor->sensor_type_id = $sensorTypeId;
-        $sensor->label = $this->Sensors->enumKeyToValue('sensor_type',$sensorTypeId);
-        $sensor->status = 1;
-        $sensor->map_item_id = $device->map_item_id;
-        $sensor->floorplan_id = 1;
-        $sensor->dontMap = true;
-        $this->Sensors->save($sensor);
-      }
-      $dataType = $this->Sensors->enumKeyToValue('sensor_data_type',$sensorTypeId);
+      $dataType = $this->Sensors->enumKeyToValue('sensor_data_type', $sensorTypeId);
       $json = json_encode(array(array(
         'value' => (float) $dataPoint[4],
         'source_id' => $sensor->id,
@@ -124,14 +76,38 @@ class InfisenseApi
         'facility_id' => (float) env('FACILITY_ID')
       )));
       array_push($messages, $json);
-      print_r($json);
       Cache::write('sensor-value-' . $sensor->id, (float) $dataPoint[4]);
       Cache::write('sensor-time-' . $sensor->id, date("Y-m-d H:i:s"));
-  
     }
     print_r("Pushing: ");
     print_r($messages);
     $messageQueueWrapper->send($messages, 'data.sensor');
+  }
+
+  public function getSensorForDataPoint($dataPoint, $device)
+  {
+    # Look up sensor type ID
+    $sensorTypeId = $this->infisenseSensorTypes[$dataPoint[1]];
+
+    # Get Sensor for sensor type
+    $sensor = $this->Sensors->find('all', [
+      'conditions' => [
+        'device_id' => $device->id,
+        'sensor_type_id' => $sensorTypeId
+      ]
+    ])->first();
+    if (!$sensor) {
+      $sensor = $this->Sensors->newEntity();
+      $sensor->device_id = $device->id;
+      $sensor->sensor_type_id = $sensorTypeId;
+      $sensor->label = $this->Sensors->enumKeyToValue('sensor_type', $sensorTypeId);
+      $sensor->status = 1;
+      $sensor->map_item_id = $device->map_item_id;
+      $sensor->floorplan_id = 1;
+      $sensor->dontMap = true;
+      $this->Sensors->save($sensor);
+    }
+    return $sensor;
   }
 
   public function query($start, $end)
@@ -160,9 +136,6 @@ class InfisenseApi
     print_r("https://api.infisense.com" . $url . "\n\n");
     # Check that we got a valid response, and decode it.
     $response = curl_exec($curl);
-    print_r("Response: ");
-    print_r($response);
-    print_r("\n");
     $err = curl_error($curl);
     curl_close($curl);
     $jsonResponse = json_decode($response);
@@ -172,4 +145,46 @@ class InfisenseApi
     }
     return $jsonResponse->data;
   }
+
+  # Store many points to the Timeseries Database.
+  public function processBulkData($data)
+  {
+    $this->Devices = TableRegistry::get("Devices");
+    $this->Sensors = TableRegistry::get("Sensors");
+
+    # Store Infisense Data in InfluxDB
+    $points = [];
+    foreach ($data as $dataPoint) {
+      $device = $this->Devices->findByApiId($dataPoint[0])->first();
+      if (!$device) {
+        continue;
+      }
+      $sensor = $this->getSensorForDataPoint($dataPoint, $device);
+      $sensorTypeId = $this->infisenseSensorTypes[$dataPoint[1]];
+      $dataType = $this->Sensors->enumKeyToValue('sensor_data_type', $sensorTypeId);
+
+      $points[] = new Point(
+        'infisense', // name of the measurement
+        (float) $dataPoint[4], // the measurement value
+        [
+          'source_type' => 0,
+          'sensor_type' => $this->infisenseSensorTypes[$dataPoint[1]],
+          'data_type' => $this->Sensors->enumKeyToValue('sensor_data_type', $this->infisenseSensorTypes[$dataPoint[1]]),
+          'facility_id' => env('FACILITY_ID'),
+          'source_id' => $sensor->id,
+          'device_id' => $device->id,
+
+        ],
+        [], // optional additional fields
+        strtotime($dataPoint[3])
+      );
+    }
+
+    # Attempt to save the DataPoint to the local Time Series DB
+    $tsw = new TimeSeriesWrapper();
+    $tsw->store($points, 'integration_data');
+  }
 }
+
+
+

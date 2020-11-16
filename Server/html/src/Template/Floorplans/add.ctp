@@ -119,7 +119,3 @@ $this->Html->script('floorplans/add', ['block' => 'scriptBottom']);
         </fieldset>
     <?= $this->Form->end() ?>
 </div>
-<?php
-    $this->Form->resetTemplates();
-    echo $this->Form->postLink(__('Import Demo Floorplan'), ['controller' => 'Floorplans', 'action' => 'importDemo']);
-?>

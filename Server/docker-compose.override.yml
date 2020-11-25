@@ -1,8 +1,8 @@
 growdash:
   image: grownetics/growdash
   volumes:
-    - ./html:/var/www/html:cached
-    - ./tmp:/tmp:cached
+    - ./html:/var/www/html
+    - ./tmp:/tmp
 
 deviceapi:
   volumes:
@@ -29,6 +29,7 @@ growsocket:
     - "8989:8989"
   volumes:
     - ./html/images/socketio/socket.js:/srv/socket.js
+    - ./html/images/socketio/socket.js:/app/socket.js
 
 notifications:
   volumes:

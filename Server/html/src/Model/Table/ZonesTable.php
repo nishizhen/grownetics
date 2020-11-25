@@ -186,7 +186,7 @@ class ZonesTable extends Table
         foreach ($query as $zone) {
             $shell->out('Process data for zone: '.$zone['id']);
             $sensorsByType = $this->getSensorsByType($zone);
-
+            $shell->out('Got sensors: '.sizeof($sensorsByType));
             if ($sensorsByType) {
                 $points = [];
                 $airTempAverage = 0;
@@ -615,6 +615,8 @@ class ZonesTable extends Table
         # TODO: Reenable this caching.
         // if (($sensorsByType = Cache::read('sensors-by-type-zone-'.$zone['id'])) === false) {
         # We don't have it in cache, so load the sensors.
+
+        # Load sensors based on the sensors_zones join table
         $zone = $this->find('all', ['conditions' => ['id' => $zone['id']]])->contain('Sensors', function ($q) {
             return $q->where(['Sensors.status' => $this->Sensors->enumValueToKey('status', 'Enabled')]);
         })->first();

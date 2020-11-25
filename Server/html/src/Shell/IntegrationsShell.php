@@ -32,6 +32,12 @@ class IntegrationsShell extends Shell
     $this->loadModel('DataPoints');
   }
 
+  public function poll()
+  {
+    $infisenseApi = new InfisenseApi();
+    $infisenseApi->poll();
+  }
+
   # Called with bin/cake integrations backfill 2020-11-13 2020-11-15
   public function backfill($startText, $endText = false)
   {

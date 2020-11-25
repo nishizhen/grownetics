@@ -47,9 +47,9 @@ class NotesPhotosTable extends Table
         $this->belongsTo('Photos', [
             'foreignKey' => 'photo_id'
         ]);
-        $this->belongsTo('Owners', [
-            'foreignKey' => 'owner_id'
-        ]);
+        // $this->belongsTo('Owners', [
+        //     'foreignKey' => 'owner_id'
+        // ]);
     }
 
     /**
@@ -82,7 +82,7 @@ class NotesPhotosTable extends Table
     {
         $rules->add($rules->existsIn(['note_id'], 'Notes'));
         $rules->add($rules->existsIn(['photo_id'], 'Photos'));
-        $rules->add($rules->existsIn(['owner_id'], 'Owners'));
+        // $rules->add($rules->existsIn(['owner_id'], 'Owners'));
 
         return $rules;
     }

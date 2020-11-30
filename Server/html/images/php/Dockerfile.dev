@@ -16,15 +16,14 @@ RUN apt-get update \
     libxml2-dev \
     make \
     nodejs \
+    npm \
     ruby \
     ruby-dev \
     unzip \
     vim \
-    yarn \
     zip \
-    && curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
-    echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list \
-    && apt install yarn \
+    && apt remove -y cmdtest yarn \
+    && npm install -g yarn \
     && pecl install mcrypt-1.0.2 \
     && gem install -n /usr/local/bin sass \
     && yarn add bower grunt-cli \

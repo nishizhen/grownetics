@@ -141,13 +141,13 @@ class MapItemsTable extends Table
                 $entity->offsetHeight = Number::format($entity->offsetHeight, ['precision' => 4]);
             }
 
-            $zoneEntities = [];
             if (is_string($entity->zone_id)) {
+              $zoneEntities = [];
                 $zoneLabel = $entity->zone_id;
                 $zoneEntity = $this->Zones->find()->where(['label' => $zoneLabel])->first();
                 array_push($zoneEntities, $zoneEntity);
+                $entity->zones = $zoneEntities;
             }
-            $entity->zones = $zoneEntities;
             $entity->dirty('zones', true);
 
 

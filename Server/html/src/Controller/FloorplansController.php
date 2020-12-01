@@ -437,7 +437,7 @@ class FloorplansController extends AppController
     $this->Floorplans->clearImport();
 
     $this->Flash->success(__('The floorplan has been deleted.'));
-    return $this->redirect(['controller' => 'Dash', 'action' => 'index']);
+    return $this->redirect(['controller' => 'floorplans', 'action' => 'add']);
   }
 
   public function importDemo()

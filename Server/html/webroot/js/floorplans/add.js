@@ -364,7 +364,7 @@ GrowServer.Floorplan.count = 0
         importPlantZones: function () {
             var self = this
             var plant_zones = d3.select(
-                this.getSVGElement(this.svgXml, 'Plant_Group')
+                this.getSVGElement(this.svgXml, 'Plant_Zone')
             )
 
             var plantZoneFeatureGroup = L.featureGroup()
@@ -726,13 +726,7 @@ GrowServer.Floorplan.count = 0
          * Cleanup zone id's so we have a nice label for display purposes.
          */
         prettifyLabel: function (label) {
-            var prettier = ''
-            var words = label.split(/[\-|_]/)
-            for (var i = 0; i < words.length; i++) {
-                prettier +=
-                    words[i][0].toUpperCase() + words[i].substring(1) + ' '
-            }
-            return prettier
+          return label.replace(/[\-|_]/g, ' ')
         },
 
         /**

@@ -12,7 +12,7 @@
             "pathMappings": {
                 "/var/www/html": "${workspaceRoot}/Server/html",
             },
-            "port": 9000
+            "port": 9003
         },
         {
             "name": "Launch currently open script",
@@ -20,7 +20,7 @@
             "request": "launch",
             "program": "${file}",
             "cwd": "${fileDirname}",
-            "port": 9000
+            "port": 9003
         }
     ]
 }

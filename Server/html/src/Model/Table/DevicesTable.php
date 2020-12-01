@@ -432,7 +432,7 @@ class DevicesTable extends Table
         // TODO: Put this magic number somewhere else
         'source_type' => 0,
         'sensor_type' => $sensor['sensor_type_id'],
-        'data_type' => $this->Sensors->enumKeyToValue('sensor_data_type',$sensor['sensor_type_id']),
+        'data_type' => $this->Sensors->enumKeyToValue('sensor_data_type', $sensor['sensor_type_id']),
         'device_id' => $deviceId,
         'created' => (string) date("Y-m-d H:i:s"),
         'facility_id' => (float) env('FACILITY_ID')

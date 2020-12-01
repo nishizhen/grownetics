@@ -62,7 +62,7 @@ class MappableBehavior extends Behavior
             if (isset($entity->zones)) {
                 foreach ($entity->zones as $zone) {
                     if (is_string($zone)) {
-                        $zoneEntity = $this->Zones->find()->where(['label' => $zone])->first();
+                      $zoneEntity = $this->Zones->find()->where(['label' => preg_replace('/[\-|_]/',' ',$zone)])->first();
                         if (isset($zoneEntity)) {
                             array_push($zoneEntities, $zoneEntity);
                         }
@@ -83,17 +83,7 @@ class MappableBehavior extends Behavior
             ]);
 
             $mapEntity->floorplan_id = $entity->floorplan_id;
-
-            $mapItemType = $this->MapItemTypes->find()->where(['label' => $klass ])->first();
-            if (!isset($mapItemType)) {
-                $mapItemType = $this->MapItemTypes->newEntity([
-                    'label' => $klass,
-                    'opacity' => 1
-                ]);
-                $this->MapItemTypes->save($mapItemType);
-            }
-
-            $mapEntity->map_item_type = $mapItemType;
+            $mapEntity->type = $klass;
 
             if (isset($entity->latitude) && isset($entity->longitude)) {
                 $mapEntity->latitude = $entity->latitude;

@@ -42,6 +42,7 @@ growdash:
     - RESTIC_PASSWORD
 
     - INFISENSE_API_KEY
+    - XDEBUG_MODE
     
   image: grownetics/growdash:${VERSION}
   volumes:

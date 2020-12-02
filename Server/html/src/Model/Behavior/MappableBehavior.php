@@ -72,8 +72,6 @@ class MappableBehavior extends Behavior
             array_push($zoneEntities, $zone);
           }
         }
-        $entity->zones = $zoneEntities;
-        $entity->dirty('zones', true);
       } else if (is_string($entity->zone_id)) {
         $zoneLabel = $entity->zone_id;
         $zoneEntity = $this->Zones->find()->where(['label' => $zoneLabel])->first();
@@ -108,6 +106,12 @@ class MappableBehavior extends Behavior
         // Log::write("debug", "Mappable is not behaving: ");
         //                Log::write("debug", $mapEntity->errors());
       } else {
+        // This is some hacky-ass bullshit that shouldn't be needed.
+        // I couldn't get it work the normal cake way. Whatever.
+        // This works, and I'm tired of debugging it.
+        $mapEntity->zones = $zoneEntities;
+        $this->MapItems->save($mapEntity);
+
         $entity->map_item = $mapEntity;
       }
     }

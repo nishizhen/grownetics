@@ -46,8 +46,8 @@ growdash:
     
   image: grownetics/growdash:${VERSION}
   volumes:
-    - ./html:/var/www/html:cached
-    - ./tmp:/tmp:cached
+    - ./html:/var/www/html
+    - ./tmp:/tmp
 
 deviceapi:
   restart: always

@@ -739,14 +739,15 @@ class ZonesTable extends Table
     public function getAvailablePlaceholdersInZone($zone)
     {
         $this->MapItemTypes = TableRegistry::get('MapItemTypes');
+        $this->Plants = TableRegistry::get('Plants');
         $targetZones = [];
 
         // if moving the batch to a Room.
         if ($zone->room_zone_id == 0) {
             // first get all bench id's in room
-            $roomBenchIds = $this->Zones->find('all', ['conditions' => [
+            $roomBenchIds = $this->find('all', ['conditions' => [
                 'room_zone_id' => $zone->id,
-                'zone_type_id' => $this->Zones->enumValueToKey('zone_types', 'Group')
+                'zone_type_id' => $this->enumValueToKey('zone_types', 'Group')
             ], 'fields' => ['id']])->toArray();
 
             foreach ($roomBenchIds as $id) {
@@ -762,7 +763,7 @@ class ZonesTable extends Table
         }
 
         //find ALL currPlantsInROOM
-        $currPlantsInZone = $this->find('all', [
+        $currPlantsInZone = $this->Plants->find('all', [
             'conditions' => [
                 'zone_id IN' => $targetZones,
                 'map_item_id !=' => 0
@@ -775,27 +776,22 @@ class ZonesTable extends Table
         foreach ($currPlantsInZone as $currPlantInZone) {
             array_push($plantMapItemIds, $currPlantInZone->map_item_id);
         }
-        # If we have plants currently in the room, only return empty placeholders.
-        if ($currPlantsInZone) {
-            $available_plant_placeholders = $this->MapItems->find(
-                'all',
-                [
-                    'conditions' =>
-                    ['id NOT IN' => $plantMapItemIds, 'map_item_type_id' => $this->MapItemTypes->find()->select('id')->where(['label' => 'Plant Placeholder']), 'zone_id IN' => $targetZones],
-                    'order' => ['zone_id' => 'ASC', 'ordinal' => 'ASC']
-                ]
-            )->toArray();
-            # No plants currently in the room, return all placeholders
-        } else {
-            $available_plant_placeholders = $this->MapItems->find(
-                'all',
-                [
-                    'conditions' =>
-                    ['map_item_type_id' => $this->MapItemTypes->find()->select('id')->where(['label' => 'Plant Placeholder']), 'zone_id IN' => $targetZones],
-                    'order' => ['zone_id' => 'ASC', 'ordinal' => 'ASC']
-                ]
-            )->toArray();
+
+        $conditions = [ 
+          
+          'map_item_type_id' => $this->MapItemTypes->find()->select('id')->where(['label' => 'Plant Placeholder']), 
+          'zone_id IN' => $targetZones
+        ];
+        if (sizeof($plantMapItemIds)) {
+          $conditions['id NOT IN'] = $plantMapItemIds;
         }
+        $available_plant_placeholders = $this->MapItems->find(
+            'all',
+            [
+                'conditions' => $conditions,
+                'order' => ['zone_id' => 'ASC', 'ordinal' => 'ASC']
+            ]
+        )->toArray();
 
         return $available_plant_placeholders;
     }

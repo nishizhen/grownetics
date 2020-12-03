@@ -195,7 +195,7 @@ class ZonesTable extends Table
                     $total = 0;
                     $sensorCount = 0;
                     foreach ($sensors as $sensor) {
-                      $shell->out('Process data for sensor: '.$sensor['id']);
+                      $shell->out('Process data for sensor: '.$sensor);
                         $value = Cache::read('sensor-value-' . $sensor);
                         if ($value) {
                             $total = $total + $value;
@@ -204,7 +204,9 @@ class ZonesTable extends Table
                     }
 
                     if ($total) {
+                      
                         $value = round($total / $sensorCount, 2);
+                        $shell->out('Got value: '.$value);
                         if ($type == $airTempSensorTypeId) {
                             $airTempAverage = $value;
                         } else if ($type == $humiditySensorTypeId) {
@@ -643,7 +645,7 @@ class ZonesTable extends Table
     {
         if (isset($data['room_zone_id']) && is_string($data['room_zone_id'])) {
             $Zones = TableRegistry::get("Zones");
-            $room_zone_text = preg_replace('/_/', ' ', $data['room_zone_id']);
+            $room_zone_text = preg_replace('/[\-|_]/', ' ', $data['room_zone_id']);
 
             $zoneEntity = $Zones->find()->where(['label' => $room_zone_text])->first();
             if (isset($zoneEntity)) {

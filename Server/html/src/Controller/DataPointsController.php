@@ -33,7 +33,7 @@ class DataPointsController extends AppController
 
         $database = InfluxDB\Client::fromDSN(sprintf('influxdb://root:root@%s:%s/%s', "influxdb", 8086, "sensor_data"), $influxTimeout);
         if ($this->request->data['source_type'] == $this->DataPoints->enumValueToKey('source_type', 'Sensor')) {
-            $query = 'SELECT mean("value") FROM "sensor_data"."autogen"."sensor_data" WHERE "type" = \''.$data_type.'\' AND "source_type" = \''.$this->request->data['source_type'].'\' AND "source_id" = \''.$this->request->data['source_id'].'\' AND time > now() - '.$this->request->data['timeframe'].' GROUP BY time('.$groupBy.')';
+            $query = 'SELECT mean("value") FROM "sensor_data"."autogen"."sensor_data" WHERE "data_type" = \''.$data_type.'\' AND "source_type" = \''.$this->request->data['source_type'].'\' AND "source_id" = \''.$this->request->data['source_id'].'\' AND time > now() - '.$this->request->data['timeframe'].' GROUP BY time('.$groupBy.')';
             $result = $database->query($query);
             $results = $result->getPoints();
         } else if ($this->request->data['source_type'] == $this->DataPoints->enumValueToKey('source_type', 'Argus')) {
@@ -41,23 +41,23 @@ class DataPointsController extends AppController
             $result = $database->query($query);
             $results = $result->getPoints();
         } else {
-            $data_type = $this->Sensors->enumValueToKey('sensor_type','Co2');
-            $query = 'SELECT mean("value") FROM "sensor_data"."autogen"."sensor_data" WHERE "type" = \''.$data_type.'\' AND "source_type" = \''.$this->request->data['source_type'].'\' AND "source_id" = \''.$this->request->data['source_id'].'\' AND time > now() - '.$this->request->data['timeframe'].' GROUP BY time('.$groupBy.')';
+            $data_type = $this->Sensors->enumValueToKey('data_type','Co2');
+            $query = 'SELECT mean("value") FROM "sensor_data"."autogen"."sensor_data" WHERE "data_type" = \''.$data_type.'\' AND "source_type" = \''.$this->request->data['source_type'].'\' AND "source_id" = \''.$this->request->data['source_id'].'\' AND time > now() - '.$this->request->data['timeframe'].' GROUP BY time('.$groupBy.')';
             $result = $database->query($query);
             $results['co2_values'] = $result->getPoints();
 
-            $data_type = $this->Sensors->enumValueToKey('sensor_type','Vapor Pressure Deficit');
-            $query = 'SELECT mean("value") FROM "sensor_data"."autogen"."sensor_data" WHERE "type" = \''.$data_type.'\' AND "source_type" = \''.$this->request->data['source_type'].'\' AND "source_id" = \''.$this->request->data['source_id'].'\' AND time > now() - '.$this->request->data['timeframe'].' GROUP BY time('.$groupBy.')';
+            $data_type = $this->Sensors->enumValueToKey('data_type','Vapor Pressure Deficit');
+            $query = 'SELECT mean("value") FROM "sensor_data"."autogen"."sensor_data" WHERE "data_type" = \''.$data_type.'\' AND "source_type" = \''.$this->request->data['source_type'].'\' AND "source_id" = \''.$this->request->data['source_id'].'\' AND time > now() - '.$this->request->data['timeframe'].' GROUP BY time('.$groupBy.')';
             $result = $database->query($query);
             $results['vpd_values'] = $result->getPoints();
 
-            $data_type = $this->Sensors->enumValueToKey('sensor_type','Humidity');
-            $query = 'SELECT mean("value") FROM "sensor_data"."autogen"."sensor_data" WHERE "type" = \''.$data_type.'\' AND "source_type" = \''.$this->request->data['source_type'].'\' AND "source_id" = \''.$this->request->data['source_id'].'\' AND time > now() - '.$this->request->data['timeframe'].' GROUP BY time('.$groupBy.')';
+            $data_type = $this->Sensors->enumValueToKey('data_type','Humidity');
+            $query = 'SELECT mean("value") FROM "sensor_data"."autogen"."sensor_data" WHERE "data_type" = \''.$data_type.'\' AND "source_type" = \''.$this->request->data['source_type'].'\' AND "source_id" = \''.$this->request->data['source_id'].'\' AND time > now() - '.$this->request->data['timeframe'].' GROUP BY time('.$groupBy.')';
             $result = $database->query($query);
             $results['hum_values'] = $result->getPoints();
 
-            $data_type = $this->Sensors->enumValueToKey('sensor_type','Air Temperature');
-            $query = 'SELECT mean("value") FROM "sensor_data"."autogen"."sensor_data" WHERE "type" = \''.$data_type.'\' AND "source_type" = \''.$this->request->data['source_type'].'\' AND "source_id" = \''.$this->request->data['source_id'].'\' AND time > now() - '.$this->request->data['timeframe'].' GROUP BY time('.$groupBy.')';
+            $data_type = $this->Sensors->enumValueToKey('data_type','Temperature');
+            $query = 'SELECT mean("value") FROM "sensor_data"."autogen"."sensor_data" WHERE "data_type" = \''.$data_type.'\' AND "source_type" = \''.$this->request->data['source_type'].'\' AND "source_id" = \''.$this->request->data['source_id'].'\' AND time > now() - '.$this->request->data['timeframe'].' GROUP BY time('.$groupBy.')';
             $result = $database->query($query);
             $results['temp_values'] = $result->getPoints();
 

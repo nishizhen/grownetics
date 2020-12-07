@@ -14,7 +14,7 @@ curl -i -XPOST http://$INFLUX_HOST:8086/query --data-urlencode "q=CREATE DATABAS
 
 mkdir webroot/cache_js webroot/cache_css
 mkdir -p tmp/cache tmp/sessions
-chmod -R 777 tmp/
+chmod -R 777 tmp/ /tmp /var/www/html/webroot/uploads
 
 composer install
 

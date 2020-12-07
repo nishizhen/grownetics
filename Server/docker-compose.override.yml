@@ -1,5 +1,6 @@
 growdash:
-  image: grownetics/growdash
+  environment:
+    - XDEBUG_MODE
   volumes:
     - ./html:/var/www/html
     - ./tmp:/tmp

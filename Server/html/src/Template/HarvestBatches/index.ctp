@@ -22,10 +22,10 @@
                 <th scope="col">Batch No.</th>
                 <th scope="col"><?= $this->Paginator->sort('cultivar_id') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('planted_date', 'Plant Date') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('next_batch_process') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('recipe_id') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('plant_count') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('current_zone') ?></th>
+                <th scope="col">Next Process Date</th>
+                <th scope="col">Recipe</th>
+                <th scope="col">Plant Count</th>
+                <th scope="col">Current Zone</th>
                 <th scope="col"></th>
             </tr>
         </thead>

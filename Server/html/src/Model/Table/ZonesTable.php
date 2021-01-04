@@ -275,7 +275,7 @@ class ZonesTable extends Table
           }
         } #/ Foreach 
         try {
-          $database = Client::fromDSN(sprintf('influxdb://root:root@%s:%s/%s', env('INFLUX_HOST'), env('INFLUX_PORT'), 'sensor_data'));
+          $database = Client::fromDSN(sprintf('influxdb://%s:%s@%s:%s/%s', env('INFLUX_USER'), env('INFLUX_PASS'), env('INFLUX_HOST'), env('INFLUX_PORT'), 'sensor_data'));
           $database->writePoints($points, Database::PRECISION_SECONDS);
         } catch (\Exception $e) {
           # Failed to save to influx. As above should probably create an alert here

@@ -108,7 +108,7 @@ class ArgusShell extends Shell
 
                             # Now that we have all the data, send it all to Influx
                             try {
-                                $database = Client::fromDSN(sprintf('influxdb://root:root@%s:%s/%s', env('INFLUX_HOST'), env('INFLUX_PORT'), "integration_data"));
+                                $database = Client::fromDSN(sprintf('influxdb://%s:%s@%s:%s/%s', env('INFLUX_USER'), env('INFLUX_PASS'), env('INFLUX_HOST'), env('INFLUX_PORT'), "integration_data"));
                                 $result = $database->writePoints($points, Database::PRECISION_SECONDS);
                             } catch (\Exception $e) {
                                 $this->out('Writing argus data to influxdb failed');

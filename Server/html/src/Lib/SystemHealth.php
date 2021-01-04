@@ -16,7 +16,7 @@ class SystemHealth {
     public function growpulse()
     {
         // fetch the database
-        $database = Client::fromDSN(sprintf('influxdb://root:root@%s:%s/%s', env('INFLUX_HOST'), env('INFLUX_PORT'), 'system_events'));
+        $database = Client::fromDSN(sprintf('influxdb://%s:%s@%s:%s/%s', env('INFLUX_USER'), env('INFLUX_PASS'), env('INFLUX_HOST'), env('INFLUX_PORT'), 'system_events'));
 
         // executing a query will yield a resultset object
         try {
@@ -79,7 +79,7 @@ class SystemHealth {
             return false;
         }
         // fetch the database
-        $database = Client::fromDSN(sprintf('influxdb://root:root@%s:%s/%s', env('INFLUX_HOST'), env('INFLUX_PORT'), 'system_events'));
+        $database = Client::fromDSN(sprintf('influxdb://%s:%s@%s:%s/%s', env('INFLUX_USER'), env('INFLUX_PASS'), env('INFLUX_HOST'), env('INFLUX_PORT'), 'system_events'));
         // executing a query will yield a resultset object
         try {
             $result = $database->query('select count("value") as "value" from device_boot  WHERE time > now() - 3m GROUP BY time(1m) ORDER BY DESC LIMIT 2');
@@ -106,7 +106,7 @@ class SystemHealth {
     public function overrides()
     {
         // fetch the database
-        $database = Client::fromDSN(sprintf('influxdb://root:root@%s:%s/%s', env('INFLUX_HOST'), env('INFLUX_PORT'), 'system_events'));
+        $database = Client::fromDSN(sprintf('influxdb://%s:%s@%s:%s/%s', env('INFLUX_USER'), env('INFLUX_PASS'), env('INFLUX_HOST'), env('INFLUX_PORT'), 'system_events'));
         // executing a query will yield a resultset object
         try {
             $result = $database->query('select count("value") as "value" from output_override_detected  WHERE time > now() - 3m GROUP BY time(1m) ORDER BY DESC LIMIT 2');
@@ -136,7 +136,7 @@ class SystemHealth {
             return false;
         }
         // fetch the database
-        $database = Client::fromDSN(sprintf('influxdb://root:root@%s:%s/%s', env('INFLUX_HOST'), env('INFLUX_PORT'), 'system_events'));
+        $database = Client::fromDSN(sprintf('influxdb://%s:%s@%s:%s/%s', env('INFLUX_USER'), env('INFLUX_PASS'), env('INFLUX_HOST'), env('INFLUX_PORT'), 'system_events'));
         // executing a query will yield a resultset object
         try {
             $result = $database->query('select count("value") as "value" from data_received  WHERE time > now() - 3m GROUP BY time(1m) ORDER BY DESC LIMIT 2');
@@ -161,7 +161,7 @@ class SystemHealth {
                 return false;
             }
             // fetch the database
-            $database = Client::fromDSN(sprintf('influxdb://root:root@%s:%s/%s', env('INFLUX_HOST'), env('INFLUX_PORT'), 'system_events'));
+            $database = Client::fromDSN(sprintf('influxdb://%s:%s@%s:%s/%s', env('INFLUX_USER'), env('INFLUX_PASS'), env('INFLUX_HOST'), env('INFLUX_PORT'), 'system_events'));
             // executing a query will yield a resultset object
             try {
                 $result = $database->query('select count("value") as "value" from bacnet_update  WHERE time > now() - 30m GROUP BY time(10m) ORDER BY DESC LIMIT 3');

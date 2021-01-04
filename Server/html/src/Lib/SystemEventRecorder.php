@@ -26,7 +26,7 @@ class SystemEventRecorder {
                     $time // Time precision has to be set to seconds!
                 )
             ];
-            $database = Client::fromDSN(sprintf('influxdb://root:root@%s:%s/%s', env('INFLUX_HOST'), env('INFLUX_PORT'), $db));
+            $database = Client::fromDSN(sprintf('influxdb://%s:%s@%s:%s/%s', env('INFLUX_USER'), env('INFLUX_PASS'), env('INFLUX_HOST'), env('INFLUX_PORT'), $db));
             $result = $database->writePoints($points, Database::PRECISION_SECONDS);
         } catch (\Exception $e) {
             Log::write('error', 'Writing system event to influxdb failed');

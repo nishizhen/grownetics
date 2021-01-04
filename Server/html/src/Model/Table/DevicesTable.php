@@ -469,7 +469,7 @@ class DevicesTable extends Table
           time() // Time precision has to be set to seconds!
         )
       ];
-      $database = Client::fromDSN(sprintf('influxdb://root:root@%s:%s/%s', env('INFLUX_HOST'), env('INFLUX_PORT'), 'sensor_data'));
+      $database = Client::fromDSN(sprintf('influxdb://%s:%s@%s:%s/%s', env('INFLUX_USER'), env('INFLUX_PASS'), env('INFLUX_HOST'), env('INFLUX_PORT'), 'sensor_data'));
       // we are writing unix timestamps, which have a second precision
       $result = $database->writePoints($points, Database::PRECISION_SECONDS);
     } catch (\Exception $e) {
@@ -674,6 +674,7 @@ class DevicesTable extends Table
 
   private function createSensors($entity)
   {
+    return false;
     //don't try to create sensors again
     $entity->doCreateSensors = false;
 

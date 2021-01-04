@@ -11,7 +11,7 @@ class TimeSeriesWrapper {
     public function store($points,$database_name)
     {
       try {
-        $database = Client::fromDSN(sprintf('influxdb://root:root@%s:%s/%s', env('INFLUX_HOST'), env('INFLUX_PORT'), $database_name));
+        $database = Client::fromDSN(sprintf('influxdb://%s:%s@%s:%s/%s', env('INFLUX_USER'), env('INFLUX_PASS'), env('INFLUX_HOST'), env('INFLUX_PORT'), $database_name));
         // we are writing unix timestamps, which have a second precision
         $result = $database->writePoints($points, Database::PRECISION_SECONDS);
       } catch (\Exception $e) {

@@ -501,6 +501,7 @@ GrowServer.Floorplan.count = 0
         },
 
         importPlants: function () {
+          console.log("Import plants")
             var self = this
             var theMap = this.map
 
@@ -561,7 +562,7 @@ GrowServer.Floorplan.count = 0
                         }
                     }
                 })
-
+console.log("Call updateProgress")
             this.updateProgress(
                 this.importMapItems,
                 'plant_placeholders',
@@ -570,6 +571,7 @@ GrowServer.Floorplan.count = 0
         },
 
         importMapItems: function () {
+          console.log("Got to importMapItems")
             var self = this
             var theMap = this.map
 
@@ -1270,6 +1272,7 @@ $(document).ready(function () {
                             var progressIncrement = 17
                             var floorplanId
                             importer.onProgress(function (group, count) {
+                              console.log("On progress")
                                 if (group == 'done') {
                                     $('#import-summary').append(
                                         '<div id="import-group-done" class="import-group">Done!</div>'
@@ -1342,14 +1345,21 @@ $(document).ready(function () {
                                             }
                                         )
                                     } else if (group != 'floorplan') {
+                                      console.log("Save stuff")
+                                      // Save the data to the server
+                                      console.log(group)
+                                      console.log(this[group].length);
+                                      if (Array.isArray(this[group])) {
+                                      while(this[group].length) {
+                                        console.log("Items to save: "+this[group].length)
                                         var data = {}
                                         data[group] = JSON.stringify(
-                                            this[group]
+                                            this[group].splice(0,100)
                                         )
                                         data[
                                             group + '_geoJSON'
                                         ] = JSON.stringify(
-                                            this[group + '_geoJSON']
+                                            this[group + '_geoJSON'].splice(0,100)
                                         )
                                         $.post(
                                             '/floorplans/layers/' +
@@ -1380,6 +1390,46 @@ $(document).ready(function () {
                                                 importer.moreProgress()
                                             }
                                         )
+                                          }
+                                        } else {
+                                          // Not an array, but an object.
+                                          console.log("Loop through the object!");
+                                          let allData = this[group];
+                                          let allDataJson = this[group + '_geoJSON'];
+
+                                          for(const key in allData) {
+                                           
+                                            // Create an array to hold the data to be saved
+                                            let data = {}
+
+                                            let arr = {};
+                                            // Pull out just one item
+                                            arr[key] = allData[key]
+                                            let stringArr = JSON.stringify(
+                                              arr
+                                          )
+                                            data[group] = stringArr
+
+                                            let arrJson = {};
+                                            // Pull out just one item
+                                            arrJson[key] = allDataJson[key];
+                                            let stringArrJson = JSON.stringify(
+                                              arrJson
+                                          );
+                                            data[
+                                                group + '_geoJSON'
+                                            ] = stringArrJson
+
+                                            $.ajaxSetup({async: false});
+                                            $.post(
+                                                '/floorplans/layers/' +
+                                                    group +
+                                                    '.json',
+                                                data);
+
+                                          }
+                                          importer.moreProgress()
+                                        }
                                     } else {
                                         $('#importingModal .progress').width(
                                             parseInt(Math.random() * 3) *

@@ -12,7 +12,7 @@
         <?php
         echo $this->Form->select('type', $this->Enum->selectValues('Devices', 'type'));?>
     </div>
-	<?=$this->Form->input('api_id',['type'=>'integer']);?>
+	<?=$this->Form->input('api_id');?>
 	<?=$this->Form->input('refresh_rate');?>
 	<?=$this->Form->input('reboot_rate');?>
 	<?=$this->Form->submit('Submit');?>

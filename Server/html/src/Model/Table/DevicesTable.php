@@ -459,7 +459,8 @@ class DevicesTable extends Table
           (float) $calibratedValue, // the measurement value
           [
             'source_type' => 0,
-            'type' => $sensor['sensor_type_id'],
+            'sensor_type' => $sensor['sensor_type_id'],
+            'data_type' => $this->Sensors->enumKeyToValue('sensor_data_type', $sensor['sensor_type_id']),
             'device_id' => $deviceId,
             'facility_id' => env('FACILITY_ID'),
             'source_id' => $sensor['id'],

@@ -972,18 +972,18 @@ var GrowServer = GrowServer || {}
         var mapItemsPromise = $.ajax(
             '/floorplans/layers/map_items/' + GrowServer.Floorplan.id + '.json'
         ).then(this.createMapItemsLayer)
-        var plantPlaceholdersPromise = $.ajax(
-            '/floorplans/layers/plant_placeholders/' +
-                GrowServer.Floorplan.id +
-                '.json'
-        ).then(this.createPlantPlaceholdersLayer)
+        // var plantPlaceholdersPromise = $.ajax(
+        //     '/floorplans/layers/plant_placeholders/' +
+        //         GrowServer.Floorplan.id +
+        //         '.json'
+        // ).then(this.createPlantPlaceholdersLayer)
 
         $.when(
             floorplanPromise,
             sensorsPromise,
             plantsPromise,
             mapItemsPromise,
-            plantPlaceholdersPromise
+            // plantPlaceholdersPromise
         ).done(function () {
             // create layers
             var initialLayers = {}

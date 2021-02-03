@@ -76,6 +76,7 @@ class DataPointsController extends AppController
 
     public function map($sensor_type_id = 3) {
         $this->loadModel('Sensors');
+        $this->loadModel('MapItems');
         $datapoints = [];
         # Load all the sensors of the data type we care about.
         # This should really only load the sensors of the type and floorplan level
@@ -92,9 +93,11 @@ class DataPointsController extends AppController
                 if (strtotime(Cache::read('sensor-time-' . $sensor['id'])) >  strtotime("-5 minutes")) {
                     array_push($datapoints,(object)[
                         'source_id' => $sensor['id'],
-                        'type' => $sensor['sensor_type_id'],
+                        'data_type' => $this->Sensors->enumKeyToValue('sensor_data_type',$sensor['sensor_type_id']),
+                        'sensor_type' => $sensor['sensor_type_id'],
                         'value' => Cache::read('sensor-value-' . $sensor['id']),
                         'created' => Cache::read('sensor-time-' . $sensor['id']),
+                        'offset_height' => $sensor['offset_height']
                     ]);  
                 } 
             } 

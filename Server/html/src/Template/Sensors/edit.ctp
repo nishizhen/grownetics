@@ -29,7 +29,6 @@
                 echo $this->Form->input('sensor_pin');
                 echo $this->Form->input('device_id', ['options' => $devices]);
                 echo $this->Form->input('label');
-                echo $this->Form->input('zone_id', ['options' => $zones]);
                 echo $this->Form->input('status', ['options' => $this->Enum->selectValues('Sensors', 'status')]);
                 echo $this->Form->input('calibration');
             ?>

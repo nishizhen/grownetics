@@ -166,6 +166,9 @@ var GrowServer = GrowServer || {}
                 case 'PAR':
                     GrowServer.setMapSensorType(11)
                     break
+                case 'Soil Moisture':
+                    GrowServer.setMapSensorType(13)
+                    break
                 case 'PH':
                     GrowServer.setMapSensorType(5)
                     break

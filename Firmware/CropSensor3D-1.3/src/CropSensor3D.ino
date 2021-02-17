@@ -25,7 +25,7 @@ SCD30 airSensor;
 //          Configuration Here
 // ======================================
 
-int deviceId = 29;
+int deviceId = 135;
 
 // ======================================
 // DO NOT CHANGE ANYTHING BELOW THIS LINE
@@ -137,13 +137,13 @@ void setup()
   bme280_1.parameter.pressOversampling = 0b101; //Setup Pressure Oversampling
   if (bme280_1.init() != 0x60)
   {
-    Serial.print(F("BME280 Nr.1 detected?\t"));
-    Serial.println(F("No"));
+    Serial.print(F("BME280?\t"));
+    Serial.println(F("N"));
   }
   else
   {
-    Serial.print(F("BME280 Nr.1 detected?\t"));
-    Serial.println(F("Yes"));
+    Serial.print(F("BME280?\t"));
+    Serial.println(F("Y"));
   }
 
   tcaselect(0);

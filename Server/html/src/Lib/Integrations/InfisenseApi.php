@@ -86,6 +86,7 @@ class InfisenseApi
 
   public function getSensorForDataPoint($dataPoint, $device)
   {
+    $this->MapItems = TableRegistry::get("map_items");
     # Look up sensor type ID
     $sensorTypeId = $this->infisenseSensorTypes[$dataPoint[1]];
 
@@ -105,7 +106,6 @@ class InfisenseApi
       $sensor->map_item_id = $device->map_item_id;
       $sensor->floorplan_id = 1;
       $sensor->dontMap = true;
-      $sensor->zones = $this->Devices->getZonesForMapItem($device);
       $this->Sensors->save($sensor);
     }
     return $sensor;

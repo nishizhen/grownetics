@@ -36,6 +36,7 @@ class InfisenseApi
     'temp' => 40,
     'temperature' => 41,
     'volumetric_water_content' => 42,
+    'CO2_ppm' => 43,
   ];
 
   # This function is called by GrowpulseShell, it pulls the most recent data, and processes it.

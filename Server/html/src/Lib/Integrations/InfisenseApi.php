@@ -64,6 +64,9 @@ class InfisenseApi
         continue;
       }
       $sensor = $this->getSensorForDataPoint($dataPoint, $device);
+      if (!$sensor) {
+        continue;
+      }
       $sensorTypeId = $this->infisenseSensorTypes[$dataPoint[1]];
       $dataType = $this->Sensors->enumKeyToValue('sensor_data_type', $sensorTypeId);
       $json = json_encode(array(array(
@@ -89,6 +92,9 @@ class InfisenseApi
   {
     $this->MapItems = TableRegistry::get("map_items");
     # Look up sensor type ID
+    if (!isset($this->infisenseSensorTypes[$dataPoint[1]])) {
+      return false;
+    }
     $sensorTypeId = $this->infisenseSensorTypes[$dataPoint[1]];
 
     # Get Sensor for sensor type

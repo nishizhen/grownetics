@@ -25,7 +25,7 @@ SCD30 airSensor;
 //          Configuration Here
 // ======================================
 
-int deviceId = 135;
+int deviceId = 231;
 
 // ======================================
 // DO NOT CHANGE ANYTHING BELOW THIS LINE

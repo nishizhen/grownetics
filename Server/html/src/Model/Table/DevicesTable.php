@@ -671,6 +671,26 @@ class DevicesTable extends Table
       //            Log::write("debug" , "creating sensors for entity ===> " .$entity);
       $this->createSensors($entity);
     }
+
+    if ($entity->update_zones) {
+      $this->Sensors = TableRegistry::get("Sensors");
+      $this->SensorsZones = TableRegistry::get("SensorsZones");
+
+      # We have zones set on the device. Load sensors related to device, update sensors_zones table.
+      $sensors = $this->Sensors->find('all',['conditions'=>['device_id'=>$entity->id]]);
+
+      # Add new sensors_zones entries
+      foreach ($sensors as $sensor) {
+        # Remove old sensors_zones entries
+        $this->SensorsZones->deleteAll(['sensor_id'=>$sensor->id]);
+
+        $sensor->zones = $entity->update_zones;
+        $sensor->dirty('zones', true);
+        foreach ($entity->update_zones as $zone) {
+          $this->SensorsZones->save($this->SensorsZones->newEntity(['zone_id'=>$zone,'sensor_id'=>$sensor->id]));
+        }
+      }
+    }
   }
 
   private function createSensors($entity)

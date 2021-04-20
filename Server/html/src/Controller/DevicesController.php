@@ -85,7 +85,6 @@ class DevicesController extends AppController
                 $this->Flash->error(__('The device could not be saved. Please, try again.'));
             }
         }
-        $this->set(compact('device'));
         $this->set('_serialize', ['device']);
     }
 
@@ -112,7 +111,41 @@ class DevicesController extends AppController
                 $this->Flash->error(__('The device could not be saved. Please, try again.'));
             }
         }
-        $this->set(compact('device'));
+        
+        $this->loadModel('Zones');
+        $zones = $this->Zones->find('list')->toArray();
+        // print_r($zones); die();
+        $this->set(compact('device','zones'));
+        $this->set('_serialize', ['device']);
+    }
+
+    /**
+     * Edit method
+     *
+     * @param string|null $id Device id.
+     * @return \Cake\Network\Response|void Redirects on successful edit, renders view otherwise.
+     * @throws \Cake\Network\Exception\NotFoundException When record not found.
+     */
+    public function zones($id = null)
+    {
+        $device = $this->Devices->get($id, [
+            'contain' => []
+        ]);
+        if ($this->request->is(['patch', 'post', 'put'])) {
+            $device = $this->Devices->patchEntity($device, $this->request->data);
+            $device->dontMap = true;
+            if ($this->Devices->save($device)) {
+                $this->Flash->success(__('The device has been saved.'));
+
+                return $this->redirect(['action' => 'index']);
+            } else {
+                $this->Flash->error(__('The device could not be saved. Please, try again.'));
+            }
+        }
+        
+        $this->loadModel('Zones');
+        $zones = $this->Zones->find('list')->toArray();
+        $this->set(compact('device','zones'));
         $this->set('_serialize', ['device']);
     }
 

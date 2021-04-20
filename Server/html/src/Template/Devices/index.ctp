@@ -95,6 +95,7 @@
             <?=$this->element('actionsMenu',['actions'=>[
                 $this->Html->link(__('View'), array('action' => 'view', $device['id'])),
                 $this->Html->link(__('Edit'), array('action' => 'edit', $device['id'])),
+                $this->Html->link(__('Edit Zones'), array('action' => 'zones', $device['id'])),
                 $this->Form->postLink(__("Delete"), ['action' => 'delete', $device->id], ['escape' => false, 'confirm' => __('Are you sure you want to delete {0}?', $device->label)])
             ]])?>
             

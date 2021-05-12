@@ -491,9 +491,10 @@ class DevicesTable extends Table
 
     if (null !== ($sensor['calibration'])) {
       // individual sensor override
-      if ('multiply' == $sensor['sensor_type']['calibration_operator']) {
+      // Default to multiply for now, until we add calibration_operator back in somewhere.
+      // if ('multiply' == $sensor['sensor_type']['calibration_operator']) {
         $calibrated = $value * $sensor['calibration'];
-      }
+      // }
     } else if (null !== ($sensor['sensor_type'])) {
       // sensor type calibration override
       if ('multiply' == $sensor['sensor_type']['calibration_operator']) {

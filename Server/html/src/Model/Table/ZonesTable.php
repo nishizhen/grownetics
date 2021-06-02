@@ -191,7 +191,8 @@ class ZonesTable extends Table
         $points = [];
         $airTempAverage = 0;
         $humAverage = 0;
-        foreach ($sensorsByType as $type => $sensors) {
+        foreach ($sensorsByType as $sensor_type => $sensors) {
+          $data_type = $this->Sensors->enumKeyToValue('sensor_data_type', $sensor_type);
           $total = 0;
           $sensorCount = 0;
           foreach ($sensors as $sensor) {
@@ -207,9 +208,9 @@ class ZonesTable extends Table
 
             $value = round($total / $sensorCount, 2);
             $shell->out('Got value: ' . $value);
-            if ($type == $airTempSensorTypeId) {
+            if ($data_type == $this->Sensors->enumKeyToValue('sensor_data_type', $airTempSensorTypeId)) {
               $airTempAverage = $value;
-            } else if ($type == $humiditySensorTypeId) {
+            } else if ($data_type == $this->Sensors->enumKeyToValue('sensor_data_type', $humiditySensorTypeId)) {
               $humAverage = $value;
             }
             if ($airTempAverage && $humAverage) {
@@ -222,7 +223,8 @@ class ZonesTable extends Table
                   (float) $vaporPressureDeficit, // the measurement value
                   [
                     'source_type' => 1,
-                    'type' => $vpdSensorTypeId,
+                    'sensor_type' => $vpdSensorTypeId,
+                    'data_type' => $this->Sensors->enumKeyToValue('sensor_data_type', $vpdSensorTypeId),
                     'facility_id' => env('FACILITY_ID'),
                     'source_id' => $zone['id'],
                   ],
@@ -239,8 +241,8 @@ class ZonesTable extends Table
                 (float) $value, // the measurement value
                 [
                   'source_type' => 1,
-                  'sensor_type' => $type,
-                  'data_type' => $this->Sensors->enumKeyToValue('sensor_data_type', $type),
+                  'sensor_type' => $sensor_type,
+                  'data_type' => $data_type,
                   'facility_id' => env('FACILITY_ID'),
                   'source_id' => $zone['id'],
                 ],
@@ -260,8 +262,8 @@ class ZonesTable extends Table
                   (float) $value, // the measurement value
                   [
                     'source_type' => $this->DataPoints->enumValueToKey('source_type', 'Harvest Batch'),
-                    'sensor_type' => $type,
-                    'data_type' => $this->Sensors->enumKeyToValue('sensor_data_type', $type),
+                    'sensor_type' => $sensor_type,
+                    'data_type' => $data_type,
                     'facility_id' => env('FACILITY_ID'),
                     'source_id' => $batch['id'],
                   ],
@@ -271,7 +273,7 @@ class ZonesTable extends Table
               );
             }
 
-            Cache::write('zone-value-' . $type . '-' . $zone['id'], $value);
+            Cache::write('zone-value-' . $sensor_type . '-' . $zone['id'], $value);
           }
         } #/ Foreach 
         try {

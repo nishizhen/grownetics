@@ -489,11 +489,15 @@ class DevicesTable extends Table
   {
     $calibrated = $value;
 
-    if (null !== ($sensor['calibration'])) {
+    if (
+      null !== $sensor['calibration']
+      &&
+      $sensor['calibration'] != 0
+    ) {
       // individual sensor override
       // Default to multiply for now, until we add calibration_operator back in somewhere.
       // if ('multiply' == $sensor['sensor_type']['calibration_operator']) {
-        $calibrated = $value * $sensor['calibration'];
+      $calibrated = $value * $sensor['calibration'];
       // }
     } else if (null !== ($sensor['sensor_type'])) {
       // sensor type calibration override
@@ -678,17 +682,17 @@ class DevicesTable extends Table
       $this->SensorsZones = TableRegistry::get("SensorsZones");
 
       # We have zones set on the device. Load sensors related to device, update sensors_zones table.
-      $sensors = $this->Sensors->find('all',['conditions'=>['device_id'=>$entity->id]]);
+      $sensors = $this->Sensors->find('all', ['conditions' => ['device_id' => $entity->id]]);
 
       # Add new sensors_zones entries
       foreach ($sensors as $sensor) {
         # Remove old sensors_zones entries
-        $this->SensorsZones->deleteAll(['sensor_id'=>$sensor->id]);
+        $this->SensorsZones->deleteAll(['sensor_id' => $sensor->id]);
 
         $sensor->zones = $entity->update_zones;
         $sensor->dirty('zones', true);
         foreach ($entity->update_zones as $zone) {
-          $this->SensorsZones->save($this->SensorsZones->newEntity(['zone_id'=>$zone,'sensor_id'=>$sensor->id]));
+          $this->SensorsZones->save($this->SensorsZones->newEntity(['zone_id' => $zone, 'sensor_id' => $sensor->id]));
         }
       }
     }
@@ -696,7 +700,7 @@ class DevicesTable extends Table
 
   private function createSensors($entity)
   {
-    return false;
+    // return false;
     //don't try to create sensors again
     $entity->doCreateSensors = false;
 

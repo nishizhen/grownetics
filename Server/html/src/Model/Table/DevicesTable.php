@@ -504,6 +504,8 @@ class DevicesTable extends Table
       if ('multiply' == $sensor['sensor_type']['calibration_operator']) {
         $calibrated = $value * $sensor['sensor_type']['calibration_operand'];
       }
+    } else {
+      $calibrated = $value;
     }
 
     return $calibrated;

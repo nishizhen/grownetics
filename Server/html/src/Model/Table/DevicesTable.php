@@ -370,7 +370,8 @@ class DevicesTable extends Table
           ),
           'fields' => array(
             'id',
-            'sensor_type_id'
+            'sensor_type_id',
+            'calibration'
           )
         );
         $query = $this->Sensors->find('all', $params);

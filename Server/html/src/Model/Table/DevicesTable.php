@@ -500,16 +500,16 @@ class DevicesTable extends Table
       // individual sensor override
       // Default to multiply for now, until we add calibration_operator back in somewhere.
       // if ('multiply' == $sensor['sensor_type']['calibration_operator']) {
-      $calibrated = round($value * $sensor['calibration'],2);
+      $calibrated = $value * $sensor['calibration'];
       // }
     } else if (null !== ($sensor['sensor_type'])) {
       // sensor type calibration override
       if ('multiply' == $sensor['sensor_type']['calibration_operator']) {
-        $calibrated = round($value * $sensor['sensor_type']['calibration_operand'],2);
+        $calibrated = $value * $sensor['sensor_type']['calibration_operand'];
       }
     }
 
-    return $calibrated;
+    return round($calibrated,2);
   }
 
   public function isRebooting($device)

@@ -490,6 +490,7 @@ class DevicesTable extends Table
   public function calibrate($sensor, $value)
   {
     $calibrated = $value;
+    Log::write("debug", "Called calibrate with sensor id: ".$sensor['id']." Calibration: ".$sensor['calibration']." Value: ".$value);
 
     if (
       null !== $sensor['calibration']
@@ -499,7 +500,7 @@ class DevicesTable extends Table
       // individual sensor override
       // Default to multiply for now, until we add calibration_operator back in somewhere.
       // if ('multiply' == $sensor['sensor_type']['calibration_operator']) {
-      $calibrated = $value * $sensor['calibration'];
+      round($calibrated = $value * $sensor['calibration'],2);
       // }
     } else if (null !== ($sensor['sensor_type'])) {
       // sensor type calibration override

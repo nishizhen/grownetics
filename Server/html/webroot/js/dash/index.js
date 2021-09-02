@@ -1,7 +1,7 @@
 var GrowServer = GrowServer || {};
 GrowServer.map_sensor_type = 3;
 GrowServer.setMapSensorType = function (sensor_type) {
-    this.socket.emit('leave', 'data.sensor.'+this.map_sensor_type);
+    // this.socket.emit('leave', 'data.sensor.'+this.map_sensor_type);
     this.map_sensor_type = sensor_type;
     this.socket.emit('join', 'data.sensor.'+sensor_type);
 }
@@ -75,7 +75,8 @@ $(document).ready(function () {
     var socket = io(GrowServer.socket_address);
     GrowServer.socket = socket;
     socket.on('connect', function() {
-        
+      // console.log("Connected");
+      // GrowServer.socket.emit('join', 'data.sensor.3');
     });
 
     var sendMessage = function(){ //use clicks message send button  

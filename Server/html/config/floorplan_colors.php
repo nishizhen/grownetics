@@ -5,7 +5,7 @@ return [
     'sensor_types' => [
       'Waterproof Temperature' => 'rgba(0,0,0,0)',
       'Humidity' => 'rgba(0,0,0,0)',
-      'Air Temperature' => 'rgba(0,0,0,0)',
+      'Temperature' => 'rgba(0,0,0,0)',
       'Co2' => 'rgba(0,0,0,0)',
       'pH' => 'rgba(0,0,0,0)',
       'DO' => 'rgba(0,0,0,0)',
@@ -71,7 +71,7 @@ return [
         10 => '#93C1D8',
         0  => '#9FC9D6'
       ],
-      'Air Temperature' => [
+      'Temperature' => [
         35 => '#800026',
         32 => '#BD0026',
         30 => '#E31A1C',

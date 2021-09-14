@@ -37,6 +37,7 @@ class InfisenseApi
     'temperature' => 41,
     'volumetric_water_content' => 42,
     'CO2_ppm' => 43,
+    'raw_vwc' => 42
   ];
 
   # This function is called by GrowpulseShell, it pulls the most recent data, and processes it.
@@ -58,7 +59,12 @@ class InfisenseApi
     $messages = [];
     foreach ($latest as $dataPoint) {
       # Get Device ID for Inifisense ID
-      $device = $this->Devices->findByApiId($dataPoint[0])->first();
+      $device = $this->Devices->find(
+        'all',
+        [
+          'api_id' => $dataPoint[0]
+        ]
+      )->first();
       if (!$device) {
         print_r("No device found for: " . $dataPoint[0] . "\n");
         continue;
@@ -168,7 +174,10 @@ class InfisenseApi
     # Store Infisense Data in InfluxDB
     $points = [];
     foreach ($data as $dataPoint) {
-      $device = $this->Devices->findByApiId($dataPoint[0])->first();
+      print_r($dataPoint);
+      $device = $this->Devices->find('all', [
+        'api_id' => $dataPoint[0]
+      ])->first();
       if (!$device) {
         continue;
       }
@@ -198,6 +207,3 @@ class InfisenseApi
     $tsw->store($points, 'integration_data');
   }
 }
-
-
-

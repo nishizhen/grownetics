@@ -8,9 +8,9 @@ class IntegrationsManager
 {
 
   # Poll all our integrations that we need to pull data from.
-  public function poll()
+  public function poll($shell)
   {
     $infisenseApi = new InfisenseApi();
-    $infisenseApi->poll();
+    $infisenseApi->poll($shell);
   }
 }

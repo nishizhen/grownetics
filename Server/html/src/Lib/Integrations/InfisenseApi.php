@@ -37,20 +37,16 @@ class InfisenseApi
     'temperature' => 41,
     'volumetric_water_content' => 42,
     'CO2_ppm' => 43,
-    'raw_vwc' => 42
+    'raw_vwc' => 42,
+    'raw_soil_temperature' => 41,
+    'soil_temperature' => 41,
   ];
 
   # This function is called by GrowpulseShell, it pulls the most recent data, and processes it.
-  public function poll()
+  public function poll($shell)
   {
     $this->Devices = TableRegistry::get("Devices");
     $this->Sensors = TableRegistry::get("Sensors");
-
-    # Store recent data in bulk
-    $start = new \DateTime('-5 minutes');
-    $end = new \DateTime();
-    $data = $this->query($start, $end);
-    $this->processBulkData($data);
 
     # Query for the most recent datapoints only
     $latest = $this->latest();
@@ -59,24 +55,22 @@ class InfisenseApi
     $messages = [];
     foreach ($latest as $dataPoint) {
       # Get Device ID for Inifisense ID
-      $device = $this->Devices->find(
-        'all',
-        [
-          'api_id' => $dataPoint[0]
-        ]
-      )->first();
+      $device = $this->Devices->findByApiId($dataPoint[0])->first();
       if (!$device) {
-        print_r("No device found for: " . $dataPoint[0] . "\n");
+        $shell->out("No device found for: " . $dataPoint[0] . "\n");
         continue;
+      } else {
+        $shell->out("Got device ".$device->id." for api_id ".$dataPoint[0]);
       }
-      $sensor = $this->getSensorForDataPoint($dataPoint, $device);
+      $sensor = $this->getSensorForDataPoint($dataPoint, $device, $shell);
       if (!$sensor) {
+        $shell->out("No sensor found!!");
         continue;
       }
       $sensorTypeId = $this->infisenseSensorTypes[$dataPoint[1]];
       $dataType = $this->Sensors->enumKeyToValue('sensor_data_type', $sensorTypeId);
       $json = json_encode(array(array(
-        'value' => (float) $dataPoint[4],
+        'value' => (float) round($dataPoint[4],2),
         'source_id' => $sensor->id,
         'source_type' => 0,
         'data_type' => $dataType,
@@ -94,7 +88,7 @@ class InfisenseApi
     $messageQueueWrapper->send($messages, 'data.sensor');
   }
 
-  public function getSensorForDataPoint($dataPoint, $device)
+  public function getSensorForDataPoint($dataPoint, $device, $shell)
   {
     $this->MapItems = TableRegistry::get("map_items");
     # Look up sensor type ID
@@ -110,7 +104,10 @@ class InfisenseApi
         'sensor_type_id' => $sensorTypeId
       ]
     ])->first();
+    $shell->out("Found sensor.");
+    // $shell->out($sensor);
     if (!$sensor) {
+      $shell->out("No sensor, create one");
       $sensor = $this->Sensors->newEntity();
       $sensor->device_id = $device->id;
       $sensor->sensor_type_id = $sensorTypeId;
@@ -120,6 +117,7 @@ class InfisenseApi
       $sensor->floorplan_id = 1;
       $sensor->dontMap = true;
       $this->Sensors->save($sensor);
+      $shell->out($sensor);
     }
     return $sensor;
   }
@@ -166,7 +164,7 @@ class InfisenseApi
   }
 
   # Store many points to the Timeseries Database.
-  public function processBulkData($data)
+  public function processBulkData($data, $shell)
   {
     $this->Devices = TableRegistry::get("Devices");
     $this->Sensors = TableRegistry::get("Sensors");
@@ -174,14 +172,15 @@ class InfisenseApi
     # Store Infisense Data in InfluxDB
     $points = [];
     foreach ($data as $dataPoint) {
-      print_r($dataPoint);
-      $device = $this->Devices->find('all', [
-        'api_id' => $dataPoint[0]
-      ])->first();
+      $api_id = $dataPoint[0];
+      $device = $this->Devices->findByApiId($api_id)->first();
+
       if (!$device) {
         continue;
       }
-      $sensor = $this->getSensorForDataPoint($dataPoint, $device);
+      $shell->out("Returned api_id: ".$device->api_id); //die();
+      $shell->out("194 Found device ".$device->id." for api_id ".$dataPoint[0]);
+      $sensor = $this->getSensorForDataPoint($dataPoint, $device, $shell);
       $sensorTypeId = $this->infisenseSensorTypes[$dataPoint[1]];
       $dataType = $this->Sensors->enumKeyToValue('sensor_data_type', $sensorTypeId);
 

@@ -300,16 +300,21 @@ var GrowServer = GrowServer || {}
             switch (dataType) {
                 case 'Temperature High':
                 case 'Temperature Low':
+                case 'SCD30 Air Temperature':
+                case 'BME280 Air Temperature':
                     label =
                         '<div class="wi wi-thermometer">' + dataType + '</div>'
                     sensorType = 'Air Temperature'
                     break
                 case 'Humidity High':
                 case 'Humidity Low':
+                case 'SCD30 Humidity':
+                case 'BME280 Humidity':
                     label = '<div class="wi wi-humidity">' + dataType + '</div>'
                     sensorType = 'Humidity'
                     break
                 case 'Co2':
+                case 'SCD30 Co2':
                     label = '<div class="fa fa-percent">CO2</div>'
                     sensorType = 'Co2'
                     break
@@ -697,7 +702,9 @@ var GrowServer = GrowServer || {}
 
             for (var i = 0; i < sensors.length; i++) {
                 var sensor = sensors[i]
-                var sensorType = sensor.sensor_type_label
+                // var sensorType = sensor.sensor_type_label
+                // Should be this, but not working yet. Need high/low for temp
+                var sensorType = sensor.data_type
                 var sensorMarker
                 var color
                 var symbol = sensor.sensor_type_symbol
@@ -726,7 +733,7 @@ var GrowServer = GrowServer || {}
                             GrowServer.Map.getDataLayer('Humidity High')
                         )
                     }
-                } else if (sensorType == 'Air Temperature') {
+                } else if (sensorType == 'Temperature') {
                     if (GrowServer.showMetric == true) {
                         symbol = sensor.sensor_type_metric_symbol
                     }

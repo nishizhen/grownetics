@@ -73,15 +73,15 @@ class GrowpulseShell extends Shell
 
                 # Store System Health Statuses
                 $this->out('Store System Statuses');
-                $systemHealth->storeStatuses();
+                $systemHealth->storeStatuses($this);
 
                 # Detect power overrides
                 $this->out('Detect Power Overrides');
-                $detector->detect();
+                $detector->detect($this);
 
                 # Query Remote Integrations/APIs
                 $this->out('Query Remote Integrations');
-                $integrations->poll();
+                $integrations->poll($this);
 
                 $time = time();
                 $this->out("Tick: " . $time);

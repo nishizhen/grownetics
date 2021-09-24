@@ -9,7 +9,7 @@
     <table cellpadding="0" cellspacing="0">
     <thead>
     <tr>
-            <th><?php echo $this->Paginator->sort('api_id','ID'); ?></th>
+            <th><?php echo $this->Paginator->sort('ID'); ?></th>
             <th><?php echo $this->Paginator->sort('label'); ?></th>
             <th><?php echo $this->Paginator->sort('last_message'); ?></th>
             <?php if ($navRole == 'Admin') { ?>
@@ -47,7 +47,7 @@
         }
     ?>
     <tr>
-        <td><a href='/devices/view/<?php echo h($device['id']); ?>'><?php echo h($device['api_id']); ?></a></td>
+        <td><a href='/devices/view/<?php echo h($device['id']); ?>'><?php echo h($device['id']); ?></a></td>
         <td><a href='/devices/view/<?php echo h($device['id']); ?>'><?=$device['label'];?></a> <?=$this->element('editBtn',['url'=>'/devices/edit/'.h($device['id'])])?></td>
         <td><?php
         echo $time_since_good_data; ?>&nbsp;</td>

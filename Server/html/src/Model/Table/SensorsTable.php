@@ -113,6 +113,7 @@ class SensorsTable extends Table
       'LoRa temperature',            # 41
       'LoRa volumetric_water_content', # 42
       'SEEEED CO2_ppm',                 #43
+      'LoRa raw volumetric_water_content', # 44
     ],
     # This is a lookup table, given the id of the sensor_type above, what is the data_type for it?
     'sensor_data_type' => [
@@ -160,7 +161,7 @@ class SensorsTable extends Table
       1,                              #41
       20,                              #42
       3,                              #43
-
+      0,                              #44 // We don't want raw vwc
     ],
     'sensor_display_class' => [
       '',

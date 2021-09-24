@@ -37,7 +37,7 @@ class InfisenseApi
     'temperature' => 41,
     'volumetric_water_content' => 42,
     'CO2_ppm' => 43,
-    'raw_vwc' => 42,
+    'raw_vwc' => 44,
     'raw_soil_temperature' => 41,
     'soil_temperature' => 41,
   ];
@@ -47,6 +47,12 @@ class InfisenseApi
   {
     $this->Devices = TableRegistry::get("Devices");
     $this->Sensors = TableRegistry::get("Sensors");
+
+    # Store recent data in bulk
+    $start = new \DateTime('-5 minutes');
+    $end = new \DateTime();
+    $data = $this->query($start, $end);
+    $this->processBulkData($data, $shell);
 
     # Query for the most recent datapoints only
     $latest = $this->latest();
@@ -59,9 +65,11 @@ class InfisenseApi
       if (!$device) {
         $shell->out("No device found for: " . $dataPoint[0] . "\n");
         continue;
-      } else {
-        $shell->out("Got device ".$device->id." for api_id ".$dataPoint[0]);
       }
+      $shell->out("Got device " . $device->id . " for api_id " . $dataPoint[0]);
+
+      $this->Devices->updateDeviceInfo($device, ['id' => $device->id]);
+
       $sensor = $this->getSensorForDataPoint($dataPoint, $device, $shell);
       if (!$sensor) {
         $shell->out("No sensor found!!");
@@ -69,8 +77,10 @@ class InfisenseApi
       }
       $sensorTypeId = $this->infisenseSensorTypes[$dataPoint[1]];
       $dataType = $this->Sensors->enumKeyToValue('sensor_data_type', $sensorTypeId);
+      $calibratedValue = $this->Devices->calibrate($sensor, $dataPoint[4]);
+
       $json = json_encode(array(array(
-        'value' => (float) round($dataPoint[4],2),
+        'value' => (float) $calibratedValue,
         'source_id' => $sensor->id,
         'source_type' => 0,
         'data_type' => $dataType,
@@ -178,8 +188,8 @@ class InfisenseApi
       if (!$device) {
         continue;
       }
-      $shell->out("Returned api_id: ".$device->api_id); //die();
-      $shell->out("194 Found device ".$device->id." for api_id ".$dataPoint[0]);
+      $shell->out("Returned api_id: " . $device->api_id); //die();
+      $shell->out("194 Found device " . $device->id . " for api_id " . $dataPoint[0]);
       $sensor = $this->getSensorForDataPoint($dataPoint, $device, $shell);
       $sensorTypeId = $this->infisenseSensorTypes[$dataPoint[1]];
       $dataType = $this->Sensors->enumKeyToValue('sensor_data_type', $sensorTypeId);

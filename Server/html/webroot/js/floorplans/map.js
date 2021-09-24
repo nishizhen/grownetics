@@ -53,10 +53,7 @@ var GrowServer = GrowServer || {}
                     var newValue = dataPoint.value
                     if (
                         GrowServer.showMetric == false &&
-                        (dataPoint.data_type == 1 ||
-                            dataPoint.data_type == 3 ||
-                            dataPoint.data_type == 18 ||
-                            dataPoint.data_type == 20)
+                        dataPoint.data_type == 1
                     ) {
                         newValue = parseFloat(
                             (dataPoint.value * 9) / 5 + 32

@@ -15,7 +15,7 @@ var GrowServer = GrowServer || {}
 
         var zoomScale = 29
 
-        var DEFAULT_LAYERS = ['Walls', 'Rooms', 'Benches', 'HVAC', 'Plants'] //,"Plant Placeholders", "Devices", "Appliances"];
+        var DEFAULT_LAYERS = ['Walls', 'Benches', 'Plants'] //,"Plant Placeholders", "Devices", "Appliances". "Rooms", "HVAC"];
         var DEFAULT_DATA_OVERLAY =
             '<div class="wi wi-thermometer">Temperature High</div>'
 
@@ -337,6 +337,10 @@ var GrowServer = GrowServer || {}
                     label = '<div class="wi wi-humidity">' + dataType + '</div>'
                     sensorType = 'DO'
                     break
+                case 'Volumetric Water Content':
+                    label = '<div class="wi wi-humidity">' + dataType + '</div>'
+                    sensorType = 'Volumetric Water Content'
+                    break
                 case 'Waterproof Temperature':
                     label =
                         '<div class="wi wi-raindrops">' + dataType + '</div>'
@@ -396,17 +400,73 @@ var GrowServer = GrowServer || {}
                                     1
                                 ]
                                 break
+                            case 'Volumetric Water Content':
+                                grades = [
+                                    100,
+                                    90,
+                                    80,
+                                    70,
+                                    60,
+                                    50,
+                                    40,
+                                    30,
+                                    20,
+                                    10
+                                ]
+                                break
+                            case 'EC':
+                                grades = [
+                                    2.8,
+                                    2.5,
+                                    2.2,
+                                    1.9,
+                                    1.6,
+                                    1.3,
+                                    1.0,
+                                    0.7,
+                                    0.4,
+                                    -100
+                                ]
+                                break
+                            case 'RSSI':
+                                grades = [
+                                    -10,
+                                    -20,
+                                    -30,
+                                    -40,
+                                    -50,
+                                    -60,
+                                    -70,
+                                    -80,
+                                    -90,
+                                    -100
+                                ]
+                                break
+                            case 'Battery Level':
+                                grades = [
+                                    2.8,
+                                    2.5,
+                                    2.2,
+                                    1.9,
+                                    1.6,
+                                    1.3,
+                                    1.0,
+                                    0.7,
+                                    0.4,
+                                    0.1
+                                ]
+                                break
                             case 'PAR':
                                 grades = [
-                                    0,
-                                    25,
-                                    50,
-                                    75,
-                                    100,
-                                    125,
-                                    150,
-                                    175,
-                                    200
+                                    2000,
+                                    1750,
+                                    1500,
+                                    1250,
+                                    1000,
+                                    700,
+                                    500,
+                                    250,
+                                    0
                                 ]
                                 break
                         }

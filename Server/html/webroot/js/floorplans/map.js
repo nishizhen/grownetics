@@ -230,7 +230,7 @@ var GrowServer = GrowServer || {}
                 case 'LoRa Light Intensity':
                     GrowServer.setMapSensorType(33)
                     break
-                case 'LoRa Photosynthetically Active Radiation':
+                case 'LoRa PAR':
                     GrowServer.setMapSensorType(34)
                     break
                 case 'LoRa Raw Ir Reading':
@@ -257,6 +257,12 @@ var GrowServer = GrowServer || {}
                 case 'LoRa Volumetric Water Content':
                     GrowServer.setMapSensorType(42)
                     break
+                case 'LoRa GWC':
+                    GrowServer.setMapSensorType(46)
+                    break
+                case 'LoRa lux':
+                    GrowServer.setMapSensorType(47)
+                    break    
                 default:
                     GrowServer.setMapSensorType(3)
                     break
@@ -386,6 +392,89 @@ var GrowServer = GrowServer || {}
                                     1200
                                 ]
                                 break
+                            case 'LoRa co2_concentration':
+                                grades = [
+                                    400,
+                                    500,
+                                    600,
+                                    700,
+                                    800,
+                                    900,
+                                    1000,
+                                    1100,
+                                    1200
+                                ]
+                                break    
+                            case 'BME280 Humidity':
+                                grades = [
+                                    0,
+                                    10,
+                                    20,
+                                    30,
+                                    40,
+                                    50,
+                                    60,
+                                    70,
+                                    80,
+                                    90                    
+                                ]
+                                break
+                            case 'BME280 Air Temperature':
+                                if (GrowServer.showMetric == false) {
+                                   grades = [60, 65, 70, 75, 80, 85, 90, 95]
+                                } else {
+                                   grades = [15, 18, 21, 24, 27, 30, 32, 35]
+                                }
+                               break
+                            case 'LoRa co2_sensor_temperature':
+                             if (GrowServer.showMetric == false) {
+                                grades = [60, 65, 70, 75, 80, 85, 90, 95]
+                             } else {
+                                grades = [15, 18, 21, 24, 27, 30, 32, 35]
+                             }
+                               break   
+                            case 'SCD30 Humidity':
+                                grades = [
+                                    0,
+                                    10,
+                                    20,
+                                    30,
+                                    40,
+                                    50,
+                                    60,
+                                    70,
+                                    80,
+                                    90                    
+                                ]
+                                break
+                            case 'SCD30 Air Temperature':
+                                if (GrowServer.showMetric == false) {
+                                   grades = [60, 65, 70, 75, 80, 85, 90, 95]
+                                } else {
+                                   grades = [15, 18, 21, 24, 27, 30, 32, 35]
+                                }
+                               break   
+                            case 'LoRa temperature':
+                             if (GrowServer.showMetric == false) {
+                                grades = [60, 65, 70, 75, 80, 85, 90, 95]
+                             } else {
+                                grades = [15, 18, 21, 24, 27, 30, 32, 35]
+                             }
+                              break
+                            case 'LoRa relative_humidity':
+                             grades = [
+                                 0,
+                                 10,
+                                 20,
+                                 30,
+                                 40,
+                                 50,
+                                 60,
+                                 70,
+                                 80,
+                                 90                    
+                                ]
+                                break
                             case 'CT':
                                 grades = [
                                     0.1,
@@ -400,7 +489,7 @@ var GrowServer = GrowServer || {}
                                     1
                                 ]
                                 break
-                            case 'Volumetric Water Content':
+                            case 'LoRa volumetric_water_content':
                                 grades = [
                                     100,
                                     90,
@@ -428,6 +517,20 @@ var GrowServer = GrowServer || {}
                                     -100
                                 ]
                                 break
+                            case 'LoRa electrical_conductivity':
+                                grades = [
+                                    2.8,
+                                    2.5,
+                                    2.2,
+                                    1.9,
+                                    1.6,
+                                    1.3,
+                                    1.0,
+                                    0.7,
+                                    0.4,
+                                    -100
+                                ]
+                                break    
                             case 'RSSI':
                                 grades = [
                                     -10,
@@ -442,7 +545,7 @@ var GrowServer = GrowServer || {}
                                     -100
                                 ]
                                 break
-                            case 'Battery Level':
+                            case 'LoRa battery_level':
                                 grades = [
                                     2.8,
                                     2.5,
@@ -456,6 +559,19 @@ var GrowServer = GrowServer || {}
                                     0.1
                                 ]
                                 break
+                            case 'LoRa GWC':
+                                grades = [
+                                    100,
+                                    90,
+                                    80,
+                                    70,
+                                    60,
+                                    50,
+                                    40,
+                                    30,
+                                    20,
+                                    10
+                                ]    
                             case 'PAR':
                                 grades = [
                                     2000,
@@ -469,6 +585,31 @@ var GrowServer = GrowServer || {}
                                     0
                                 ]
                                 break
+                            case 'LoRa PAR':
+                                grades = [
+                                    2000,
+                                    1750,
+                                    1500,
+                                    1250,
+                                    1000,
+                                    700,
+                                    500,
+                                    250,
+                                    0
+                                ]
+                                break    
+                            case 'LoRa lux':
+                                grades = [
+                                    6000,
+                                    5250,
+                                    4500,
+                                    3750,
+                                    3000,
+                                    2100,
+                                    1650,
+                                    750,
+                                    0
+                                ]    
                         }
                         var div = L.DomUtil.create('div', 'info legend')
 

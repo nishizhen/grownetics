@@ -510,7 +510,8 @@ var GrowServer = GrowServer || {}
                     }
                 } //featureGroup.onAdd
 
-                dataOverlays[label] = featureGroup
+                if (label)
+                  dataOverlays[label] = featureGroup
             } else {
                 featureGroup = dataOverlays[label]
             }

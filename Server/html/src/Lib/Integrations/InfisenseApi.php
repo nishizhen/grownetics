@@ -125,7 +125,7 @@ class InfisenseApi
       $sensor = $this->Sensors->newEntity();
       $sensor->device_id = $device->id;
       $sensor->sensor_type_id = $sensorTypeId;
-      $sensor->label = $this->Sensors->enumKeyToValue('sensor_type', $sensorTypeId);
+      $sensor->label = 'Device ' . $device->id . ' - ' . $this->Sensors->enumKeyToValue('sensor_type', $sensorTypeId);
       $sensor->status = 1;
       $sensor->map_item_id = $device->map_item_id;
       $sensor->floorplan_id = 1;

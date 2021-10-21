@@ -64,9 +64,9 @@ class SensorsTable extends Table
       'Light Intensity',          # 17
       'Raw IR',                   # 18
       'RSSI',                     # 19
-      'Volumetric Water Content'  # 20
-      'Gravimetric Water Content' # 21
-      'lux'                       # 22
+      'Volumetric Water Content',  # 20
+      'Gravimetric Water Content', # 21
+      'lux',                       # 22
 
     ],
     # This is the list of different types of sensors our system supports

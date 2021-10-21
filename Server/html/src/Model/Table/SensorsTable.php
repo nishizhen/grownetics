@@ -65,12 +65,14 @@ class SensorsTable extends Table
       'Raw IR',                   # 18
       'RSSI',                     # 19
       'Volumetric Water Content'  # 20
+      'Gravimetric Water Content' # 21
+      'lux'                       # 22
 
     ],
     # This is the list of different types of sensors our system supports
     'sensor_type' => [
       'Unspecified',              # 0
-      'Waterproof Temperature',   # 1 
+      'Waterproof Temperature',   # 1
       'Humidity',                 # 2 HIH3160
       'Air Temperature',          # 3 HIH3160
       'Co2',                      # 4
@@ -103,7 +105,7 @@ class SensorsTable extends Table
       'LoRa dielectric_permittivity', # 31
       'LoRa electrical_conductivity', # 32
       'LoRa light_intensity',        # 33
-      'LoRa photosynthetically_active_radiation', # 34
+      'LoRa PAR',                    # 34
       'LoRa raw_ir_reading',         # 35
       'LoRa raw_ir_reading_lpf',     # 36
       'LoRa relative_humidity',      # 37
@@ -112,8 +114,13 @@ class SensorsTable extends Table
       'LoRa temp',                   # 40
       'LoRa temperature',            # 41
       'LoRa volumetric_water_content', # 42
-      'SEEEED CO2_ppm',                 #43
+      'SEEEED CO2_ppm',              #43
       'LoRa raw volumetric_water_content', # 44
+      'LoRa Eos_Alert',              #45
+      'LoRa GWC',                    #46
+      'LoRa lux',                    #47
+      'LoRa raw soil moisture',      #48
+      'LoRa raw soil temp',           #49
     ],
     # This is a lookup table, given the id of the sensor_type above, what is the data_type for it?
     'sensor_data_type' => [
@@ -162,6 +169,11 @@ class SensorsTable extends Table
       20,                              #42
       3,                              #43
       0,                              #44 // We don't want raw vwc
+      0,                              #45 // We don't want eos_alert
+      21,                             # 46 GWC Gravimetric Water Content
+      22,                             # 47 lux (visible light, not PAR)
+      0,                              # 48 Raw GWC kHz
+      0,                              # 49 We don't want raw soil temp
     ],
     'sensor_display_class' => [
       '',

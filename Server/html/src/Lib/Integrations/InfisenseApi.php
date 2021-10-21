@@ -38,8 +38,12 @@ class InfisenseApi
     'volumetric_water_content' => 42,
     'CO2_ppm' => 43,
     'raw_vwc' => 44,
-    'raw_soil_temperature' => 41,
+    'raw_soil_temperature' => 49,
     'soil_temperature' => 41,
+    'eos_alert' => 45,
+    'GWC' => 46,
+    'lux' => 47,
+    'raw_soil_moisture' => 48
   ];
 
   # This function is called by GrowpulseShell, it pulls the most recent data, and processes it.

@@ -45,7 +45,7 @@ class SensorsTable extends Table
     # This is the actual list of Data Types.
     'data_type' => [
       'Unspecified',              # 0
-      'Temperature',              # 1
+      'Air Temperature',          # 1
       'Humidity',                 # 2
       'Co2',                      # 3
       'pH',                       # 4
@@ -61,13 +61,12 @@ class SensorsTable extends Table
       'Battery Level',            # 14
       'Voltage',                  # 15
       'Dielectric Permittivity',  # 16
-      'Light Intensity',          # 17
+      'Lux',                      # 17
       'Raw IR',                   # 18
       'RSSI',                     # 19
-      'Volumetric Water Content',  # 20
-      'Gravimetric Water Content', # 21
-      'lux',                       # 22
-
+      'Volumetric Water Content', # 20
+      'Gravimetric Water Content',# 21
+      'Soil Temp'                 # 22
     ],
     # This is the list of different types of sensors our system supports
     'sensor_type' => [
@@ -114,7 +113,7 @@ class SensorsTable extends Table
       'LoRa temp',                   # 40
       'LoRa temperature',            # 41
       'LoRa volumetric_water_content', # 42
-      'SEEEED CO2_ppm',              #43
+      'LoRa CO2',                    #43
       'LoRa raw volumetric_water_content', # 44
       'LoRa Eos_Alert',              #45
       'LoRa GWC',                    #46
@@ -135,43 +134,43 @@ class SensorsTable extends Table
       7, #'CT',                       # 8
       8, #'Fill Level',               # 9
       9, #'Vapor Pressure Deficit',   # 10
-      10, #'PAR',                      # 11
+      10, #'PAR',                     # 11
       1, #'Atlas Scientific RTD',     # 12
-      11, #'Soil Moisture'             # 13
+      11, #'Soil Moisture'            # 13
       4, # pH                         #14
-      6, # EC                          #15
+      6, # EC                         #15
       3, #co2                         16
       2, #humidity                    17
       1, #air temperature             18
       2, #humidity                    19
       1, #air temperature             20
-      13, #air pressure                21
-      1,                              #22
-      13,                              #23
-      14,                              #24
-      15,                              #25
-      15,                              #26
-      3,                              #27
+      13, #air pressure               21
+      1,                              #22 Barometric Sensor Temp
+      13,                             #23 LoRa barometric_pressure
+      14,                             #24 LoRa battery_level
+      15,                             #25 LoRa capacitor_voltage_1
+      15,                             #26 LoRa capacitor_voltage_2
+      0,                              #27 
       3,                              #28
       0,                              #29
       1,                              #30
-      16,                              #31
-      6,                              #32
-      17,                              #33
-      10,                              #34
-      18,                              #35
-      18,                              #36
+      16,                             #31
+      6,                              #32 LoRa electrical_conductivity
+      17,                             #33 LoRa light_intensity
+      10,                             #34
+      18,                             #35
+      18,                             #36
       2,                              #37
-      19,                              #38
-      1,                              #39
+      19,                             #38
+      22,                             #39 LoRa Soil Temp
       1,                              #40
-      1,                              #41
-      20,                              #42
-      3,                              #43
+      1,                              #41 
+      20,                             #42 LoRa volumetric_water_content
+      3,                              #43 SEEEED CO2
       0,                              #44 // We don't want raw vwc
       0,                              #45 // We don't want eos_alert
       21,                             # 46 GWC Gravimetric Water Content
-      22,                             # 47 lux (visible light, not PAR)
+      17,                             # 47 lux (visible light, not PAR)
       0,                              # 48 Raw GWC kHz
       0,                              # 49 We don't want raw soil temp
     ],
@@ -403,7 +402,7 @@ class SensorsTable extends Table
         $type_symbol = "";
         break;
       case "PAR Sensor":
-        $type_symbol = "nm";
+        $type_symbol = "umol";
         break;
       case "Vapor Pressure Deficit Sensor":
         $type_symbol = "mb";

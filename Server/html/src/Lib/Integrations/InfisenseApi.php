@@ -39,7 +39,7 @@ class InfisenseApi
     'CO2_ppm' => 43,
     'raw_vwc' => 44,
     'raw_soil_temperature' => 49,
-    'soil_temperature' => 41,
+    'soil_temperature' => 39,
     'eos_alert' => 45,
     'GWC' => 46,
     'lux' => 47,

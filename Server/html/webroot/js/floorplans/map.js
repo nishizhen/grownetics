@@ -262,7 +262,7 @@ var GrowServer = GrowServer || {}
                     break
                 case 'LoRa lux':
                     GrowServer.setMapSensorType(47)
-                    break    
+                    break
                 default:
                     GrowServer.setMapSensorType(3)
                     break
@@ -404,7 +404,7 @@ var GrowServer = GrowServer || {}
                                     1100,
                                     1200
                                 ]
-                                break    
+                                break
                             case 'BME280 Humidity':
                                 grades = [
                                     0,
@@ -416,7 +416,7 @@ var GrowServer = GrowServer || {}
                                     60,
                                     70,
                                     80,
-                                    90                    
+                                    90
                                 ]
                                 break
                             case 'BME280 Air Temperature':
@@ -432,7 +432,7 @@ var GrowServer = GrowServer || {}
                              } else {
                                 grades = [15, 18, 21, 24, 27, 30, 32, 35]
                              }
-                               break   
+                               break
                             case 'SCD30 Humidity':
                                 grades = [
                                     0,
@@ -444,7 +444,7 @@ var GrowServer = GrowServer || {}
                                     60,
                                     70,
                                     80,
-                                    90                    
+                                    90
                                 ]
                                 break
                             case 'SCD30 Air Temperature':
@@ -453,7 +453,7 @@ var GrowServer = GrowServer || {}
                                 } else {
                                    grades = [15, 18, 21, 24, 27, 30, 32, 35]
                                 }
-                               break   
+                               break
                             case 'LoRa temperature':
                              if (GrowServer.showMetric == false) {
                                 grades = [60, 65, 70, 75, 80, 85, 90, 95]
@@ -472,7 +472,7 @@ var GrowServer = GrowServer || {}
                                  60,
                                  70,
                                  80,
-                                 90                    
+                                 90
                                 ]
                                 break
                             case 'CT':
@@ -530,7 +530,7 @@ var GrowServer = GrowServer || {}
                                     0.4,
                                     -100
                                 ]
-                                break    
+                                break
                             case 'RSSI':
                                 grades = [
                                     -10,
@@ -571,7 +571,7 @@ var GrowServer = GrowServer || {}
                                     30,
                                     20,
                                     10
-                                ]    
+                                ]
                             case 'PAR':
                                 grades = [
                                     2000,
@@ -597,7 +597,7 @@ var GrowServer = GrowServer || {}
                                     250,
                                     0
                                 ]
-                                break    
+                                break
                             case 'LoRa lux':
                                 grades = [
                                     6000,
@@ -609,7 +609,8 @@ var GrowServer = GrowServer || {}
                                     1650,
                                     750,
                                     0
-                                ]    
+                                ]
+                                break
                         }
                         var div = L.DomUtil.create('div', 'info legend')
 

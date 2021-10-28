@@ -64,15 +64,15 @@ class SensorsTable extends Table
       'Light Intensity',          # 17
       'Raw IR',                   # 18
       'RSSI',                     # 19
-      'Volumetric Water Content'  # 20
-      'Gravimetric Water Content' # 21
-      'lux'                       # 22
+      'Volumetric Water Content',  # 20
+      'Gravimetric Water Content', # 21
+      'lux',                       # 22
 
     ],
     # This is the list of different types of sensors our system supports
     'sensor_type' => [
       'Unspecified',              # 0
-      'Waterproof Temperature',   # 1 
+      'Waterproof Temperature',   # 1
       'Humidity',                 # 2 HIH3160
       'Air Temperature',          # 3 HIH3160
       'Co2',                      # 4
@@ -120,7 +120,7 @@ class SensorsTable extends Table
       'LoRa GWC',                    #46
       'LoRa lux',                    #47
       'LoRa raw soil moisture',      #48
-      'LoRa raw soil temp',           #49   
+      'LoRa raw soil temp',           #49
     ],
     # This is a lookup table, given the id of the sensor_type above, what is the data_type for it?
     'sensor_data_type' => [

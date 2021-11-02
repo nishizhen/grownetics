@@ -33,7 +33,7 @@ class BatchWorkflowCardCell extends Cell
         $tasks = $this->Tasks->find('all',
             ['conditions' => [
                 'harvestbatch_id' => $batch_id,
-                'Tasks.status' => $this->Tasks->enumValueToKey('status', 'Incomplete')
+                // 'Tasks.status' => $this->Tasks->enumValueToKey('status', 'Incomplete')
             ],
             'order' => ['Tasks.due_Date' => 'ASC'],
             // 'limit' => 5,

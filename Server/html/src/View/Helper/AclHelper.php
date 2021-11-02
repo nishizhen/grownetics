@@ -16,7 +16,7 @@ class AclHelper extends Helper
 
     public function hasAccess($acls, $controller, $action) {
         foreach ($acls as $acl) {
-            if (is_object($acl) && $acl->controller == $controller &&
+            if (is_object($acl) && sizeof($acl->roles) && $acl->controller == $controller &&
                 (
                     $acl->action == $action
                     ||

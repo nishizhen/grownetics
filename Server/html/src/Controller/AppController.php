@@ -204,8 +204,8 @@ class AppController extends Controller
                         $acls[] = $row; // $row->controller.'/'.$row->action;
                         if (
                             ($row->controller == $controller && ($row->action == $action || $row->action == '*'))
-                            // &&
-                            // strtolower($row->rule) == 'allow'
+                            &&
+                            sizeof($row->roles)
                         ) {
                             $authed = true;
                         }

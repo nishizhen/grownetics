@@ -167,6 +167,37 @@ class ZonesTable extends Table
     $this->Rules->processRules($ruleConditionIds);
   }
 
+  function getMedian($arr) {
+    //Make sure it's an array.
+    if(!is_array($arr)){
+        return false;
+    }
+    //If it's an empty array, return FALSE.
+    if(empty($arr)){
+        return false;
+    }
+    //Count how many elements are in the array.
+    $num = count($arr);
+    //Determine the middle value of the array.
+    $middleVal = floor(($num - 1) / 2);
+    //If the size of the array is an odd number,
+    //then the middle value is the median.
+    if($num % 2) { 
+        return $arr[$middleVal];
+    } 
+    //If the size of the array is an even number, then we
+    //have to get the two middle values and get their
+    //average
+    else {
+        //The $middleVal var will be the low
+        //end of the middle
+        $lowMid = $arr[$middleVal];
+        $highMid = $arr[$middleVal + 1];
+        //Return the average of the low and high.
+        return (($lowMid + $highMid) / 2);
+    }
+}
+
   # Determine the average value for each zone, save it into Influx
   public function processData($shell)
   {
@@ -195,23 +226,27 @@ class ZonesTable extends Table
           $data_type = $this->Sensors->enumKeyToValue('sensor_data_type', $sensor_type);
           $total = 0;
           $sensorCount = 0;
+          $dataPoints = [];
           foreach ($sensors as $sensor) {
             $shell->out('Process data for sensor: ' . $sensor);
             $value = Cache::read('sensor-value-' . $sensor);
             if ($value) {
               $total = $total + $value;
               $sensorCount++;
+              array_push($dataPoints,$value);
             }
           }
 
           if ($total) {
-
-            $value = round($total / $sensorCount, 2);
-            $shell->out('Got value: ' . $value);
+            $modeValue = round($total / $sensorCount, 2);
+            sort($dataPoints);
+            $medianValue = $this->getMedian($dataPoints);
+            $shell->out('Got mode: ' . $modeValue);
+            $shell->out('Got median: ' . $medianValue);
             if ($data_type == $this->Sensors->enumKeyToValue('sensor_data_type', $airTempSensorTypeId)) {
-              $airTempAverage = $value;
+              $airTempAverage = $modeValue;
             } else if ($data_type == $this->Sensors->enumKeyToValue('sensor_data_type', $humiditySensorTypeId)) {
-              $humAverage = $value;
+              $humAverage = $modeValue;
             }
             if ($airTempAverage && $humAverage) {
               $converter = new DataConverter();
@@ -233,18 +268,40 @@ class ZonesTable extends Table
                 )
               );
             }
+            // Store Mode
             array_push(
               $points,
 
               new Point(
                 'sensor_data', // name of the measurement
-                (float) $value, // the measurement value
+                (float) $modeValue, // the measurement value
                 [
                   'source_type' => 1,
                   'sensor_type' => $sensor_type,
                   'data_type' => $data_type,
                   'facility_id' => env('FACILITY_ID'),
                   'source_id' => $zone['id'],
+                  'averaging_method' => 0,
+                ],
+                [], // optional additional fields
+                time() // Time precision has to be set to seconds!
+              )
+            );
+
+            // Store Median
+            array_push(
+              $points,
+
+              new Point(
+                'sensor_data', // name of the measurement
+                (float) $medianValue, // the measurement value
+                [
+                  'source_type' => 1,
+                  'sensor_type' => $sensor_type,
+                  'data_type' => $data_type,
+                  'facility_id' => env('FACILITY_ID'),
+                  'source_id' => $zone['id'],
+                  'averaging_method' => 1,
                 ],
                 [], // optional additional fields
                 time() // Time precision has to be set to seconds!
@@ -259,7 +316,7 @@ class ZonesTable extends Table
 
                 new Point(
                   'sensor_data', // name of the measurement
-                  (float) $value, // the measurement value
+                  (float) $modeValue, // the measurement value
                   [
                     'source_type' => $this->DataPoints->enumValueToKey('source_type', 'Harvest Batch'),
                     'sensor_type' => $sensor_type,
@@ -273,7 +330,7 @@ class ZonesTable extends Table
               );
             }
 
-            Cache::write('zone-value-' . $sensor_type . '-' . $zone['id'], $value);
+            Cache::write('zone-value-' . $sensor_type . '-' . $zone['id'], $modeValue);
           }
         } #/ Foreach 
         try {

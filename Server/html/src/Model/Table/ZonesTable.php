@@ -238,15 +238,15 @@ class ZonesTable extends Table
           }
 
           if ($total) {
-            $modeValue = round($total / $sensorCount, 2);
+            $meanValue = round($total / $sensorCount, 2);
             sort($dataPoints);
             $medianValue = $this->getMedian($dataPoints);
-            $shell->out('Got mode: ' . $modeValue);
+            $shell->out('Got mode: ' . $meanValue);
             $shell->out('Got median: ' . $medianValue);
             if ($data_type == $this->Sensors->enumKeyToValue('sensor_data_type', $airTempSensorTypeId)) {
-              $airTempAverage = $modeValue;
+              $airTempAverage = $meanValue;
             } else if ($data_type == $this->Sensors->enumKeyToValue('sensor_data_type', $humiditySensorTypeId)) {
-              $humAverage = $modeValue;
+              $humAverage = $meanValue;
             }
             if ($airTempAverage && $humAverage) {
               $converter = new DataConverter();
@@ -274,7 +274,7 @@ class ZonesTable extends Table
 
               new Point(
                 'sensor_data', // name of the measurement
-                (float) $modeValue, // the measurement value
+                (float) $meanValue, // the measurement value
                 [
                   'source_type' => 1,
                   'sensor_type' => $sensor_type,
@@ -316,7 +316,7 @@ class ZonesTable extends Table
 
                 new Point(
                   'sensor_data', // name of the measurement
-                  (float) $modeValue, // the measurement value
+                  (float) $meanValue, // the measurement value
                   [
                     'source_type' => $this->DataPoints->enumValueToKey('source_type', 'Harvest Batch'),
                     'sensor_type' => $sensor_type,
@@ -330,7 +330,7 @@ class ZonesTable extends Table
               );
             }
 
-            Cache::write('zone-value-' . $sensor_type . '-' . $zone['id'], $modeValue);
+            Cache::write('zone-value-' . $sensor_type . '-' . $zone['id'], $meanValue);
           }
         } #/ Foreach 
         try {

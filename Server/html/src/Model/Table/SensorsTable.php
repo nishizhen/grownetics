@@ -191,21 +191,58 @@ class SensorsTable extends Table
       "wi wi-thermometer",
       "wi wi-humidity"
     ],
-    'sensor_symbol' => [
-      '',
-      '&#8457;',
-      '&#37;',
-      '&#8457;',
-      'ppm',
-      'pH',
-      '',
-      '&#956;',
-      '',
-      '',
-      'mb',
-      'μmol/s',
-      '&#8457;',
-      '&#37;'
+    'sensor_symbol' => [            #     Links to sensor_type above
+      '',                           #   0 Unspecified
+      '&#8457;',                    #   1 fahrenheit symbol
+      '&#37;',                      #   2 percent symbol
+      '&#8457;',                    #   3 fahrenheit symbol
+      'ppm',                        #   4
+      'pH',                         #   5
+      'DO',                         #   6
+      '&#956;S/m',                  #   7 EC microsiemens per meter
+      '',                           #   8 CT
+      '',                           #   9 Fill Level
+      'mb',                         #  10 VPD
+      'μmol/s',                     #  11 PAR
+      '&#8457;',                    #  12 fahrenheit symbol
+      '&#37;'                       #  13 percent symbol Soil moisture
+      'pH',                         #  14
+      '&#956;S/m',                  #  15 microsiemens per meter
+      'ppm',                        #  16 co2_concentration
+      '&#37;',                      #  17 Precent Humidity
+      '&#8457;',                    #  18
+      '&#37;',                      #  19 Percent
+      '&#8457;',                    #  20
+      'hPa',                        #  21
+      '&#8457;',                    #  22
+      'Pa',                         #  23 pascal LoRa pressure sensor
+      'LoRa battery_level',         #  24
+      'LoRa capacitor_voltage_1',   #  25
+      'LoRa capacitor_voltage_2',   #  26
+      'LoRa co2_concentration_lpf', #  27
+      'ppm',                        #  28
+      'LoRa co2_sensor_status',     #  29
+      '&#8457;',                    #  30
+      'F/m',                        #  31 dielectric_permittivity Farad per Meter
+      '&#956;S/m',                  #  32 microsiemens per meter
+      'LUX',                        #  33 LUX
+      '&#956;mol/m/s',              #  34
+      'LoRa raw_ir_reading',        #  35
+      'LoRa raw_ir_reading_lpf',    #  36
+      '&#37;',                      #  37
+      'LoRa rssi',                  #  38
+      '&#8457;',                    #  39 Soil Temp
+      '&#8457;',                    #  40 Temp
+      '&#8457;',                    #  41 Temperature
+      '&#37;',                      #  42
+      'ppm',                        #  43
+      'LoRa raw vwc',               # 44
+      'LoRa Eos_Alert',             #45
+      'LoRa GWC',                   #46
+      'LoRa lux',                   #47
+      'LoRa raw soil moisture',     #48
+      'LoRa raw soil temp',         #49
+
     ],
     'sensor_metric_symbol' => [
       '',
@@ -214,14 +251,51 @@ class SensorsTable extends Table
       '&#8451;',
       'ppm',
       'pH',
-      '',
-      '',
-      '',
-      '',
-      'mb',
-      'μmol/s',
-      '&#8451;',
-      ''
+      'DO',                         #   6
+      '&#956;S/m',                  #   7 EC microsiemens per meter
+      '',                           #   8 CT
+      '',                           #   9 Fill Level
+      'mb',                         #  10 VPD
+      'μmol/s',                     #  11 PAR
+      '&#8451;',                    #  12 Celcius symbol
+      '&#37;'                       #  13 percent symbol Soil moisture
+      'pH',                         #  14
+      '&#956;S/m',                  #  15 microsiemens per meter
+      'ppm',                        #  16 co2_concentration
+      '&#37;',                      #  17 Precent Humidity
+      '&#8451;',                    #  18
+      '&#37;',                      #  19 Percent
+      '&#8451;',                    #  20
+      'hPa',                        #  21
+      '&#8451;',                    #  22
+      'Pa',                         #  23 pascal LoRa pressure sensor
+      'LoRa battery_level',         #  24
+      'LoRa capacitor_voltage_1',   #  25
+      'LoRa capacitor_voltage_2',   #  26
+      'LoRa co2_concentration_lpf', #  27
+      'ppm',                        #  28
+      'LoRa co2_sensor_status',     #  29
+      '&#8451;',                    #  30
+      'F/m',                        #  31 dielectric_permittivity Farad per Meter
+      '&#956;S/m',                  #  32 microsiemens per meter
+      'LUX',                        #  33 LUX
+      '&#956;mol/m/s',              #  34
+      'LoRa raw_ir_reading',        #  35
+      'LoRa raw_ir_reading_lpf',    #  36
+      '&#37;',                      #  37
+      'LoRa rssi',                  #  38
+      '&#8451;',                    #  39 Soil Temp
+      '&#8451;',                    #  40 Temp
+      '&#8451;',                    #  41 Temperature
+      '&#37;',                      #  42
+      'ppm',                        #  43
+      'LoRa raw vwc',               # 44
+      'LoRa Eos_Alert',             #45
+      'LoRa GWC',                   #46
+      'LoRa lux',                   #47
+      'LoRa raw soil moisture',     #48
+      'LoRa raw soil temp',         #49
+
     ]
   );
 

@@ -43,7 +43,13 @@ class InfisenseApi
     'eos_alert' => 45,
     'GWC' => 46,
     'lux' => 47,
-    'raw_soil_moisture' => 48
+    'raw_soil_moisture' => 48,
+    'soil_pH' => 49,
+    'soil_temperature' => 50,
+    'leaf_temperature' => 51,
+    'leaf_moisture' => 52,
+    'soil_conductivity' => 53,
+    'soil_moisture' => 54,
   ];
 
   # This function is called by GrowpulseShell, it pulls the most recent data, and processes it.

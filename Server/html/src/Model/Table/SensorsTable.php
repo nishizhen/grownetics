@@ -67,7 +67,9 @@ class SensorsTable extends Table
       'Volumetric Water Content',  # 20
       'Gravimetric Water Content', # 21
       'lux',                       # 22
-
+      'Leaf Surface Temperature',  # 23
+      'Leaf Moisture',             # 24
+      'Substrate Temperature',     # 25
     ],
     # This is the list of different types of sensors our system supports
     'sensor_type' => [
@@ -121,6 +123,11 @@ class SensorsTable extends Table
       'LoRa lux',                    #47
       'LoRa raw soil moisture',      #48
       'LoRa raw soil temp',           #49
+      'LoRa pH',                      #50
+      'LoRa Leaf Surface Temperature',  #51
+      'LoRa Leaf Moisture',         #52
+      'LoRa Soil Moisture',         #53
+
     ],
     # This is a lookup table, given the id of the sensor_type above, what is the data_type for it?
     'sensor_data_type' => [
@@ -135,45 +142,49 @@ class SensorsTable extends Table
       7, #'CT',                       # 8
       8, #'Fill Level',               # 9
       9, #'Vapor Pressure Deficit',   # 10
-      10, #'PAR',                      # 11
+      10, #'PAR',                     # 11
       1, #'Atlas Scientific RTD',     # 12
-      11, #'Soil Moisture'             # 13
+      11, #'Soil Moisture'            # 13
       4, # pH                         #14
-      6, # EC                          #15
+      6, # EC                         #15
       3, #co2                         16
       2, #humidity                    17
       1, #air temperature             18
       2, #humidity                    19
       1, #air temperature             20
-      13, #air pressure                21
-      1,                              #22
-      13,                              #23
-      14,                              #24
-      15,                              #25
-      15,                              #26
-      3,                              #27
-      3,                              #28
-      0,                              #29
-      1,                              #30
-      16,                              #31
-      6,                              #32
-      17,                              #33
-      10,                              #34
-      18,                              #35
-      18,                              #36
-      2,                              #37
-      19,                              #38
-      1,                              #39
-      1,                              #40
-      1,                              #41
-      20,                              #42
-      3,                              #43
-      0,                              #44 // We don't want raw vwc
-      0,                              #45 // We don't want eos_alert
-      21,                             # 46 GWC Gravimetric Water Content
-      22,                             # 47 lux (visible light, not PAR)
-      0,                              # 48 Raw GWC kHz
-      0,                              # 49 We don't want raw soil temp
+      13, #air pressure               21
+      1,                             #22 LoRa Barometer pressure
+      13,                            #23 Lora Barometric Pressure
+      14,                            #24 LoRa Battery Level
+      15,                            #25 LoRa Capacitor voltage 1
+      15,                            #26 LoRa Capacitor voltage 2
+      0,                             #27 Co2 concentration lpf
+      3,                             #28 Co2 concentration ppm
+      0,                             #29 Co2 Sensor status
+      1,                             #30 CO2 Sensor Temp
+      16,                            #31 LoRa Dielectric Permittivity
+      6,                             #32 LoRa EC
+      17,                            #33 LoRa light_intensity LUX
+      10,                            #34 LoRa PAR
+      18,                            #35 LoRa IR (motion)
+      0,                             #36 LoRa raw_ir_lpf
+      2,                             #37 LoRa relative_humidity
+      19,                            #38 LoRa RSSI (signal strength)
+      25,                            #39 LoRa Substrate Temp
+      1,                             #40 LoRa Temp
+      1,                             #41 LoRa Temperature
+      20,                            #42 LoRa VWC
+      3,                             #43 LoRa CO2
+      0,                             #44 // We don't want raw vwc
+      0,                             #45 // We don't want eos_alert
+      21,                            # 46 GWC Gravimetric Water Content
+      22,                            # 47 lux (visible light, not PAR)
+      0,                             # 48 Raw GWC kHz
+      0,                             # 49 We don't want raw soil temp
+      4,                             #50 LoRa pH
+      23,                            #51 LoRa Leaf Temperature Sensor
+      24,                            #52 LoRa Leaf Moisture
+      11,                            #53 LoRa Soil Moisture
     ],
     'sensor_display_class' => [
       '',

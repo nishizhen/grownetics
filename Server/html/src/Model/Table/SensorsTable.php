@@ -68,33 +68,33 @@ class SensorsTable extends Table
       'Gravimetric Water Content', # 21
       'lux',                       # 22
       'Leaf Surface Temperature',  # 23
-      'Leaf Moisture',             # 24
+      'Leaf Surface Moisture',             # 24
       'Substrate Temperature',     # 25
     ],
     # This is the list of different types of sensors our system supports
     'sensor_type' => [
-      'Unspecified',              # 0
-      'Waterproof Temperature',   # 1
-      'Humidity',                 # 2 HIH3160
-      'Air Temperature',          # 3 HIH3160
-      'Co2',                      # 4
-      'pH',                       # 5 Atlas Scientific pH
-      'DO',                       # 6 Atlas Scientific DO
-      'EC',                       # 7 Analog
-      'CT',                       # 8
-      'Fill Level',               # 9
-      'Vapor Pressure Deficit',   # 10
-      'PAR',                      # 11
-      'Atlas Scientific RTD',     # 12
-      'Soil Moisture',            # 13
-      '4-20ma pH',                # 14
-      '4-20ma EC',                # 15
-      'SCD30 Co2',                # 16
-      'SCD30 Humidity',           # 17
-      'SCD30 Air Temperature',    # 18
-      'BME280 Humidity',          # 19
-      'BME280 Air Temperature',   # 20
-      'BME280 Air Pressure',      # 21
+      'Unspecified',                 # 0
+      'Waterproof Temperature',      # 1
+      'Humidity',                    # 2 HIH3160
+      'Air Temperature',             # 3 HIH3160
+      'Co2',                         # 4
+      'pH',                          # 5 Atlas Scientific pH
+      'DO',                          # 6 Atlas Scientific DO
+      'EC',                          # 7 Analog
+      'CT',                          # 8
+      'Fill Level',                  # 9
+      'Vapor Pressure Deficit',      # 10
+      'PAR',                         # 11
+      'Atlas Scientific RTD',        # 12
+      'Soil Moisture',               # 13
+      '4-20ma pH',                   # 14
+      '4-20ma EC',                   # 15
+      'SCD30 Co2',                   # 16
+      'SCD30 Humidity',              # 17
+      'SCD30 Air Temperature',       # 18
+      'BME280 Humidity',             # 19
+      'BME280 Air Temperature',      # 20
+      'BME280 Air Pressure',         # 21
       'LoRa barometer_temperature',  # 22
       'LoRa barometric_pressure',    # 23
       'LoRa battery_level',          # 24
@@ -103,7 +103,7 @@ class SensorsTable extends Table
       'LoRa co2_concentration_lpf',  # 27
       'LoRa co2_concentration',      # 28
       'LoRa co2_sensor_status',      # 29
-      'LoRa co2_sensor_temperature', # 30
+      'LoRa co2_sensor_temperature',  # 30
       'LoRa dielectric_permittivity', # 31
       'LoRa electrical_conductivity', # 32
       'LoRa light_intensity',        # 33
@@ -115,18 +115,18 @@ class SensorsTable extends Table
       'LoRa soil_temp',              # 39
       'LoRa temp',                   # 40
       'LoRa temperature',            # 41
-      'LoRa volumetric_water_content', # 42
-      'SEEEED CO2_ppm',              #43
-      'LoRa raw volumetric_water_content', # 44
-      'LoRa Eos_Alert',              #45
-      'LoRa GWC',                    #46
-      'LoRa lux',                    #47
-      'LoRa raw soil moisture',      #48
-      'LoRa raw soil temp',           #49
-      'LoRa pH',                      #50
-      'LoRa Leaf Surface Temperature',  #51
-      'LoRa Leaf Moisture',         #52
-      'LoRa Soil Moisture',         #53
+      'LoRa volumetric_water_content',      # 42
+      'SEEEED CO2_ppm',                     # 43
+      'LoRa raw volumetric_water_content',  # 44
+      'LoRa Eos_Alert',              # 45
+      'LoRa GWC',                    # 46
+      'LoRa lux',                    # 47
+      'LoRa raw soil moisture',      # 48
+      'LoRa raw soil temp',          # 49
+      'LoRa pH',                     # 50
+      'LoRa Leaf Surface Temperature',  # 51
+      'LoRa Leaf Surface Moisture',     # 52
+      'LoRa Soil Moisture',             # 53
 
     ],
     # This is a lookup table, given the id of the sensor_type above, what is the data_type for it?
@@ -182,25 +182,25 @@ class SensorsTable extends Table
       0,                             # 48 Raw GWC kHz
       0,                             # 49 We don't want raw soil temp
       4,                             #50 LoRa pH
-      23,                            #51 LoRa Leaf Temperature Sensor
-      24,                            #52 LoRa Leaf Moisture
+      23,                            #51 LoRa Leaf Surface Temperature Sensor
+      24,                            #52 LoRa Leaf Surface Moisture
       11,                            #53 LoRa Soil Moisture
     ],
     'sensor_display_class' => [
-      '',
-      "wi wi-raindrops",
-      "wi wi-humidity",
-      "wi wi-thermometer",
-      "wi wi-barometer",
-      "wi wi-raindrop",
-      "wi wi-humidity",
-      "wi wi-dust",
-      "wi wi-lightning",
-      "wi wi-flood",
-      "wi wi-lightning",
-      "wi wi-raindrops",
-      "wi wi-thermometer",
-      "wi wi-humidity"
+      '',                           #  0
+      "wi wi-raindrops",            #  1
+      "wi wi-humidity",             #  2
+      "wi wi-thermometer",          #  3
+      "wi wi-barometer",            #  4
+      "wi wi-raindrop",             #  5
+      "wi wi-humidity",             #  6
+      "wi wi-dust",                 #  7
+      "wi wi-lightning",            #  8
+      "wi wi-flood",                #  9
+      "wi wi-lightning",            # 10
+      "wi wi-raindrops",            # 11
+      "wi wi-thermometer",          # 12
+      "wi wi-humidity"              # 13
     ],
     'sensor_symbol' => [            #     Links to sensor_type above
       '',                           #   0 Unspecified

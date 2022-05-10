@@ -15,9 +15,9 @@ var GrowServer = GrowServer || {}
 
         var zoomScale = 29
 
-        var DEFAULT_LAYERS = ['Walls', 'Benches', 'Plants'] //,"Plant Placeholders", "Devices", "Appliances". "Rooms", "HVAC"];
+        var DEFAULT_LAYERS = ['Walls', 'Benches', 'Plants', 'Devices'] //,"Plant Placeholders", "Appliances". "Rooms", "HVAC"];
         var DEFAULT_DATA_OVERLAY =
-            '<div class="wi wi-thermometer">Temperature High</div>'
+            '<div class="wi wi-thermometer">Temperature</div>'
 
         var growIcon = L.icon({
             iconUrl: '/img/map-icons/grownetics-logo-marker-icon.png',
@@ -217,7 +217,6 @@ var GrowServer = GrowServer || {}
                 case 'LoRa Co2 Concentration':
                     GrowServer.setMapSensorType(28)
                     break
-
                 case 'LoRa Co2 Sensor Temperature':
                     GrowServer.setMapSensorType(30)
                     break
@@ -260,11 +259,23 @@ var GrowServer = GrowServer || {}
                 case 'LoRa GWC':
                     GrowServer.setMapSensorType(46)
                     break
-                case 'LoRa lux':
+                case 'LoRa LUX':
                     GrowServer.setMapSensorType(47)
                     break
+                case 'LoRa pH':
+                    GrowServer.setMapSensorType(50)
+                    break
+                case 'LoRa Leaf Surface Temp':
+                    GrowServer.setMapSensorType(51)
+                    break
+                case 'LoRa Leaf Surface Moisture':
+                    GrowServer.setMapSensorType(52)
+                    break
+                case 'LoRa Soil Moisture':
+                    GrowServer.setMapSensorType(53)
+                    break
                 default:
-                    GrowServer.setMapSensorType(3)
+                    GrowServer.setMapSensorType(41)
                     break
             }
         })
@@ -305,20 +316,27 @@ var GrowServer = GrowServer || {}
                 case 'Temperature Low':
                 case 'SCD30 Air Temperature':
                 case 'BME280 Air Temperature':
+                case 'Air Temperature':
+                case 'LoRa co2_sensor_temperature':
+                case 'LoRa temperature':
+                case 'LoRa temp':
                     label =
                         '<div class="wi wi-thermometer">' + dataType + '</div>'
-                    sensorType = 'Air Temperature'
+                    sensorType = 'Temperature'
                     break
                 case 'Humidity High':
                 case 'Humidity Low':
                 case 'SCD30 Humidity':
                 case 'BME280 Humidity':
+                case 'LoRa relative_humidity':
                     label = '<div class="wi wi-humidity">' + dataType + '</div>'
                     sensorType = 'Humidity'
                     break
                 case 'Co2':
                 case 'SCD30 Co2':
-                    label = '<div class="fa fa-percent">CO2</div>'
+                case 'LoRa co2_concentration':
+                case 'SEEEED CO2_ppm':
+                    label = '<div class="fa fa-wind">CO2</div>'
                     sensorType = 'Co2'
                     break
                 case 'CT':
@@ -327,31 +345,42 @@ var GrowServer = GrowServer || {}
                     sensorType = 'CT'
                     break
                 case 'PAR':
+                case 'LoRa PAR':
                     label =
-                        '<div class="wi wi-lightning">' + dataType + '</div>'
+                        '<div class="fa fa-brightness">' + dataType + '</div>'
                     sensorType = 'PAR'
                     break
                 case 'PH':
-                    label = '<div class="wi wi-raindrop">' + dataType + '</div>'
+                case 'LoRa pH':
+                    label = '<div class="fa fa-tank-water">' + dataType + '</div>'
                     sensorType = 'pH'
                     break
                 case 'EC':
-                    label = '<div class="wi wi-dust">' + dataType + '</div>'
+                case 'LoRa electrical_conductivity':
+                    label = '<div class="fa fa-tank-water">' + dataType + '</div>'
                     sensorType = 'EC'
                     break
                 case 'DO':
-                    label = '<div class="wi wi-humidity">' + dataType + '</div>'
+                    label = '<div class="fa fa-chart-scatter-bubble">' + dataType + '</div>'
                     sensorType = 'DO'
                     break
                 case 'Volumetric Water Content':
+                case 'LoRa volumetric_water_content':
                     label = '<div class="wi wi-humidity">' + dataType + '</div>'
                     sensorType = 'Volumetric Water Content'
                     break
-                case 'Waterproof Temperature':
+                case 'Substrate Temperature':
+                case 'LoRa soil_temp':
                     label =
-                        '<div class="wi wi-raindrops">' + dataType + '</div>'
-                    sensorType = 'Waterproof Temperature'
+                        '<div class="fa fa-droplet-degree">' + dataType + '</div>'
+                    sensorType = 'Substrate Temperature'
                     break
+                case 'RSSI':
+                case 'LoRa rssi':
+                    label = '<div class="fa fa-signal-bars">' + dataType + '</div>'
+                    sensorType = 'RSSI'
+                    break
+
                 default:
                     label = dataType
                     sensorType = dataType
@@ -574,27 +603,27 @@ var GrowServer = GrowServer || {}
                                 ]
                             case 'PAR':
                                 grades = [
-                                    2000,
-                                    1750,
-                                    1500,
-                                    1250,
-                                    1000,
+                                    800,
                                     700,
+                                    600,
                                     500,
-                                    250,
+                                    400,
+                                    300,
+                                    200,
+                                    100,
                                     0
                                 ]
                                 break
                             case 'LoRa PAR':
                                 grades = [
-                                    2000,
-                                    1750,
-                                    1500,
-                                    1250,
-                                    1000,
+                                    800,
                                     700,
+                                    600,
                                     500,
-                                    250,
+                                    400,
+                                    300,
+                                    200,
+                                    100,
                                     0
                                 ]
                                 break
@@ -933,7 +962,7 @@ var GrowServer = GrowServer || {}
                             GrowServer.Map.getDataLayer('Humidity High')
                         )
                     }
-                } else if (sensorType == 'Temperature') {
+                } else if (sensorType == 'Air Temperature') {
                     if (GrowServer.showMetric == true) {
                         symbol = sensor.sensor_type_metric_symbol
                     }
@@ -1242,7 +1271,7 @@ var GrowServer = GrowServer || {}
             var control = new L.Control({ position: 'topright' })
             control.onAdd = function (map) {
                 var azoom = L.DomUtil.create('a', 'resetzoom')
-                azoom.innerHTML = '[Reset]'
+                azoom.innerHTML = '[Reset Zoom]'
                 L.DomEvent.disableClickPropagation(azoom).addListener(
                     azoom,
                     'click',

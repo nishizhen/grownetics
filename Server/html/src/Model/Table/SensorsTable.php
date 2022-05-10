@@ -68,8 +68,9 @@ class SensorsTable extends Table
       'Gravimetric Water Content', # 21
       'lux',                       # 22
       'Leaf Surface Temperature',  # 23
-      'Leaf Surface Moisture',             # 24
+      'Leaf Surface Moisture',     # 24
       'Substrate Temperature',     # 25
+      'Water Depth'                # 26 
     ],
     # This is the list of different types of sensors our system supports
     'sensor_type' => [
@@ -127,7 +128,7 @@ class SensorsTable extends Table
       'LoRa Leaf Surface Temperature',  # 51
       'LoRa Leaf Surface Moisture',     # 52
       'LoRa Soil Moisture',             # 53
-
+      'LoRa Water Depth',               # 54 Decentlab Reservoir EC water_depth
     ],
     # This is a lookup table, given the id of the sensor_type above, what is the data_type for it?
     'sensor_data_type' => [
@@ -185,6 +186,7 @@ class SensorsTable extends Table
       23,                            #51 LoRa Leaf Surface Temperature Sensor
       24,                            #52 LoRa Leaf Surface Moisture
       11,                            #53 LoRa Soil Moisture
+      26,                            #54 LoRa Water Depth
     ],
     'sensor_display_class' => [
       '',                           #  0

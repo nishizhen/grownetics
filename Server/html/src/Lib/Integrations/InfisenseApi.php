@@ -49,6 +49,7 @@ class InfisenseApi
     'leaf_moisture' => 52,
     'soil_conductivity' => 32,
     'soil_moisture' => 53,
+    'water_depth' => 54,
   ];
 
   # This function is called by GrowpulseShell, it pulls the most recent data, and processes it.

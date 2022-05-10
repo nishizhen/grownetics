@@ -274,6 +274,9 @@ var GrowServer = GrowServer || {}
                 case 'LoRa Soil Moisture':
                     GrowServer.setMapSensorType(53)
                     break
+                case 'LoRa Water Depth':
+                    GrowServer.setMapSensorType(54)
+                    break    
                 default:
                     GrowServer.setMapSensorType(41)
                     break
